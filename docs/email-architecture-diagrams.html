@@ -51,7 +51,9 @@
             <h3 style="margin-top: 0;">📋 Quick Summary</h3>
             <ul style="margin-bottom: 0;">
                 <li><strong>Solution:</strong> Azure Automation with Microsoft Graph API</li>
-                <li><strong>Schedule:</strong> Enable at 07:55 AM, Disable at 04:05 PM (Mon-Fri)</li>
+                <li><strong>Weekday Schedule:</strong> Enable at 07:55 AM, Disable at 04:05 PM (Mon-Fri)</li>
+                <li><strong>Weekends:</strong> 🔴 <strong>Disabled ALL DAY Saturday & Sunday</strong></li>
+                <li><strong>Affected Users:</strong> <strong>Only students</strong> (Teachers/Admins NOT affected)</li>
                 <li><strong>Cost:</strong> €3-6 per month</li>
                 <li><strong>Implementation:</strong> 1-2 days</li>
             </ul>
@@ -182,18 +184,28 @@
                 <!-- Timeline -->
                 <g transform="translate(30, 490)">
                     <rect x="0" y="0" width="940" height="90" rx="6" fill="white" stroke="#BEBBB8" filter="url(#shadow)"/>
-                    <text x="470" y="22" text-anchor="middle" font-family="Segoe UI" font-size="12" font-weight="600" fill="#323130">📅 Daily Schedule (Monday - Friday)</text>
-                    <rect x="30" y="40" width="880" height="25" rx="4" fill="#E6E6E6"/>
-                    <rect x="30" y="40" width="260" height="25" rx="4" fill="#FFCDD2"/>
-                    <text x="160" y="57" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="#A4262C">🔴 DISABLED (00:00 - 07:55)</text>
-                    <rect x="290" y="40" width="340" height="25" fill="#C8E6C9"/>
-                    <text x="460" y="57" text-anchor="middle" font-family="Segoe UI" font-size="9" font-weight="600" fill="#1B5E20">🟢 ENABLED - School Hours (07:55 - 16:05)</text>
-                    <rect x="630" y="40" width="280" height="25" rx="4" fill="#FFCDD2"/>
-                    <text x="770" y="57" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="#A4262C">🔴 DISABLED (16:05 - 24:00)</text>
-                    <text x="30" y="80" font-family="Consolas" font-size="8" fill="#605E5C">00:00</text>
-                    <text x="290" y="80" font-family="Consolas" font-size="8" fill="#107C10" font-weight="bold">07:55</text>
-                    <text x="630" y="80" font-family="Consolas" font-size="8" fill="#D13438" font-weight="bold">16:05</text>
-                    <text x="890" y="80" font-family="Consolas" font-size="8" fill="#605E5C">24:00</text>
+                    <text x="350" y="22" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="600" fill="#323130">📅 Weekly Schedule (Students ONLY - Teachers/Admins NOT affected)</text>
+                    
+                    <!-- Weekday timeline -->
+                    <text x="350" y="38" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#605E5C">Monday - Friday</text>
+                    <rect x="30" y="42" width="620" height="20" rx="4" fill="#E6E6E6"/>
+                    <rect x="30" y="42" width="180" height="20" rx="4" fill="#FFCDD2"/>
+                    <text x="120" y="56" text-anchor="middle" font-family="Segoe UI" font-size="7" fill="#A4262C">🔴 00:00-07:55</text>
+                    <rect x="210" y="42" width="260" height="20" fill="#C8E6C9"/>
+                    <text x="340" y="56" text-anchor="middle" font-family="Segoe UI" font-size="8" font-weight="600" fill="#1B5E20">🟢 SCHOOL 07:55-16:05</text>
+                    <rect x="470" y="42" width="180" height="20" rx="4" fill="#FFCDD2"/>
+                    <text x="560" y="56" text-anchor="middle" font-family="Segoe UI" font-size="7" fill="#A4262C">🔴 16:05-24:00</text>
+                    
+                    <!-- Weekend bar -->
+                    <text x="780" y="38" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#D13438" font-weight="600">Saturday &amp; Sunday</text>
+                    <rect x="680" y="42" width="230" height="20" rx="4" fill="#FFCDD2" stroke="#D13438" stroke-width="2"/>
+                    <text x="795" y="56" text-anchor="middle" font-family="Segoe UI" font-size="9" font-weight="600" fill="#A4262C">🔴 DISABLED ALL WEEKEND</text>
+                    
+                    <text x="30" y="78" font-family="Consolas" font-size="7" fill="#605E5C">00:00</text>
+                    <text x="210" y="78" font-family="Consolas" font-size="7" fill="#107C10" font-weight="bold">07:55</text>
+                    <text x="470" y="78" font-family="Consolas" font-size="7" fill="#D13438" font-weight="bold">16:05</text>
+                    <text x="640" y="78" font-family="Consolas" font-size="7" fill="#605E5C">24:00</text>
+                    <text x="795" y="78" font-family="Consolas" font-size="7" fill="#D13438" font-weight="bold">Sat-Sun</text>
                 </g>
 
                 <!-- Cost Badge -->

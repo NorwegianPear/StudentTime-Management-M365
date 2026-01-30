@@ -7,7 +7,24 @@
 
 ## 🎯 Purpose
 
-This solution allows schools to **restrict student login times** to specific hours (e.g., 07:55 AM - 16:05 PM, Monday-Friday) in a **cloud-only Entra ID environment** where native logon hour restrictions are not available.
+This solution allows schools to **restrict student login times** to school hours in a **cloud-only Entra ID environment** where native logon hour restrictions are not available.
+
+### Schedule
+
+| Day | Hours | Status |
+|-----|-------|--------|
+| **Monday - Friday** | 07:55 AM - 04:05 PM | 🟢 Students ENABLED |
+| **Monday - Friday** | 04:05 PM - 07:55 AM | 🔴 Students DISABLED |
+| **Saturday - Sunday** | All day | 🔴 Students DISABLED |
+
+### Who Is Affected?
+
+| User Type | Affected? |
+|-----------|-----------|
+| **Students** | ✅ YES - Only members of the specified security group |
+| **Teachers** | ❌ NO - Not in the student group |
+| **Admins** | ❌ NO - Not in the student group |
+| **Staff** | ❌ NO - Not in the student group |
 
 ### Why This Solution?
 

@@ -280,31 +280,40 @@
   <path d="M970 380 L970 430" 
         stroke="#5C2D91" stroke-width="4" fill="none" marker-end="url(#arrowPurple)"/>
 
-  <!-- Timeline Section -->
+  <!-- Weekly Schedule Section -->
   <g transform="translate(50, 650)">
     <rect x="0" y="0" width="1100" height="120" rx="8" fill="white" stroke="#BEBBB8" filter="url(#shadow)"/>
-    <text x="550" y="25" text-anchor="middle" font-family="Segoe UI, Arial" font-size="14" font-weight="600" fill="#323130">📅 Daily Schedule (Monday - Friday)</text>
+    <text x="550" y="25" text-anchor="middle" font-family="Segoe UI, Arial" font-size="14" font-weight="600" fill="#323130">📅 Weekly Schedule - Students ONLY (Teachers/Admins NOT affected)</text>
     
-    <!-- Timeline bar -->
-    <rect x="50" y="50" width="1000" height="30" rx="4" fill="#E6E6E6"/>
+    <!-- Day headers -->
+    <text x="120" y="48" text-anchor="middle" font-family="Segoe UI, Arial" font-size="9" font-weight="600" fill="#323130">MON-FRI</text>
+    <text x="920" y="48" text-anchor="middle" font-family="Segoe UI, Arial" font-size="9" font-weight="600" fill="#D13438">SAT-SUN</text>
+    
+    <!-- Weekday timeline bar -->
+    <rect x="50" y="55" width="700" height="25" rx="4" fill="#E6E6E6"/>
     
     <!-- Disabled morning -->
-    <rect x="50" y="50" width="300" height="30" rx="4" fill="#FFCDD2"/>
-    <text x="200" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#A4262C">🔴 DISABLED (00:00 - 07:55)</text>
+    <rect x="50" y="55" width="210" height="25" rx="4" fill="#FFCDD2"/>
+    <text x="155" y="72" text-anchor="middle" font-family="Segoe UI, Arial" font-size="9" fill="#A4262C">🔴 00:00-07:55</text>
     
     <!-- Enabled school hours -->
-    <rect x="350" y="50" width="400" height="30" fill="#C8E6C9"/>
-    <text x="550" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="11" font-weight="600" fill="#1B5E20">🟢 ENABLED - School Hours (07:55 - 16:05)</text>
+    <rect x="260" y="55" width="280" height="25" fill="#C8E6C9"/>
+    <text x="400" y="72" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" font-weight="600" fill="#1B5E20">🟢 SCHOOL HOURS 07:55-16:05</text>
     
     <!-- Disabled afternoon -->
-    <rect x="750" y="50" width="300" height="30" rx="4" fill="#FFCDD2"/>
-    <text x="900" y="70" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#A4262C">🔴 DISABLED (16:05 - 24:00)</text>
+    <rect x="540" y="55" width="210" height="25" rx="4" fill="#FFCDD2"/>
+    <text x="645" y="72" text-anchor="middle" font-family="Segoe UI, Arial" font-size="9" fill="#A4262C">🔴 16:05-24:00</text>
+    
+    <!-- Weekend bar - DISABLED ALL DAY -->
+    <rect x="780" y="55" width="280" height="25" rx="4" fill="#FFCDD2" stroke="#D13438" stroke-width="2"/>
+    <text x="920" y="72" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" font-weight="600" fill="#A4262C">🔴 DISABLED ALL WEEKEND</text>
     
     <!-- Time markers -->
-    <text x="50" y="100" text-anchor="middle" font-family="Consolas" font-size="9" fill="#605E5C">00:00</text>
-    <text x="350" y="100" text-anchor="middle" font-family="Consolas" font-size="9" fill="#107C10" font-weight="bold">07:55</text>
-    <text x="750" y="100" text-anchor="middle" font-family="Consolas" font-size="9" fill="#D13438" font-weight="bold">16:05</text>
-    <text x="1050" y="100" text-anchor="middle" font-family="Consolas" font-size="9" fill="#605E5C">24:00</text>
+    <text x="50" y="100" text-anchor="middle" font-family="Consolas" font-size="8" fill="#605E5C">00:00</text>
+    <text x="260" y="100" text-anchor="middle" font-family="Consolas" font-size="8" fill="#107C10" font-weight="bold">07:55</text>
+    <text x="540" y="100" text-anchor="middle" font-family="Consolas" font-size="8" fill="#D13438" font-weight="bold">16:05</text>
+    <text x="750" y="100" text-anchor="middle" font-family="Consolas" font-size="8" fill="#605E5C">24:00</text>
+    <text x="920" y="100" text-anchor="middle" font-family="Consolas" font-size="8" fill="#D13438" font-weight="bold">Sat + Sun</text>
   </g>
 
   <!-- Legend -->

@@ -19,7 +19,7 @@
 
 ## Executive Summary
 
-This solution restricts student Microsoft 365 login times to school hours (07:55 AM - 04:05 PM, Monday-Friday) using Azure Automation and Microsoft Graph API in a cloud-only Entra ID environment.
+This solution restricts student Microsoft 365 login times to school hours (07:55 AM - 04:05 PM, Monday-Friday) using Azure Automation and Microsoft Graph API in a cloud-only Entra ID environment. **Students remain disabled throughout weekends** (Saturday & Sunday).
 
 ### Key Facts
 
@@ -27,29 +27,70 @@ This solution restricts student Microsoft 365 login times to school hours (07:55
 |--------|---------|
 | **Problem** | Native time-based login restrictions not available in cloud-only Entra ID |
 | **Solution** | Azure Automation scheduled runbooks |
+| **Schedule** | Mon-Fri: 07:55 AM - 04:05 PM |
+| **Weekends** | 🔴 **Disabled all day Saturday & Sunday** |
 | **Cost** | €3-6/month |
 | **Implementation Time** | 1-2 days |
-| **Affected Users** | All members of student security group |
+| **Affected Users** | Only members of student security group |
+| **Not Affected** | Teachers, admins, staff (not in student group) |
 
 ---
 
 ## Solution Overview
 
+### Weekly Schedule
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        WEEKLY ACCESS SCHEDULE                                    │
+├──────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────────┤
+│  MONDAY  │ TUESDAY  │WEDNESDAY │ THURSDAY │  FRIDAY  │ SATURDAY │   SUNDAY     │
+├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────────┤
+│          │          │          │          │          │          │              │
+│  07:55   │  07:55   │  07:55   │  07:55   │  07:55   │          │              │
+│   🟢     │   🟢     │   🟢     │   🟢     │   🟢     │   🔴     │     🔴       │
+│ ENABLED  │ ENABLED  │ ENABLED  │ ENABLED  │ ENABLED  │ DISABLED │  DISABLED    │
+│          │          │          │          │          │          │              │
+│  16:05   │  16:05   │  16:05   │  16:05   │  16:05   │  ALL     │    ALL       │
+│   🔴     │   🔴     │   🔴     │   🔴     │   🔴     │  DAY     │    DAY       │
+│ DISABLED │ DISABLED │ DISABLED │ DISABLED │ DISABLED │          │              │
+│          │          │          │          │          │          │              │
+└──────────┴──────────┴──────────┴──────────┴──────────┴──────────┴──────────────┘
+         ↑ Runbooks run Mon-Fri only. Students stay disabled Sat & Sun ↑
+```
+
+### Flow Diagram
+
 ```mermaid
 graph TB
-    subgraph "School Hours: 07:55 - 16:05"
+    subgraph "School Hours: Mon-Fri 07:55 - 16:05"
         A[🟢 Students CAN access M365]
     end
     
-    subgraph "Outside Hours: 16:05 - 07:55"
+    subgraph "Outside Hours: Mon-Fri 16:05 - 07:55"
         B[🔴 Students CANNOT access M365]
     end
     
-    A -->|16:05 PM| C{Azure Automation<br/>Disable Accounts}
-    C --> B
-    B -->|07:55 AM| D{Azure Automation<br/>Enable Accounts}
+    subgraph "Weekends: All Day Sat & Sun"
+        W[🔴 Students DISABLED all weekend]
+    end
+    
+    A -->|Fri 16:05| C{Disable Runbook}
+    C --> W
+    W -->|Mon 07:55| D{Enable Runbook}
     D --> A
+    A -->|16:05 PM| C
+    B -->|07:55 AM| D
 ```
+
+### Who Is Affected?
+
+| User Type | Affected? | Reason |
+|-----------|-----------|--------|
+| **Students** | ✅ YES | Members of StudentGroupId security group |
+| **Teachers** | ❌ NO | Not in the student group |
+| **Administrators** | ❌ NO | Not in the student group |
+| **Staff** | ❌ NO | Not in the student group |
 
 ---
 
