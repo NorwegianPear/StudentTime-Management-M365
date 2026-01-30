@@ -7,13 +7,15 @@
 ## Table of Contents
 
 1. [Executive Summary](#executive-summary)
-2. [Solution Overview](#solution-overview)
-3. [Architecture Diagrams](#architecture-diagrams)
-4. [Component Details](#component-details)
-5. [Data Flow](#data-flow)
-6. [Security Architecture](#security-architecture)
-7. [Deployment Architecture](#deployment-architecture)
-8. [Alternative Solutions](#alternative-solutions)
+2. [Cost & Licensing](#cost--licensing)
+3. [Implementation Timeline](#implementation-timeline)
+4. [Solution Overview](#solution-overview)
+5. [Architecture Diagrams](#architecture-diagrams)
+6. [Component Details](#component-details)
+7. [Data Flow](#data-flow)
+8. [Security Architecture](#security-architecture)
+9. [Deployment Architecture](#deployment-architecture)
+10. [Alternative Solutions](#alternative-solutions)
 
 ---
 
@@ -29,10 +31,162 @@ This solution restricts student Microsoft 365 login times to school hours (07:55
 | **Solution** | Azure Automation scheduled runbooks |
 | **Schedule** | Mon-Fri: 07:55 AM - 04:05 PM |
 | **Weekends** | 🔴 **Disabled all day Saturday & Sunday** |
-| **Cost** | €3-6/month |
-| **Implementation Time** | 1-2 days |
+| **Monthly Cost** | €0-6/month (Non-profit: typically FREE) |
+| **Setup Time** | 2-4 hours (+ Azure subscription setup if needed) |
 | **Affected Users** | Only members of student security group |
 | **Not Affected** | Teachers, admins, staff (not in student group) |
+| **Extra Licenses** | ❌ **None required** - Works with existing M365 Education |
+
+---
+
+## Cost & Licensing
+
+### 💰 Total Cost Overview
+
+| Component | Regular Price | Non-Profit Price | Required? |
+|-----------|---------------|------------------|-----------|
+| **Azure Subscription** | Pay-as-you-go | **FREE** ($3,500/year credits) | ✅ Yes |
+| **Azure Automation** | ~€5-8/month | **€0-3/month** | ✅ Yes |
+| **Log Analytics (Basic)** | ~€2-3/month | **€0-1/month** | ✅ Yes |
+| **M365 Education Licenses** | Already have | Already have | ✅ Already included |
+| **Extra Entra ID Licenses** | - | - | ❌ **Not needed** |
+| **Intune/Device Management** | - | - | ❌ **Not needed** |
+| **GitHub Enterprise** | ~€19/user/month | ~€3.67/user/month | ⚪ Optional (IaC) |
+| | | | |
+| **TOTAL (Non-Profit)** | | **€0-4/month** | |
+
+### 📋 Azure Subscription Setup (Required)
+
+Since you don't have an Azure subscription, here's how to get one:
+
+#### Option A: Azure for Nonprofits (Recommended) 🌟
+
+| Step | Action | Time |
+|------|--------|------|
+| 1 | Go to [nonprofit.microsoft.com](https://nonprofit.microsoft.com) | - |
+| 2 | Verify nonprofit status (need registration docs) | 1-5 days |
+| 3 | Receive **$3,500 USD/year** in Azure credits | - |
+| 4 | Create Azure subscription under nonprofit tenant | 10 min |
+
+**Benefits:**
+- First year essentially **FREE**
+- Covers this solution + many other Azure services
+- Renews annually with continued nonprofit status
+
+#### Option B: Pay-As-You-Go (Immediate)
+
+| Step | Action | Time |
+|------|--------|------|
+| 1 | Go to [portal.azure.com](https://portal.azure.com) | - |
+| 2 | Sign in with your M365 admin account | - |
+| 3 | Create new subscription (credit card required) | 10 min |
+| 4 | Estimated monthly cost: **€7-11/month** | - |
+
+#### Option C: Azure for Education (If Eligible)
+
+Some educational institutions qualify for Azure for Education:
+- **Azure Dev Tools for Teaching**: Free for students/faculty
+- **Azure Lab Services**: For classroom environments
+
+### 🔑 License Requirements
+
+**Good news: NO additional licenses needed!**
+
+| What You Have | What You Need | Status |
+|---------------|---------------|--------|
+| Office 365 A1/A3 for students | ✅ Included | ✅ OK |
+| Office 365 A1/A3 for faculty | ✅ Included | ✅ OK |
+| Entra ID (Azure AD) Free | ✅ Included with M365 | ✅ OK |
+| Microsoft Graph API | ✅ Free | ✅ OK |
+| Azure Automation | Consumption-based | ✅ Covered by credits |
+
+**You do NOT need:**
+- ❌ Entra ID Premium P1/P2
+- ❌ Microsoft Intune
+- ❌ Conditional Access (premium)
+- ❌ Any per-user licenses
+
+### 🐙 GitHub Enterprise (Optional)
+
+GitHub Enterprise is **only needed** if you want to use Infrastructure as Code (IaC) with CI/CD pipelines:
+
+| Deployment Method | GitHub Required? | Cost |
+|-------------------|------------------|------|
+| **PowerShell Direct** | ❌ No | €0 |
+| **Bicep (Manual)** | ❌ No | €0 |
+| **GitHub Actions (IaC)** | ✅ Yes | See below |
+
+**GitHub Pricing for Nonprofits:**
+
+| Plan | Regular Price | Nonprofit Price | Features |
+|------|---------------|-----------------|----------|
+| **GitHub Free** | €0 | €0 | Public repos, limited Actions |
+| **GitHub Team** | €3.67/user/month | **€0** (often free for nonprofits) | Private repos, 3,000 Actions min/month |
+| **GitHub Enterprise** | €19.25/user/month | ~€3.67/user/month | Advanced security, SAML SSO |
+
+**Recommendation:** Start with **GitHub Free** or apply for **GitHub for Nonprofits** at [socialimpact.github.com](https://socialimpact.github.com/tech-for-social-good/nonprofits/)
+
+---
+
+## Implementation Timeline
+
+### ⏱️ Time Estimates
+
+| Phase | Tasks | Duration | Who |
+|-------|-------|----------|-----|
+| **Pre-requisites** | | **1-5 days** | |
+| | Apply for Azure Nonprofits (if applicable) | 1-5 days | Admin |
+| | OR Create Pay-as-you-go subscription | 15 min | Admin |
+| | Verify Global Admin access | 5 min | Admin |
+| **Setup** | | **2-4 hours** | |
+| | Create/verify student security group | 15-30 min | Admin |
+| | Create App Registration in Entra ID | 15-20 min | Admin |
+| | Grant admin consent for permissions | 5 min | Admin |
+| | Deploy Azure Automation resources | 30-45 min | Admin/Atea |
+| | Configure schedules and variables | 15-20 min | Admin/Atea |
+| | Import and publish runbooks | 15-20 min | Admin/Atea |
+| **Testing** | | **3-5 days** | |
+| | Create test group with 2-3 accounts | 10 min | Admin |
+| | Run manual tests (enable/disable) | 30 min | Admin |
+| | Monitor for 3-5 days | Passive | Admin |
+| | Review job logs and results | 30 min | Admin |
+| **Production** | | **1 hour** | |
+| | Update StudentGroupId to production group | 10 min | Admin |
+| | Communicate to students/staff | 30 min | Admin |
+| | Go-live monitoring | 30 min | Admin |
+| | | | |
+| **TOTAL** | | **2-4 hours active work** | |
+| | | **(+ 1-5 days waiting for nonprofit approval if applicable)** | |
+
+### 📅 Typical Project Timeline
+
+```
+Week 1:
+├── Day 1-2: Apply for Azure Nonprofits / Setup subscription
+├── Day 3: Create App Registration + Deploy automation
+├── Day 4-5: Testing with test group
+
+Week 2:
+├── Day 1-3: Continue monitoring test group
+├── Day 4: Switch to production group
+├── Day 5: Go-live + monitoring
+
+Total: ~1.5 weeks (can be faster with Pay-as-you-go)
+```
+
+### 🚀 Fast-Track Option (Same Day)
+
+If you use Pay-as-you-go Azure subscription:
+
+| Time | Activity |
+|------|----------|
+| **0:00 - 0:15** | Create Azure subscription |
+| **0:15 - 0:45** | Create App Registration |
+| **0:45 - 1:30** | Deploy Azure Automation |
+| **1:30 - 2:00** | Configure and test |
+| **2:00+** | Monitor test group |
+
+**Same-day deployment possible!**
 
 ---
 

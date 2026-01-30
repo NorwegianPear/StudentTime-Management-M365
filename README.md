@@ -48,14 +48,35 @@ Please communicate this clearly to students and staff before implementation.
 
 ---
 
+## � Cost & Requirements
+
+### No Extra Licenses Needed!
+
+This solution works with your **existing M365 Education licenses**. No additional per-user licenses required.
+
+| Component | Cost (Non-Profit) | Cost (Regular) | Required? |
+|-----------|-------------------|----------------|-----------|
+| Azure Subscription | **FREE** ($3,500/yr credits) | Pay-as-you-go | ✅ Yes |
+| Azure Automation | **€0-3/month** | €5-8/month | ✅ Yes |
+| M365 Education | Already have | Already have | ✅ Yes |
+| Entra ID Premium | - | - | ❌ Not needed |
+| Intune | - | - | ❌ Not needed |
+| GitHub (for IaC) | **€0** (Free tier) | €0-19/user | ⚪ Optional |
+
+**Monthly Total (Non-Profit): €0-4/month** | **Setup Time: 2-4 hours**
+
+> 📖 See [SOLUTION-ARCHITECTURE.md](docs/SOLUTION-ARCHITECTURE.md#cost--licensing) for detailed cost breakdown and Azure Nonprofit setup.
+
+---
+
 ## 📋 Prerequisites
 
 | Requirement | Details |
 |-------------|---------|
-| Microsoft 365 | Education subscription (A1, A3, or A5) |
-| Azure | Subscription (for Azure Automation) |
+| Microsoft 365 | Education subscription (A1, A3, or A5) ✅ |
+| Azure Subscription | [Free for nonprofits](https://nonprofit.microsoft.com) or Pay-as-you-go |
 | Permissions | Global Administrator or Application Administrator |
-| Student Group | Security group containing all student accounts |
+| Student Group | Security group containing student accounts |
 
 ---
 
