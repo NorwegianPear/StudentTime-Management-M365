@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login Time Restriction - Solution Architecture</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.7; color: #323130; max-width: 1000px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        .container { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        h1 { color: #0078D4; border-bottom: 3px solid #0078D4; padding-bottom: 15px; margin-bottom: 25px; }
+        h2 { color: #005A9E; margin-top: 35px; border-left: 4px solid #0078D4; padding-left: 15px; }
+        h3 { color: #323130; margin-top: 25px; }
+        .highlight-box { background: linear-gradient(135deg, #e6f2ff 0%, #cce4ff 100%); border-left: 5px solid #0078D4; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
+        .warning-box { background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%); border-left: 5px solid #FF8C00; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
+        .success-box { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-left: 5px solid #107C10; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
+        .danger-box { background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-left: 5px solid #D13438; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-radius: 8px; overflow: hidden; }
+        th { background: linear-gradient(135deg, #0078D4 0%, #005A9E 100%); color: white; padding: 15px; text-align: left; font-weight: 600; }
+        td { padding: 12px 15px; border-bottom: 1px solid #e6e6e6; color: #323130; }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        tr:hover { background-color: #e6f2ff; }
+        .badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge-success { background: #107C10; color: white; }
+        .badge-warning { background: #FF8C00; color: white; }
+        .badge-danger { background: #D13438; color: white; }
+        .badge-info { background: #0078D4; color: white; }
+        code { background: #f4f4f4; padding: 3px 8px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 13px; color: #5C2D91; }
+        .diagram-container { margin: 30px 0; padding: 20px; background: #fafafa; border-radius: 12px; border: 1px solid #e6e6e6; }
+        .diagram-title { text-align: center; font-size: 16px; font-weight: 600; color: #0078D4; margin-bottom: 15px; }
+        .signature { margin-top: 40px; padding-top: 25px; border-top: 2px solid #e6e6e6; }
+        .footer { font-size: 12px; color: #605E5C; margin-top: 30px; text-align: center; padding: 20px; background: linear-gradient(135deg, #e6f2ff 0%, #f0f0f0 100%); border-radius: 8px; }
+        ul { padding-left: 20px; }
+        li { margin: 10px 0; }
+        .cost-box { background: linear-gradient(135deg, #107C10 0%, #0B5C0B 100%); color: white; padding: 25px; border-radius: 12px; text-align: center; margin: 25px 0; }
+        .cost-amount { font-size: 36px; font-weight: bold; }
+        .timeline { display: flex; margin: 25px 0; border-radius: 8px; overflow: hidden; }
+        .timeline-segment { padding: 15px; text-align: center; flex: 1; }
+        .timeline-disabled { background: #ffcdd2; color: #A4262C; }
+        .timeline-enabled { background: #c8e6c9; color: #1B5E20; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Student Login Time Restriction - Solution Architecture</h1>
+        
+        <p>Hi Adnan,</p>
+        
+        <p>Following up on our previous discussion, I've prepared detailed technical diagrams explaining exactly how our proposed solution works. This email includes the complete architecture and data flow for the Student Time Management solution.</p>
+
+        <div class="highlight-box">
+            <h3 style="margin-top: 0;">📋 Quick Summary</h3>
+            <ul style="margin-bottom: 0;">
+                <li><strong>Solution:</strong> Azure Automation with Microsoft Graph API</li>
+                <li><strong>Schedule:</strong> Enable at 07:55 AM, Disable at 04:05 PM (Mon-Fri)</li>
+                <li><strong>Cost:</strong> €3-6 per month</li>
+                <li><strong>Implementation:</strong> 1-2 days</li>
+            </ul>
+        </div>
+
+        <h2>🏗️ Solution Architecture Diagram</h2>
+        
+        <div class="diagram-container">
+            <div class="diagram-title">Complete Solution Architecture</div>
+            <!-- Embedded SVG Diagram -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="100%" height="auto">
+                <defs>
+                    <linearGradient id="azureBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0078D4"/>
+                        <stop offset="100%" style="stop-color:#005A9E"/>
+                    </linearGradient>
+                    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#107C10"/>
+                        <stop offset="100%" style="stop-color:#0B5C0B"/>
+                    </linearGradient>
+                    <linearGradient id="redGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#D13438"/>
+                        <stop offset="100%" style="stop-color:#A4262C"/>
+                    </linearGradient>
+                    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#8764B8"/>
+                        <stop offset="100%" style="stop-color:#5C2D91"/>
+                    </linearGradient>
+                    <linearGradient id="entraBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#00BCF2"/>
+                        <stop offset="100%" style="stop-color:#0078D4"/>
+                    </linearGradient>
+                    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                        <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+                    </filter>
+                    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+                        <path d="M1,1 L9,5 L1,9 Z" fill="#107C10"/>
+                    </marker>
+                    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+                        <path d="M1,1 L9,5 L1,9 Z" fill="#D13438"/>
+                    </marker>
+                    <marker id="arrowPurple" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+                        <path d="M1,1 L9,5 L1,9 Z" fill="#5C2D91"/>
+                    </marker>
+                </defs>
+
+                <!-- Background -->
+                <rect width="1000" height="700" fill="#FAFAFA"/>
+
+                <!-- Azure Cloud Boundary -->
+                <rect x="30" y="20" width="580" height="400" rx="10" fill="none" stroke="#0078D4" stroke-width="2" stroke-dasharray="10,5"/>
+                <rect x="40" y="10" width="130" height="22" fill="url(#azureBlue)" rx="4"/>
+                <text x="105" y="25" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="600" fill="white">☁️ Microsoft Azure</text>
+
+                <!-- Automation Account -->
+                <rect x="60" y="50" width="520" height="180" rx="8" fill="white" stroke="#0078D4" stroke-width="2" filter="url(#shadow)"/>
+                <rect x="60" y="50" width="520" height="32" rx="8" fill="url(#azureBlue)"/>
+                <text x="320" y="72" text-anchor="middle" font-family="Segoe UI" font-size="13" font-weight="600" fill="white">Azure Automation: StudentAccessAutomation</text>
+
+                <!-- Enable Runbook -->
+                <g transform="translate(90, 100)">
+                    <rect x="0" y="0" width="160" height="110" rx="6" fill="white" stroke="#107C10" stroke-width="2"/>
+                    <rect x="0" y="0" width="160" height="28" rx="6" fill="url(#greenGrad)"/>
+                    <text x="80" y="19" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="600" fill="white">🟢 Enable-StudentAccess</text>
+                    <text x="80" y="55" text-anchor="middle" font-family="Segoe UI" font-size="10" fill="#323130">PowerShell Runbook</text>
+                    <text x="80" y="75" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="#107C10">accountEnabled = true</text>
+                    <text x="80" y="98" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="#605E5C">⏰ 07:55 AM Mon-Fri</text>
+                </g>
+
+                <!-- Disable Runbook -->
+                <g transform="translate(390, 100)">
+                    <rect x="0" y="0" width="160" height="110" rx="6" fill="white" stroke="#D13438" stroke-width="2"/>
+                    <rect x="0" y="0" width="160" height="28" rx="6" fill="url(#redGrad)"/>
+                    <text x="80" y="19" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="600" fill="white">🔴 Disable-StudentAccess</text>
+                    <text x="80" y="55" text-anchor="middle" font-family="Segoe UI" font-size="10" fill="#323130">PowerShell Runbook</text>
+                    <text x="80" y="75" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="#D13438">accountEnabled = false</text>
+                    <text x="80" y="98" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="#605E5C">⏰ 04:05 PM Mon-Fri</text>
+                </g>
+
+                <!-- Variables -->
+                <g transform="translate(90, 250)">
+                    <rect x="0" y="0" width="460" height="70" rx="6" fill="#FFF4CE" stroke="#FF8C00" stroke-width="1"/>
+                    <text x="230" y="20" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="600" fill="#FF8C00">🔐 Encrypted Variables</text>
+                    <text x="80" y="48" text-anchor="middle" font-family="Consolas" font-size="9" fill="#323130">TenantId</text>
+                    <text x="180" y="48" text-anchor="middle" font-family="Consolas" font-size="9" fill="#323130">ClientId</text>
+                    <text x="290" y="48" text-anchor="middle" font-family="Consolas" font-size="9" fill="#D13438">🔒 ClientSecret</text>
+                    <text x="400" y="48" text-anchor="middle" font-family="Consolas" font-size="9" fill="#323130">StudentGroupId</text>
+                </g>
+
+                <!-- Microsoft Graph API -->
+                <g transform="translate(650, 80)">
+                    <rect x="0" y="0" width="300" height="140" rx="8" fill="white" stroke="#5C2D91" stroke-width="2" filter="url(#shadow)"/>
+                    <rect x="0" y="0" width="300" height="32" rx="8" fill="url(#purpleGrad)"/>
+                    <text x="150" y="21" text-anchor="middle" font-family="Segoe UI" font-size="12" font-weight="600" fill="white">🔗 Microsoft Graph API</text>
+                    <text x="15" y="55" font-family="Consolas" font-size="9" fill="#5C2D91">GET  /groups/{id}/members</text>
+                    <text x="15" y="75" font-family="Consolas" font-size="9" fill="#5C2D91">GET  /users/{id}</text>
+                    <text x="15" y="95" font-family="Consolas" font-size="9" fill="#107C10">PATCH /users/{id}</text>
+                    <text x="15" y="115" font-family="Consolas" font-size="9" fill="#D13438">POST /revokeSignInSessions</text>
+                </g>
+
+                <!-- Entra ID -->
+                <g transform="translate(650, 260)">
+                    <rect x="0" y="0" width="300" height="200" rx="8" fill="white" stroke="#00BCF2" stroke-width="2" filter="url(#shadow)"/>
+                    <rect x="0" y="0" width="300" height="32" rx="8" fill="url(#entraBlue)"/>
+                    <text x="150" y="21" text-anchor="middle" font-family="Segoe UI" font-size="12" font-weight="600" fill="white">🔐 Microsoft Entra ID</text>
+                    
+                    <!-- App Registration -->
+                    <rect x="15" y="45" width="270" height="50" rx="4" fill="#E6F7FF" stroke="#00BCF2"/>
+                    <text x="150" y="65" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="600" fill="#0078D4">App Registration</text>
+                    <text x="150" y="82" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#107C10">✓ User.ReadWrite.All  ✓ Group.Read.All  ✓ Directory.Read.All</text>
+                    
+                    <!-- Student Group -->
+                    <rect x="15" y="110" width="270" height="75" rx="4" fill="#F3F3F3" stroke="#BEBBB8"/>
+                    <text x="150" y="130" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="600" fill="#323130">👨‍🎓 Student Security Group</text>
+                    <circle cx="60" cy="160" r="12" fill="#0078D4"/>
+                    <circle cx="95" cy="160" r="12" fill="#0078D4"/>
+                    <circle cx="130" cy="160" r="12" fill="#0078D4"/>
+                    <circle cx="165" cy="160" r="12" fill="#0078D4"/>
+                    <circle cx="200" cy="160" r="12" fill="#0078D4"/>
+                    <text x="240" y="165" font-family="Segoe UI" font-size="10" fill="#605E5C">... 500+</text>
+                </g>
+
+                <!-- Flow Arrows -->
+                <path d="M250 210 L250 340 Q250 360 270 360 L620 360 Q640 360 640 340 L640 230" stroke="#107C10" stroke-width="3" fill="none" marker-end="url(#arrowGreen)"/>
+                <path d="M550 210 L550 300 Q550 320 570 320 L620 320 Q640 320 640 300 L640 230" stroke="#D13438" stroke-width="3" fill="none" marker-end="url(#arrowRed)"/>
+                <path d="M800 220 L800 260" stroke="#5C2D91" stroke-width="3" fill="none" marker-end="url(#arrowPurple)"/>
+
+                <!-- Timeline -->
+                <g transform="translate(30, 490)">
+                    <rect x="0" y="0" width="940" height="90" rx="6" fill="white" stroke="#BEBBB8" filter="url(#shadow)"/>
+                    <text x="470" y="22" text-anchor="middle" font-family="Segoe UI" font-size="12" font-weight="600" fill="#323130">📅 Daily Schedule (Monday - Friday)</text>
+                    <rect x="30" y="40" width="880" height="25" rx="4" fill="#E6E6E6"/>
+                    <rect x="30" y="40" width="260" height="25" rx="4" fill="#FFCDD2"/>
+                    <text x="160" y="57" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="#A4262C">🔴 DISABLED (00:00 - 07:55)</text>
+                    <rect x="290" y="40" width="340" height="25" fill="#C8E6C9"/>
+                    <text x="460" y="57" text-anchor="middle" font-family="Segoe UI" font-size="9" font-weight="600" fill="#1B5E20">🟢 ENABLED - School Hours (07:55 - 16:05)</text>
+                    <rect x="630" y="40" width="280" height="25" rx="4" fill="#FFCDD2"/>
+                    <text x="770" y="57" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="#A4262C">🔴 DISABLED (16:05 - 24:00)</text>
+                    <text x="30" y="80" font-family="Consolas" font-size="8" fill="#605E5C">00:00</text>
+                    <text x="290" y="80" font-family="Consolas" font-size="8" fill="#107C10" font-weight="bold">07:55</text>
+                    <text x="630" y="80" font-family="Consolas" font-size="8" fill="#D13438" font-weight="bold">16:05</text>
+                    <text x="890" y="80" font-family="Consolas" font-size="8" fill="#605E5C">24:00</text>
+                </g>
+
+                <!-- Cost Badge -->
+                <g transform="translate(30, 600)">
+                    <rect x="0" y="0" width="200" height="70" rx="8" fill="url(#greenGrad)" filter="url(#shadow)"/>
+                    <text x="100" y="25" text-anchor="middle" font-family="Segoe UI" font-size="12" font-weight="600" fill="white">💰 Monthly Cost</text>
+                    <text x="100" y="52" text-anchor="middle" font-family="Segoe UI" font-size="22" font-weight="bold" fill="white">€3 - €6</text>
+                </g>
+
+                <!-- Legend -->
+                <g transform="translate(260, 600)">
+                    <rect x="0" y="0" width="350" height="70" rx="6" fill="white" stroke="#BEBBB8"/>
+                    <text x="175" y="18" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="600" fill="#323130">Legend</text>
+                    <rect x="15" y="30" width="15" height="10" fill="url(#greenGrad)"/>
+                    <text x="40" y="39" font-family="Segoe UI" font-size="9" fill="#605E5C">Enable Flow</text>
+                    <rect x="130" y="30" width="15" height="10" fill="url(#redGrad)"/>
+                    <text x="155" y="39" font-family="Segoe UI" font-size="9" fill="#605E5C">Disable Flow</text>
+                    <rect x="245" y="30" width="15" height="10" fill="url(#purpleGrad)"/>
+                    <text x="270" y="39" font-family="Segoe UI" font-size="9" fill="#605E5C">API Call</text>
+                    <line x1="15" y1="55" x2="45" y2="55" stroke="#0078D4" stroke-width="2" stroke-dasharray="5,3"/>
+                    <text x="55" y="58" font-family="Segoe UI" font-size="9" fill="#605E5C">Azure Boundary</text>
+                </g>
+
+                <!-- Deployment Options -->
+                <g transform="translate(640, 600)">
+                    <rect x="0" y="0" width="330" height="70" rx="8" fill="url(#azureBlue)" filter="url(#shadow)"/>
+                    <text x="165" y="22" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="600" fill="white">🚀 Deployment Options</text>
+                    <text x="165" y="40" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="white" opacity="0.9">PowerShell (Direct) • Bicep (IaC) • GitHub Actions</text>
+                    <text x="165" y="58" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="#FFB900">Ready to deploy in 1-2 days</text>
+                </g>
+            </svg>
+        </div>
+
+        <h2>📊 How It Works - Step by Step</h2>
+
+        <div class="diagram-container">
+            <div class="diagram-title">Data Flow Diagram</div>
+            <!-- Embedded Flow SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 350" width="100%" height="auto">
+                <defs>
+                    <linearGradient id="blueGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0078D4"/>
+                        <stop offset="100%" style="stop-color:#005A9E"/>
+                    </linearGradient>
+                    <linearGradient id="green2" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#107C10"/>
+                        <stop offset="100%" style="stop-color:#0B5C0B"/>
+                    </linearGradient>
+                    <linearGradient id="red2" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#D13438"/>
+                        <stop offset="100%" style="stop-color:#A4262C"/>
+                    </linearGradient>
+                    <linearGradient id="purple2" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#8764B8"/>
+                        <stop offset="100%" style="stop-color:#5C2D91"/>
+                    </linearGradient>
+                    <filter id="sh2" x="-10%" y="-10%" width="120%" height="120%">
+                        <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/>
+                    </filter>
+                    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                        <path d="M1,1 L7,4 L1,7 Z" fill="#0078D4"/>
+                    </marker>
+                </defs>
+
+                <rect width="900" height="350" fill="#FAFAFA"/>
+
+                <!-- Step 1 -->
+                <g transform="translate(20, 50)">
+                    <ellipse cx="55" cy="40" rx="55" ry="40" fill="url(#blueGrad2)" filter="url(#sh2)"/>
+                    <text x="55" y="35" text-anchor="middle" font-family="Segoe UI" font-size="9" font-weight="600" fill="white">⏰ Scheduler</text>
+                    <text x="55" y="50" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="white">07:55 / 16:05</text>
+                    <circle cx="55" cy="0" r="14" fill="#FFB900"/>
+                    <text x="55" y="5" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="bold" fill="white">1</text>
+                </g>
+
+                <!-- Step 2 -->
+                <g transform="translate(160, 50)">
+                    <rect x="0" y="0" width="120" height="80" rx="6" fill="white" stroke="#0078D4" stroke-width="2" filter="url(#sh2)"/>
+                    <text x="60" y="30" text-anchor="middle" font-family="Segoe UI" font-size="9" font-weight="600" fill="#0078D4">📜 Runbook</text>
+                    <text x="60" y="48" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#323130">Load Credentials</text>
+                    <text x="60" y="65" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#605E5C">from Variables</text>
+                    <circle cx="60" cy="0" r="14" fill="#FFB900"/>
+                    <text x="60" y="5" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="bold" fill="white">2</text>
+                </g>
+
+                <!-- Step 3 -->
+                <g transform="translate(310, 50)">
+                    <rect x="0" y="0" width="120" height="80" rx="6" fill="white" stroke="#5C2D91" stroke-width="2" filter="url(#sh2)"/>
+                    <text x="60" y="30" text-anchor="middle" font-family="Segoe UI" font-size="9" font-weight="600" fill="#5C2D91">🔗 Connect</text>
+                    <text x="60" y="48" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#323130">Graph API</text>
+                    <text x="60" y="65" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#605E5C">OAuth 2.0</text>
+                    <circle cx="60" cy="0" r="14" fill="#FFB900"/>
+                    <text x="60" y="5" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="bold" fill="white">3</text>
+                </g>
+
+                <!-- Step 4 -->
+                <g transform="translate(460, 50)">
+                    <rect x="0" y="0" width="120" height="80" rx="6" fill="white" stroke="#00BCF2" stroke-width="2" filter="url(#sh2)"/>
+                    <text x="60" y="30" text-anchor="middle" font-family="Segoe UI" font-size="9" font-weight="600" fill="#00BCF2">👥 Get Members</text>
+                    <text x="60" y="48" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#323130">Query Group</text>
+                    <text x="60" y="65" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#605E5C">Return User IDs</text>
+                    <circle cx="60" cy="0" r="14" fill="#FFB900"/>
+                    <text x="60" y="5" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="bold" fill="white">4</text>
+                </g>
+
+                <!-- Step 5: Loop -->
+                <g transform="translate(610, 50)">
+                    <rect x="0" y="0" width="100" height="80" rx="6" fill="#FFF4CE" stroke="#FF8C00" stroke-width="2" stroke-dasharray="4,2" filter="url(#sh2)"/>
+                    <text x="50" y="28" text-anchor="middle" font-family="Segoe UI" font-size="9" font-weight="600" fill="#FF8C00">🔄 ForEach</text>
+                    <text x="50" y="45" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#323130">Student</text>
+                    <text x="50" y="62" text-anchor="middle" font-family="Segoe UI" font-size="7" fill="#605E5C">500+ iterations</text>
+                    <circle cx="50" cy="0" r="14" fill="#FFB900"/>
+                    <text x="50" y="5" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="bold" fill="white">5</text>
+                </g>
+
+                <!-- Arrows row 1 -->
+                <path d="M130 90 L160 90" stroke="#0078D4" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+                <path d="M280 90 L310 90" stroke="#0078D4" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+                <path d="M430 90 L460 90" stroke="#5C2D91" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+                <path d="M580 90 L610 90" stroke="#00BCF2" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+
+                <!-- Decision diamond -->
+                <g transform="translate(740, 55)">
+                    <polygon points="60,0 120,35 60,70 0,35" fill="white" stroke="#FF8C00" stroke-width="2" filter="url(#sh2)"/>
+                    <text x="60" y="32" text-anchor="middle" font-family="Segoe UI" font-size="8" font-weight="600" fill="#323130">Morning</text>
+                    <text x="60" y="44" text-anchor="middle" font-family="Segoe UI" font-size="8" font-weight="600" fill="#323130">or PM?</text>
+                </g>
+
+                <path d="M710 90 L740 90" stroke="#FF8C00" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+
+                <!-- Enable box -->
+                <g transform="translate(20, 200)">
+                    <rect x="0" y="0" width="180" height="90" rx="6" fill="white" stroke="#107C10" stroke-width="2" filter="url(#sh2)"/>
+                    <rect x="0" y="0" width="180" height="25" rx="6" fill="url(#green2)"/>
+                    <text x="90" y="17" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="600" fill="white">🟢 ENABLE (07:55)</text>
+                    <text x="90" y="50" text-anchor="middle" font-family="Consolas" font-size="9" fill="#107C10">accountEnabled = true</text>
+                    <text x="90" y="75" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#605E5C">Students can sign in</text>
+                    <circle cx="90" cy="0" r="14" fill="#107C10"/>
+                    <text x="90" y="5" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="bold" fill="white">6a</text>
+                </g>
+
+                <!-- Disable box -->
+                <g transform="translate(700, 180)">
+                    <rect x="0" y="0" width="180" height="130" rx="6" fill="white" stroke="#D13438" stroke-width="2" filter="url(#sh2)"/>
+                    <rect x="0" y="0" width="180" height="25" rx="6" fill="url(#red2)"/>
+                    <text x="90" y="17" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="600" fill="white">🔴 DISABLE (16:05)</text>
+                    <text x="90" y="48" text-anchor="middle" font-family="Consolas" font-size="9" fill="#D13438">accountEnabled = false</text>
+                    <line x1="15" y1="60" x2="165" y2="60" stroke="#E6E6E6"/>
+                    <text x="90" y="78" text-anchor="middle" font-family="Segoe UI" font-size="8" font-weight="600" fill="#323130">+ Revoke Sessions</text>
+                    <text x="90" y="95" text-anchor="middle" font-family="Consolas" font-size="8" fill="#D13438">revokeSignInSessions</text>
+                    <rect x="20" y="105" width="140" height="18" rx="4" fill="#FFCDD2"/>
+                    <text x="90" y="118" text-anchor="middle" font-family="Segoe UI" font-size="7" fill="#A4262C">⚠️ Active sessions terminated</text>
+                    <circle cx="90" cy="0" r="14" fill="#D13438"/>
+                    <text x="90" y="5" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="bold" fill="white">6b</text>
+                </g>
+
+                <!-- Arrows to decision results -->
+                <path d="M740 90 L110 180 L110 200" stroke="#107C10" stroke-width="2" fill="none"/>
+                <text x="380" y="150" font-family="Segoe UI" font-size="9" fill="#107C10" font-weight="600">Morning</text>
+                <path d="M860 90 L860 125 L790 125 L790 180" stroke="#D13438" stroke-width="2" fill="none"/>
+                <text x="830" y="150" font-family="Segoe UI" font-size="9" fill="#D13438" font-weight="600">Afternoon</text>
+
+                <!-- Complete box -->
+                <g transform="translate(350, 230)">
+                    <rect x="0" y="0" width="180" height="60" rx="8" fill="url(#blueGrad2)" filter="url(#sh2)"/>
+                    <text x="90" y="25" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="600" fill="white">✅ Job Complete</text>
+                    <text x="90" y="45" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="white" opacity="0.9">Disconnect &amp; Log Results</text>
+                    <circle cx="90" cy="0" r="14" fill="#FFB900"/>
+                    <text x="90" y="5" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="bold" fill="white">7</text>
+                </g>
+
+                <!-- Arrows to complete -->
+                <path d="M110 290 L110 320 L350 260" stroke="#107C10" stroke-width="2" fill="none"/>
+                <path d="M790 310 L790 340 L530 260" stroke="#D13438" stroke-width="2" fill="none"/>
+            </svg>
+        </div>
+
+        <h2>📋 Solution Details</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Azure Automation Account</strong></td>
+                    <td>Hosts the runbooks and schedules. Runs PowerShell 7.2 with Microsoft.Graph modules.</td>
+                </tr>
+                <tr>
+                    <td><strong>Enable-StudentAccess Runbook</strong></td>
+                    <td>Runs at 07:55 AM (Mon-Fri). Sets <code>accountEnabled = true</code> for all students.</td>
+                </tr>
+                <tr>
+                    <td><strong>Disable-StudentAccess Runbook</strong></td>
+                    <td>Runs at 04:05 PM (Mon-Fri). Sets <code>accountEnabled = false</code> AND revokes all active sessions.</td>
+                </tr>
+                <tr>
+                    <td><strong>Encrypted Variables</strong></td>
+                    <td>Stores TenantId, ClientId, ClientSecret (encrypted), and StudentGroupId securely.</td>
+                </tr>
+                <tr>
+                    <td><strong>Microsoft Graph API</strong></td>
+                    <td>Used to query group members and update user account status programmatically.</td>
+                </tr>
+                <tr>
+                    <td><strong>Entra ID App Registration</strong></td>
+                    <td>Service principal with <code>User.ReadWrite.All</code>, <code>Group.Read.All</code>, <code>Directory.Read.All</code> permissions.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="warning-box">
+            <h3 style="margin-top: 0;">⚠️ Important: User Experience Impact</h3>
+            <p>When accounts are disabled at 04:05 PM:</p>
+            <ul style="margin-bottom: 0;">
+                <li>All active sessions are <strong>immediately terminated</strong></li>
+                <li>Students will be <strong>signed out</strong> from all Microsoft 365 apps</li>
+                <li><strong>Unsaved work may be lost</strong> - students must save before 04:05 PM</li>
+                <li>Clear communication to students and staff is essential</li>
+            </ul>
+        </div>
+
+        <h2>📅 Next Steps</h2>
+
+        <p>To proceed with implementation, we need:</p>
+        <ol>
+            <li><strong>Confirmation</strong> that this solution meets your requirements</li>
+            <li><strong>Access</strong> to Entra ID (Global Admin or Application Admin role)</li>
+            <li><strong>Azure subscription</strong> for hosting the Automation Account</li>
+            <li><strong>Student group Object ID</strong> or we can create a new security group</li>
+            <li><strong>Final schedule confirmation</strong> (currently 07:55 - 16:05, can be adjusted)</li>
+        </ol>
+
+        <div class="success-box">
+            <h3 style="margin-top: 0;">📦 Ready to Deploy</h3>
+            <p style="margin-bottom: 0;">We have the complete solution ready in a GitHub repository with all runbooks, deployment scripts, and Infrastructure as Code templates. Implementation can be completed within <strong>1-2 business days</strong>.</p>
+        </div>
+
+        <p>Please let me know if you have any questions about the architecture or would like to schedule a call to discuss further.</p>
+
+        <div class="signature">
+            <p>Best regards,</p>
+            <p><strong>Uy Le Phan</strong><br>
+            Atea AS<br>
+            <a href="mailto:Uy.Le.Phan@atea.no" style="color: #0078D4;">Uy.Le.Phan@atea.no</a></p>
+        </div>
+
+        <div class="footer">
+            <p>📎 <strong>Resources:</strong><br>
+            🔗 GitHub Repository: <a href="https://github.com/NorwegianPear/StudentTime-Management-M365" style="color: #0078D4;">https://github.com/NorwegianPear/StudentTime-Management-M365</a><br>
+            📄 Full documentation and diagrams included</p>
+            <p style="margin-top: 10px; font-size: 11px; color: #888;">This solution is open source under the MIT License</p>
+        </div>
+    </div>
+</body>
+</html>

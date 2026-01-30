@@ -105,13 +105,46 @@ StudentTime-Management-M365/
 
 ---
 
+## 🧪 Testing First (Recommended)
+
+> **⚠️ Always test with a small group before production deployment!**
+
+The solution **only affects members of the security group** you specify. Teachers, admins, and staff are **never touched**.
+
+### Quick Test Setup
+
+```powershell
+# 1. Run the test environment setup script
+.\scripts\Setup-TestEnvironment.ps1
+
+# 2. Optionally create test user accounts
+.\scripts\Setup-TestEnvironment.ps1 -CreateTestUsers -TestUserCount 3
+```
+
+This will:
+1. Create a test security group: `StudentAccess-TestGroup`
+2. Optionally create test student accounts
+3. Output the **Group ID** to use during deployment
+
+### Test → Production Workflow
+
+| Phase | Group | Duration |
+|-------|-------|----------|
+| **Testing** | `StudentAccess-TestGroup` (2-3 accounts) | 3-5 days |
+| **Pilot** | Small student group (20-50 accounts) | 1-2 weeks |
+| **Production** | All students security group | Ongoing |
+
+To switch from test to production, simply update the `StudentGroupId` variable in Azure Automation.
+
+---
+
 ## 🚀 Quick Start
 
 ### Option 1: Interactive Menu (Recommended)
 
 ```powershell
 # Clone the repository
-git clone https://github.com/yourorg/StudentTime-Management-M365.git
+git clone https://github.com/NorwegianPear/StudentTime-Management-M365.git
 cd StudentTime-Management-M365
 
 # Run the interactive menu

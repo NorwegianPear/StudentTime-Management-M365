@@ -85,6 +85,10 @@ function Show-MainMenu {
     Write-Host "── TESTING ────────────────────────────────────────────────" -ForegroundColor DarkCyan -NoNewline
     Write-Host "│" -ForegroundColor DarkGray
     Write-Host "  │   " -ForegroundColor DarkGray -NoNewline
+    Write-Host "[T]" -ForegroundColor Yellow -NoNewline
+    Write-Host "  Setup Test Environment (Create Test Group)" -ForegroundColor White -NoNewline
+    Write-Host "         │" -ForegroundColor DarkGray
+    Write-Host "  │   " -ForegroundColor DarkGray -NoNewline
     Write-Host "[6]" -ForegroundColor Cyan -NoNewline
     Write-Host "  Test: Enable Student Access" -ForegroundColor White -NoNewline
     Write-Host "                          │" -ForegroundColor DarkGray
@@ -597,6 +601,55 @@ function Invoke-ViewStatus {
     Read-Host "  Press Enter to continue"
 }
 
+function Invoke-SetupTestEnvironment {
+    Show-Banner
+    Write-Host "  ═══════════════════════════════════════════════════════════════" -ForegroundColor Yellow
+    Write-Host "               SETUP TEST ENVIRONMENT" -ForegroundColor White
+    Write-Host "  ═══════════════════════════════════════════════════════════════" -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "  This will create a TEST security group for safely testing" -ForegroundColor Cyan
+    Write-Host "  the solution before rolling out to all students." -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "  ⚠️  ONLY members of this group will be affected!" -ForegroundColor Yellow
+    Write-Host "     Teachers, admins, and staff are NEVER touched." -ForegroundColor Gray
+    Write-Host ""
+    Write-Host "  Options:" -ForegroundColor White
+    Write-Host "    [1] Create test group only (add users manually)" -ForegroundColor White
+    Write-Host "    [2] Create test group + 3 test user accounts" -ForegroundColor White
+    Write-Host "    [B] Back to menu" -ForegroundColor White
+    Write-Host ""
+    
+    $choice = Read-Host "  Select option"
+    
+    $testScript = Join-Path $script:ProjectRoot "scripts\Setup-TestEnvironment.ps1"
+    
+    switch ($choice) {
+        '1' {
+            Write-Host ""
+            Write-Host "  Creating test group..." -ForegroundColor Cyan
+            & $testScript
+        }
+        '2' {
+            Write-Host ""
+            Write-Host "  Creating test group and test users..." -ForegroundColor Cyan
+            & $testScript -CreateTestUsers -TestUserCount 3
+        }
+        'B' { return }
+        'b' { return }
+    }
+    
+    Write-Host ""
+    Write-Host "  ─────────────────────────────────────────────────────────────────" -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host "  NEXT STEPS:" -ForegroundColor Green
+    Write-Host "    1. Use the Group ID shown above when deploying" -ForegroundColor White
+    Write-Host "    2. Test for a few days with the test accounts" -ForegroundColor White
+    Write-Host "    3. When ready, update StudentGroupId to production group" -ForegroundColor White
+    Write-Host ""
+    
+    Read-Host "  Press Enter to continue"
+}
+
 function Invoke-ViewConfig {
     Show-Banner
     Write-Host "  ═══════════════════════════════════════════════════════════════" -ForegroundColor Magenta
@@ -682,6 +735,7 @@ do {
         '3' { Invoke-DeployAzureDirect }
         '4' { Invoke-GitHubActionsSetup }
         '5' { Invoke-DeployBicep }
+        'T' { Invoke-SetupTestEnvironment }
         '6' { Invoke-TestEnable }
         '7' { Invoke-TestDisable }
         '8' { Invoke-ViewStatus }
