@@ -5,43 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Login Time Restriction - Full Solution Proposal</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
-        .container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #0078d4; border-bottom: 3px solid #0078d4; padding-bottom: 10px; }
-        h2 { color: #106ebe; margin-top: 30px; border-left: 4px solid #0078d4; padding-left: 15px; }
-        h3 { color: #333; margin-top: 20px; }
-        .highlight-box { background: linear-gradient(135deg, #e8f4fd 0%, #d0e8f9 100%); border-left: 5px solid #0078d4; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .warning-box { background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%); border-left: 5px solid #ffc107; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .success-box { background: linear-gradient(135deg, #d4edda 0%, #b7dfbf 100%); border-left: 5px solid #28a745; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .danger-box { background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%); border-left: 5px solid #dc3545; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        .info-box { background: linear-gradient(135deg, #e2e3e5 0%, #d6d8db 100%); border-left: 5px solid #6c757d; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 1px 5px rgba(0,0,0,0.1); }
-        th { background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%); color: white; padding: 15px; text-align: left; }
-        td { padding: 12px 15px; border-bottom: 1px solid #ddd; }
-        tr:nth-child(even) { background-color: #f8f9fa; }
-        tr:hover { background-color: #e9ecef; }
-        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
-        .badge-success { background: #28a745; color: white; }
-        .badge-warning { background: #ffc107; color: #333; }
-        .badge-danger { background: #dc3545; color: white; }
-        .badge-info { background: #17a2b8; color: white; }
-        .badge-primary { background: #0078d4; color: white; }
-        .recommendation { border: 3px solid #28a745; border-radius: 8px; padding: 5px; }
-        code { background: #f4f4f4; padding: 3px 8px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 13px; }
-        .architecture-diagram { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; font-family: 'Consolas', monospace; white-space: pre; overflow-x: auto; line-height: 1.4; }
-        .cost-highlight { font-size: 24px; font-weight: bold; color: #28a745; }
-        .signature { margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; }
-        .footer { font-size: 12px; color: #666; margin-top: 30px; text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #4a4a4a; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #fff5f8; }
+        .container { background: #ffffff; padding: 35px; border-radius: 12px; box-shadow: 0 4px 15px rgba(219,112,147,0.15); border: 1px solid #f8d7e3; }
+        h1 { color: #c44569; border-bottom: 3px solid #f8b4c8; padding-bottom: 12px; }
+        h2 { color: #b8405e; margin-top: 30px; border-left: 4px solid #f8b4c8; padding-left: 15px; }
+        h3 { color: #5a5a5a; margin-top: 20px; }
+        .highlight-box { background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%); border-left: 5px solid #e91e8c; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; color: #4a4a4a; }
+        .warning-box { background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%); border-left: 5px solid #f9a825; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; color: #5d4e37; }
+        .success-box { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-left: 5px solid #66bb6a; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; color: #2e5a2f; }
+        .danger-box { background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-left: 5px solid #ef5350; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; color: #5a2c2c; }
+        .info-box { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-left: 5px solid #ab47bc; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; color: #4a3a4d; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 2px 8px rgba(219,112,147,0.1); border-radius: 8px; overflow: hidden; }
+        th { background: linear-gradient(135deg, #e91e8c 0%, #c44569 100%); color: white; padding: 15px; text-align: left; font-weight: 600; }
+        td { padding: 12px 15px; border-bottom: 1px solid #f8d7e3; color: #4a4a4a; }
+        tr:nth-child(even) { background-color: #fef6f9; }
+        tr:hover { background-color: #fce4ec; }
+        .badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge-success { background: #81c784; color: #1b5e20; }
+        .badge-warning { background: #ffcc80; color: #5d4e37; }
+        .badge-danger { background: #ef9a9a; color: #5a2c2c; }
+        .badge-info { background: #b39ddb; color: #4a3a4d; }
+        .badge-primary { background: #f48fb1; color: #880e4f; }
+        .recommendation { border: 3px solid #81c784; border-radius: 8px; padding: 5px; background-color: #f1f8f1; }
+        code { background: #fce4ec; padding: 3px 8px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 13px; color: #c44569; }
+        .architecture-diagram { background: #3d3d3d; color: #f8b4c8; padding: 20px; border-radius: 8px; font-family: 'Consolas', monospace; white-space: pre; overflow-x: auto; line-height: 1.4; border: 2px solid #f8b4c8; }
+        .cost-highlight { font-size: 24px; font-weight: bold; color: #66bb6a; }
+        .signature { margin-top: 40px; padding-top: 20px; border-top: 2px solid #f8d7e3; }
+        .footer { font-size: 12px; color: #888; margin-top: 30px; text-align: center; padding: 15px; background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%); border-radius: 8px; }
         ul { padding-left: 20px; }
-        li { margin: 8px 0; }
+        li { margin: 8px 0; color: #4a4a4a; }
         .timeline { position: relative; padding-left: 30px; }
-        .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 3px; background: #0078d4; }
+        .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, #f8b4c8 0%, #e91e8c 100%); }
         .timeline-item { position: relative; margin: 20px 0; padding-left: 20px; }
-        .timeline-item::before { content: ''; position: absolute; left: -23px; top: 5px; width: 12px; height: 12px; background: #0078d4; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 2px #0078d4; }
+        .timeline-item::before { content: ''; position: absolute; left: -23px; top: 5px; width: 12px; height: 12px; background: #e91e8c; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 2px #f8b4c8; }
         .pros-cons { display: flex; gap: 20px; flex-wrap: wrap; }
         .pros, .cons { flex: 1; min-width: 250px; }
         .pros li::marker { content: '✅ '; }
         .cons li::marker { content: '⚠️ '; }
+        p { color: #4a4a4a; }
+        a { color: #c44569; }
+        blockquote { color: #5a5a5a; }
+        strong { color: #4a4a4a; }
     </style>
 </head>
 <body>
@@ -138,33 +142,105 @@
             </ul>
         </div>
 
-        <div class="architecture-diagram">
-┌─────────────────────────────────────────────────────────────────┐
-│                     AZURE AUTOMATION                            │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌──────────────────┐          ┌──────────────────┐            │
-│  │ Enable-Student   │          │ Disable-Student  │            │
-│  │ Access.ps1       │          │ Access.ps1       │            │
-│  │                  │          │ + Revoke Tokens  │            │
-│  └────────┬─────────┘          └────────┬─────────┘            │
-│           │                             │                       │
-│  ⏰ 07:55 AM                    ⏰ 04:05 PM                     │
-│  Mon-Fri                        Mon-Fri                         │
-└───────────┼─────────────────────────────┼───────────────────────┘
-            │                             │
-            ▼                             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│              MICROSOFT GRAPH API                                │
-│     PATCH /users/{id} → accountEnabled = true/false             │
-│     POST /users/{id}/revokeSignInSessions                       │
-└─────────────────────────────────────────────────────────────────┘
-            │                             │
-            ▼                             ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    ENTRA ID (Azure AD)                          │
-│              Student Group: "Students-M365"                     │
-│                   ~500-5000 accounts                            │
-└─────────────────────────────────────────────────────────────────┘
+        <!-- Solution Architecture Diagram -->
+        <div style="margin: 30px 0; padding: 20px; background: linear-gradient(135deg, #fef6f9 0%, #fff 100%); border-radius: 12px; border: 2px solid #f8d7e3;">
+            <h4 style="text-align: center; color: #c44569; margin-bottom: 20px;">📊 Solution Architecture</h4>
+            
+            <svg viewBox="0 0 800 520" style="width: 100%; max-width: 800px; display: block; margin: 0 auto;">
+                <!-- Background gradient -->
+                <defs>
+                    <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#fce4ec;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#f8bbd9;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e3f2fd;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#bbdefb;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#e8f5e9;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#c8e6c9;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#f3e5f5;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#e1bee7;stop-opacity:1" />
+                    </linearGradient>
+                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="2" dy="3" stdDeviation="3" flood-color="#c44569" flood-opacity="0.2"/>
+                    </filter>
+                </defs>
+                
+                <!-- Azure Automation Box -->
+                <rect x="50" y="20" width="700" height="140" rx="15" fill="url(#blueGrad)" stroke="#1976d2" stroke-width="2" filter="url(#shadow)"/>
+                <text x="400" y="50" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold" fill="#1565c0" text-anchor="middle">☁️ AZURE AUTOMATION</text>
+                
+                <!-- Enable Runbook -->
+                <rect x="100" y="70" width="180" height="70" rx="10" fill="#fff" stroke="#66bb6a" stroke-width="2"/>
+                <text x="190" y="95" font-family="Segoe UI, sans-serif" font-size="12" font-weight="bold" fill="#2e7d32" text-anchor="middle">🟢 Enable-StudentAccess.ps1</text>
+                <text x="190" y="115" font-family="Segoe UI, sans-serif" font-size="11" fill="#4a4a4a" text-anchor="middle">⏰ 07:55 AM</text>
+                <text x="190" y="130" font-family="Segoe UI, sans-serif" font-size="10" fill="#888" text-anchor="middle">Monday - Friday</text>
+                
+                <!-- Disable Runbook -->
+                <rect x="520" y="70" width="180" height="70" rx="10" fill="#fff" stroke="#ef5350" stroke-width="2"/>
+                <text x="610" y="95" font-family="Segoe UI, sans-serif" font-size="12" font-weight="bold" fill="#c62828" text-anchor="middle">🔴 Disable-StudentAccess.ps1</text>
+                <text x="610" y="115" font-family="Segoe UI, sans-serif" font-size="11" fill="#4a4a4a" text-anchor="middle">⏰ 04:05 PM + Revoke Sessions</text>
+                <text x="610" y="130" font-family="Segoe UI, sans-serif" font-size="10" fill="#888" text-anchor="middle">Monday - Friday</text>
+                
+                <!-- Arrows from Automation to Graph -->
+                <path d="M 190 140 L 190 180 L 300 180 L 300 210" stroke="#66bb6a" stroke-width="3" fill="none" marker-end="url(#arrowGreen)"/>
+                <path d="M 610 140 L 610 180 L 500 180 L 500 210" stroke="#ef5350" stroke-width="3" fill="none" marker-end="url(#arrowRed)"/>
+                
+                <defs>
+                    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L9,3 z" fill="#66bb6a"/>
+                    </marker>
+                    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L9,3 z" fill="#ef5350"/>
+                    </marker>
+                    <marker id="arrowPink" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L9,3 z" fill="#c44569"/>
+                    </marker>
+                </defs>
+                
+                <!-- Microsoft Graph API Box -->
+                <rect x="150" y="210" width="500" height="90" rx="15" fill="url(#purpleGrad)" stroke="#7b1fa2" stroke-width="2" filter="url(#shadow)"/>
+                <text x="400" y="240" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold" fill="#6a1b9a" text-anchor="middle">🔗 MICROSOFT GRAPH API</text>
+                <text x="400" y="265" font-family="Consolas, monospace" font-size="11" fill="#4a4a4a" text-anchor="middle">PATCH /users/{id} → accountEnabled = true/false</text>
+                <text x="400" y="285" font-family="Consolas, monospace" font-size="11" fill="#4a4a4a" text-anchor="middle">POST /users/{id}/revokeSignInSessions</text>
+                
+                <!-- Arrow from Graph to Entra ID -->
+                <path d="M 400 300 L 400 340" stroke="#c44569" stroke-width="3" fill="none" marker-end="url(#arrowPink)"/>
+                
+                <!-- Entra ID Box -->
+                <rect x="100" y="350" width="600" height="150" rx="15" fill="url(#pinkGrad)" stroke="#c44569" stroke-width="2" filter="url(#shadow)"/>
+                <text x="400" y="380" font-family="Segoe UI, sans-serif" font-size="16" font-weight="bold" fill="#c44569" text-anchor="middle">🔐 ENTRA ID (Azure AD)</text>
+                
+                <!-- Student Icons -->
+                <rect x="150" y="400" width="500" height="80" rx="10" fill="#fff" stroke="#f8b4c8" stroke-width="1"/>
+                <text x="400" y="425" font-family="Segoe UI, sans-serif" font-size="13" font-weight="bold" fill="#4a4a4a" text-anchor="middle">👨‍🎓 Student Security Group: "Students-M365"</text>
+                
+                <!-- Student avatars -->
+                <circle cx="220" cy="455" r="15" fill="#e91e8c" opacity="0.7"/>
+                <text x="220" y="460" font-family="Segoe UI, sans-serif" font-size="14" fill="#fff" text-anchor="middle">👤</text>
+                <circle cx="280" cy="455" r="15" fill="#e91e8c" opacity="0.7"/>
+                <text x="280" y="460" font-family="Segoe UI, sans-serif" font-size="14" fill="#fff" text-anchor="middle">👤</text>
+                <circle cx="340" cy="455" r="15" fill="#e91e8c" opacity="0.7"/>
+                <text x="340" y="460" font-family="Segoe UI, sans-serif" font-size="14" fill="#fff" text-anchor="middle">👤</text>
+                <circle cx="400" cy="455" r="15" fill="#e91e8c" opacity="0.7"/>
+                <text x="400" y="460" font-family="Segoe UI, sans-serif" font-size="14" fill="#fff" text-anchor="middle">👤</text>
+                <circle cx="460" cy="455" r="15" fill="#e91e8c" opacity="0.7"/>
+                <text x="460" y="460" font-family="Segoe UI, sans-serif" font-size="14" fill="#fff" text-anchor="middle">👤</text>
+                <circle cx="520" cy="455" r="15" fill="#e91e8c" opacity="0.7"/>
+                <text x="520" y="460" font-family="Segoe UI, sans-serif" font-size="14" fill="#fff" text-anchor="middle">👤</text>
+                <text x="580" y="460" font-family="Segoe UI, sans-serif" font-size="14" fill="#888" text-anchor="middle">... 500+ accounts</text>
+            </svg>
+            
+            <!-- Legend -->
+            <div style="display: flex; justify-content: center; gap: 30px; margin-top: 15px; flex-wrap: wrap;">
+                <span style="font-size: 12px; color: #4a4a4a;"><span style="display: inline-block; width: 12px; height: 12px; background: #66bb6a; border-radius: 3px; margin-right: 5px;"></span> Enable Flow (Morning)</span>
+                <span style="font-size: 12px; color: #4a4a4a;"><span style="display: inline-block; width: 12px; height: 12px; background: #ef5350; border-radius: 3px; margin-right: 5px;"></span> Disable Flow (Afternoon)</span>
+                <span style="font-size: 12px; color: #4a4a4a;"><span style="display: inline-block; width: 12px; height: 12px; background: #c44569; border-radius: 3px; margin-right: 5px;"></span> Graph API Call</span>
+            </div>
         </div>
 
         <div class="pros-cons">
