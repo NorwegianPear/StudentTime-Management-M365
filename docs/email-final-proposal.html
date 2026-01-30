@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login Time Restriction - Complete Solution Proposal</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.7; color: #323130; max-width: 1000px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        .container { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        h1 { color: #0078D4; border-bottom: 3px solid #0078D4; padding-bottom: 15px; margin-bottom: 25px; }
+        h2 { color: #005A9E; margin-top: 35px; border-left: 4px solid #0078D4; padding-left: 15px; }
+        h3 { color: #323130; margin-top: 25px; }
+        .highlight-box { background: linear-gradient(135deg, #e6f2ff 0%, #cce4ff 100%); border-left: 5px solid #0078D4; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
+        .warning-box { background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%); border-left: 5px solid #FF8C00; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
+        .success-box { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-left: 5px solid #107C10; padding: 20px; margin: 25px 0; border-radius: 0 8px 8px 0; }
+        .cost-box { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border: 2px solid #107C10; padding: 25px; margin: 25px 0; border-radius: 12px; text-align: center; }
+        .cost-amount { font-size: 42px; font-weight: bold; color: #107C10; }
+        .cost-period { font-size: 16px; color: #605E5C; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-radius: 8px; overflow: hidden; }
+        th { background: linear-gradient(135deg, #0078D4 0%, #005A9E 100%); color: white; padding: 15px; text-align: left; font-weight: 600; }
+        td { padding: 12px 15px; border-bottom: 1px solid #e6e6e6; }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        tr:hover { background-color: #e6f2ff; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        .badge-free { background: #107C10; color: white; }
+        .badge-included { background: #0078D4; color: white; }
+        .badge-optional { background: #8764B8; color: white; }
+        .badge-required { background: #FFB900; color: #323130; }
+        code { background: #f4f4f4; padding: 3px 8px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 13px; }
+        .diagram-container { margin: 30px 0; padding: 20px; background: #fafafa; border-radius: 12px; border: 1px solid #e6e6e6; }
+        .diagram-title { text-align: center; font-size: 16px; font-weight: 600; color: #0078D4; margin-bottom: 15px; }
+        .timeline-step { display: flex; margin: 15px 0; align-items: flex-start; }
+        .step-number { background: #0078D4; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px; flex-shrink: 0; }
+        .step-content { flex: 1; }
+        .signature { margin-top: 40px; padding-top: 25px; border-top: 2px solid #e6e6e6; }
+        .footer { font-size: 12px; color: #605E5C; margin-top: 30px; text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px; }
+        .section-divider { border: none; height: 2px; background: linear-gradient(90deg, #0078D4, #00BCF2, #107C10); margin: 40px 0; border-radius: 2px; }
+        ul { padding-left: 20px; }
+        li { margin: 8px 0; }
+        .check { color: #107C10; font-weight: bold; }
+        .cross { color: #D13438; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Student Login Time Restriction - Complete Solution Proposal</h1>
+        
+        <p>Hi Adnan,</p>
+        
+        <p>Thank you for the opportunity to present our complete solution for restricting student login times in Microsoft 365. This email contains everything you need to know: architecture, costs, licensing requirements, and implementation timeline.</p>
+
+        <div class="highlight-box">
+            <h3 style="margin-top: 0;">📋 Executive Summary</h3>
+            <table style="margin: 0; box-shadow: none;">
+                <tr><td style="width: 200px; border: none;"><strong>Solution</strong></td><td style="border: none;">Azure Automation + Microsoft Graph API</td></tr>
+                <tr><td style="border: none;"><strong>Schedule</strong></td><td style="border: none;">Mon-Fri: 07:55 AM - 04:05 PM (Enabled)</td></tr>
+                <tr><td style="border: none;"><strong>Weekends</strong></td><td style="border: none;">🔴 Disabled ALL DAY Saturday & Sunday</td></tr>
+                <tr><td style="border: none;"><strong>Affected Users</strong></td><td style="border: none;">Students ONLY (~1,000 users)</td></tr>
+                <tr><td style="border: none;"><strong>Not Affected</strong></td><td style="border: none;">Teachers, Admins, Staff</td></tr>
+                <tr><td style="border: none;"><strong>Monthly Cost</strong></td><td style="border: none;"><strong style="color: #107C10;">€0-4/month</strong> (Nonprofit pricing)</td></tr>
+                <tr><td style="border: none;"><strong>Setup Time</strong></td><td style="border: none;">2-4 hours active work</td></tr>
+                <tr><td style="border: none;"><strong>Extra Licenses</strong></td><td style="border: none;"><strong style="color: #107C10;">None required!</strong></td></tr>
+            </table>
+        </div>
+
+        <hr class="section-divider">
+
+        <h2>🏗️ Solution Architecture</h2>
+        
+        <p>The diagram below shows how the complete solution works:</p>
+
+        <div class="diagram-container">
+            <div class="diagram-title">Complete Solution Architecture</div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 750" width="100%" height="auto">
+                <defs>
+                    <linearGradient id="azureBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0078D4"/>
+                        <stop offset="100%" style="stop-color:#005A9E"/>
+                    </linearGradient>
+                    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#107C10"/>
+                        <stop offset="100%" style="stop-color:#0B5C0B"/>
+                    </linearGradient>
+                    <linearGradient id="redGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#D13438"/>
+                        <stop offset="100%" style="stop-color:#A4262C"/>
+                    </linearGradient>
+                    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#8764B8"/>
+                        <stop offset="100%" style="stop-color:#5C2D91"/>
+                    </linearGradient>
+                    <linearGradient id="entraBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#00BCF2"/>
+                        <stop offset="100%" style="stop-color:#0078D4"/>
+                    </linearGradient>
+                    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                        <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+                    </filter>
+                </defs>
+
+                <!-- Background -->
+                <rect width="1000" height="750" fill="#FAFAFA"/>
+
+                <!-- Title -->
+                <text x="500" y="35" text-anchor="middle" font-family="Segoe UI" font-size="18" font-weight="600" fill="#323130">Student Time Management - Azure Automation Solution</text>
+
+                <!-- Azure Cloud Boundary -->
+                <rect x="30" y="55" width="580" height="420" rx="10" fill="none" stroke="#0078D4" stroke-width="2" stroke-dasharray="10,5"/>
+                <rect x="40" y="45" width="130" height="22" fill="url(#azureBlue)" rx="4"/>
+                <text x="105" y="60" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="600" fill="white">☁️ Microsoft Azure</text>
+
+                <!-- Automation Account -->
+                <rect x="60" y="80" width="520" height="200" rx="8" fill="white" stroke="#0078D4" stroke-width="2" filter="url(#shadow)"/>
+                <rect x="60" y="80" width="520" height="32" rx="8" fill="url(#azureBlue)"/>
+                <text x="320" y="102" text-anchor="middle" font-family="Segoe UI" font-size="12" font-weight="600" fill="white">Azure Automation Account</text>
+
+                <!-- Enable Runbook -->
+                <g transform="translate(90, 130)">
+                    <rect x="0" y="0" width="180" height="130" rx="6" fill="white" stroke="#107C10" stroke-width="2"/>
+                    <rect x="0" y="0" width="180" height="28" rx="6" fill="url(#greenGrad)"/>
+                    <text x="90" y="19" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="600" fill="white">🟢 Enable-StudentAccess</text>
+                    <text x="90" y="55" text-anchor="middle" font-family="Segoe UI" font-size="10" fill="#323130">PowerShell Runbook</text>
+                    <text x="90" y="75" text-anchor="middle" font-family="Consolas" font-size="9" fill="#107C10">accountEnabled = true</text>
+                    <rect x="20" y="90" width="140" height="28" rx="4" fill="#E8F5E9" stroke="#107C10"/>
+                    <text x="90" y="108" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="#1B5E20">⏰ 07:55 AM Mon-Fri</text>
+                </g>
+
+                <!-- Disable Runbook -->
+                <g transform="translate(370, 130)">
+                    <rect x="0" y="0" width="180" height="130" rx="6" fill="white" stroke="#D13438" stroke-width="2"/>
+                    <rect x="0" y="0" width="180" height="28" rx="6" fill="url(#redGrad)"/>
+                    <text x="90" y="19" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="600" fill="white">🔴 Disable-StudentAccess</text>
+                    <text x="90" y="55" text-anchor="middle" font-family="Segoe UI" font-size="10" fill="#323130">PowerShell Runbook</text>
+                    <text x="90" y="75" text-anchor="middle" font-family="Consolas" font-size="9" fill="#D13438">accountEnabled = false</text>
+                    <rect x="20" y="90" width="140" height="28" rx="4" fill="#FFEBEE" stroke="#D13438"/>
+                    <text x="90" y="108" text-anchor="middle" font-family="Segoe UI" font-size="9" fill="#A4262C">⏰ 04:05 PM Mon-Fri</text>
+                </g>
+
+                <!-- Variables Box -->
+                <g transform="translate(60, 300)">
+                    <rect x="0" y="0" width="520" height="80" rx="6" fill="#FFF8E1" stroke="#FFB900" stroke-width="2"/>
+                    <text x="260" y="22" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="600" fill="#FF8C00">🔐 Encrypted Variables (Secure Storage)</text>
+                    <text x="80" y="52" text-anchor="middle" font-family="Consolas" font-size="9" fill="#323130">TenantId</text>
+                    <text x="190" y="52" text-anchor="middle" font-family="Consolas" font-size="9" fill="#323130">ClientId</text>
+                    <text x="310" y="52" text-anchor="middle" font-family="Consolas" font-size="9" fill="#D13438">🔒 ClientSecret</text>
+                    <text x="440" y="52" text-anchor="middle" font-family="Consolas" font-size="9" fill="#323130">StudentGroupId</text>
+                    <text x="260" y="70" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#605E5C">All credentials encrypted at rest with Azure-managed keys</text>
+                </g>
+
+                <!-- Microsoft Graph API -->
+                <g transform="translate(650, 100)">
+                    <rect x="0" y="0" width="310" height="160" rx="8" fill="white" stroke="#5C2D91" stroke-width="2" filter="url(#shadow)"/>
+                    <rect x="0" y="0" width="310" height="32" rx="8" fill="url(#purpleGrad)"/>
+                    <text x="155" y="21" text-anchor="middle" font-family="Segoe UI" font-size="12" font-weight="600" fill="white">🔗 Microsoft Graph API</text>
+                    <text x="20" y="55" font-family="Consolas" font-size="9" fill="#5C2D91">GET  /groups/{id}/members</text>
+                    <text x="20" y="75" font-family="Consolas" font-size="9" fill="#5C2D91">GET  /users/{id}</text>
+                    <text x="20" y="95" font-family="Consolas" font-size="9" fill="#107C10">PATCH /users/{id} → Enable</text>
+                    <text x="20" y="115" font-family="Consolas" font-size="9" fill="#D13438">PATCH /users/{id} → Disable</text>
+                    <text x="20" y="135" font-family="Consolas" font-size="9" fill="#D13438">POST /revokeSignInSessions</text>
+                    <text x="155" y="152" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#605E5C">Free API - No additional cost</text>
+                </g>
+
+                <!-- Entra ID -->
+                <g transform="translate(650, 280)">
+                    <rect x="0" y="0" width="310" height="195" rx="8" fill="white" stroke="#00BCF2" stroke-width="2" filter="url(#shadow)"/>
+                    <rect x="0" y="0" width="310" height="32" rx="8" fill="url(#entraBlue)"/>
+                    <text x="155" y="21" text-anchor="middle" font-family="Segoe UI" font-size="12" font-weight="600" fill="white">🔐 Microsoft Entra ID</text>
+                    
+                    <!-- App Registration -->
+                    <rect x="15" y="45" width="280" height="45" rx="4" fill="#E6F7FF" stroke="#00BCF2"/>
+                    <text x="155" y="62" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="600" fill="#0078D4">App Registration</text>
+                    <text x="155" y="80" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#107C10">✓ User.ReadWrite.All  ✓ Group.Read.All</text>
+                    
+                    <!-- Student Group -->
+                    <rect x="15" y="100" width="135" height="80" rx="4" fill="#FFEBEE" stroke="#D13438"/>
+                    <text x="82" y="118" text-anchor="middle" font-family="Segoe UI" font-size="9" font-weight="600" fill="#D13438">👨‍🎓 Students Group</text>
+                    <text x="82" y="135" text-anchor="middle" font-family="Segoe UI" font-size="20" fill="#D13438">~1,000</text>
+                    <text x="82" y="150" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#A4262C">AFFECTED</text>
+                    <text x="82" y="168" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#605E5C">A1 for students license</text>
+                    
+                    <!-- Teachers Group -->
+                    <rect x="160" y="100" width="135" height="80" rx="4" fill="#E8F5E9" stroke="#107C10"/>
+                    <text x="227" y="118" text-anchor="middle" font-family="Segoe UI" font-size="9" font-weight="600" fill="#107C10">👩‍🏫 Teachers/Staff</text>
+                    <text x="227" y="135" text-anchor="middle" font-family="Segoe UI" font-size="20" fill="#107C10">~200</text>
+                    <text x="227" y="150" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#1B5E20">NOT AFFECTED</text>
+                    <text x="227" y="168" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#605E5C">A1/A3 for faculty</text>
+                </g>
+
+                <!-- Flow Arrows -->
+                <path d="M270 260 L270 400 Q270 420 290 420 L620 420 Q640 420 640 400 L640 280" stroke="#107C10" stroke-width="3" fill="none" marker-end="url(#arrowGreen)"/>
+                <path d="M550 260 L550 380 Q550 400 570 400 L620 400 Q640 400 640 380 L640 280" stroke="#D13438" stroke-width="3" fill="none"/>
+                <path d="M805 260 L805 280" stroke="#5C2D91" stroke-width="3" fill="none"/>
+
+                <!-- Weekly Schedule -->
+                <g transform="translate(30, 500)">
+                    <rect x="0" y="0" width="940" height="110" rx="8" fill="white" stroke="#BEBBB8" filter="url(#shadow)"/>
+                    <text x="470" y="25" text-anchor="middle" font-family="Segoe UI" font-size="14" font-weight="600" fill="#323130">📅 Weekly Schedule - Students ONLY (Teachers/Admins NOT affected)</text>
+                    
+                    <!-- Weekday label -->
+                    <text x="320" y="45" text-anchor="middle" font-family="Segoe UI" font-size="10" fill="#605E5C">Monday - Friday</text>
+                    <text x="800" y="45" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="600" fill="#D13438">Weekends</text>
+                    
+                    <!-- Weekday timeline -->
+                    <rect x="30" y="55" width="600" height="25" rx="4" fill="#E6E6E6"/>
+                    <rect x="30" y="55" width="180" height="25" rx="4" fill="#FFCDD2"/>
+                    <text x="120" y="72" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#A4262C">🔴 DISABLED 00:00-07:55</text>
+                    <rect x="210" y="55" width="240" height="25" fill="#C8E6C9"/>
+                    <text x="330" y="72" text-anchor="middle" font-family="Segoe UI" font-size="9" font-weight="600" fill="#1B5E20">🟢 ENABLED 07:55-16:05</text>
+                    <rect x="450" y="55" width="180" height="25" rx="4" fill="#FFCDD2"/>
+                    <text x="540" y="72" text-anchor="middle" font-family="Segoe UI" font-size="8" fill="#A4262C">🔴 DISABLED 16:05-24:00</text>
+                    
+                    <!-- Weekend bar -->
+                    <rect x="660" y="55" width="280" height="25" rx="4" fill="#FFCDD2" stroke="#D13438" stroke-width="2"/>
+                    <text x="800" y="72" text-anchor="middle" font-family="Segoe UI" font-size="10" font-weight="600" fill="#A4262C">🔴 DISABLED ALL WEEKEND</text>
+                    
+                    <!-- Time labels -->
+                    <text x="30" y="95" font-family="Consolas" font-size="8" fill="#605E5C">00:00</text>
+                    <text x="210" y="95" font-family="Consolas" font-size="8" fill="#107C10" font-weight="bold">07:55</text>
+                    <text x="450" y="95" font-family="Consolas" font-size="8" fill="#D13438" font-weight="bold">16:05</text>
+                    <text x="630" y="95" font-family="Consolas" font-size="8" fill="#605E5C">24:00</text>
+                    <text x="800" y="95" font-family="Consolas" font-size="8" fill="#D13438" font-weight="bold">Sat + Sun</text>
+                </g>
+
+                <!-- Cost Box -->
+                <g transform="translate(30, 630)">
+                    <rect x="0" y="0" width="300" height="100" rx="8" fill="url(#greenGrad)" filter="url(#shadow)"/>
+                    <text x="150" y="28" text-anchor="middle" font-family="Segoe UI" font-size="12" font-weight="600" fill="white">💰 Monthly Cost (Non-Profit)</text>
+                    <text x="150" y="65" text-anchor="middle" font-family="Segoe UI" font-size="32" font-weight="bold" fill="white">€0 - €4</text>
+                    <text x="150" y="88" text-anchor="middle" font-family="Segoe UI" font-size="10" fill="white" opacity="0.9">With Azure for Nonprofits credits</text>
+                </g>
+
+                <!-- Setup Time Box -->
+                <g transform="translate(350, 630)">
+                    <rect x="0" y="0" width="300" height="100" rx="8" fill="url(#azureBlue)" filter="url(#shadow)"/>
+                    <text x="150" y="28" text-anchor="middle" font-family="Segoe UI" font-size="12" font-weight="600" fill="white">⏱️ Implementation Time</text>
+                    <text x="150" y="65" text-anchor="middle" font-family="Segoe UI" font-size="32" font-weight="bold" fill="white">2-4 hrs</text>
+                    <text x="150" y="88" text-anchor="middle" font-family="Segoe UI" font-size="10" fill="white" opacity="0.9">Active work (+ testing period)</text>
+                </g>
+
+                <!-- Licenses Box -->
+                <g transform="translate(670, 630)">
+                    <rect x="0" y="0" width="300" height="100" rx="8" fill="url(#purpleGrad)" filter="url(#shadow)"/>
+                    <text x="150" y="28" text-anchor="middle" font-family="Segoe UI" font-size="12" font-weight="600" fill="white">🔑 Extra Licenses Needed</text>
+                    <text x="150" y="65" text-anchor="middle" font-family="Segoe UI" font-size="32" font-weight="bold" fill="white">NONE</text>
+                    <text x="150" y="88" text-anchor="middle" font-family="Segoe UI" font-size="10" fill="white" opacity="0.9">Works with existing M365 Education</text>
+                </g>
+            </svg>
+        </div>
+
+        <hr class="section-divider">
+
+        <h2>💰 Complete Cost Breakdown</h2>
+
+        <div class="cost-box">
+            <div class="cost-amount">€0 - €4</div>
+            <div class="cost-period">per month (Non-Profit Pricing)</div>
+            <p style="margin-top: 15px; color: #605E5C;">With Azure for Nonprofits, the first year is essentially <strong>FREE</strong></p>
+        </div>
+
+        <h3>Detailed Cost Table</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Non-Profit Price</th>
+                    <th>Regular Price</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Azure Subscription</strong></td>
+                    <td style="color: #107C10; font-weight: bold;">FREE ($3,500/yr credits)</td>
+                    <td>Pay-as-you-go</td>
+                    <td><span class="badge badge-required">Required</span></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;&nbsp;&nbsp;↳ Azure Automation</td>
+                    <td style="color: #107C10;">€0-3/month</td>
+                    <td>€5-8/month</td>
+                    <td><span class="badge badge-required">Required</span></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;&nbsp;&nbsp;↳ Log Analytics</td>
+                    <td style="color: #107C10;">€0-1/month</td>
+                    <td>€2-3/month</td>
+                    <td><span class="badge badge-required">Required</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Microsoft 365 Education</strong></td>
+                    <td style="color: #0078D4;">Already included</td>
+                    <td>Already included</td>
+                    <td><span class="badge badge-included">✓ You Have This</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Entra ID (Azure AD)</strong></td>
+                    <td style="color: #0078D4;">Free tier (included)</td>
+                    <td>Free tier</td>
+                    <td><span class="badge badge-included">✓ You Have This</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Microsoft Graph API</strong></td>
+                    <td style="color: #107C10;">FREE</td>
+                    <td>FREE</td>
+                    <td><span class="badge badge-free">Free</span></td>
+                </tr>
+                <tr style="background: #fff8e1;">
+                    <td><strong>Entra ID Premium P1/P2</strong></td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td><span class="badge" style="background: #107C10; color: white;">❌ NOT NEEDED</span></td>
+                </tr>
+                <tr style="background: #fff8e1;">
+                    <td><strong>Microsoft Intune</strong></td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td><span class="badge" style="background: #107C10; color: white;">❌ NOT NEEDED</span></td>
+                </tr>
+                <tr style="background: #f3e5f5;">
+                    <td><strong>GitHub (for IaC/CI-CD)</strong></td>
+                    <td style="color: #8764B8;">€0 (Free tier works)</td>
+                    <td>€0-19/user/month</td>
+                    <td><span class="badge badge-optional">Optional</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr class="section-divider">
+
+        <h2>🔑 How to Get Required Services</h2>
+
+        <h3>Step 1: Azure Subscription (Required)</h3>
+        
+        <p>Since you currently don't have an Azure subscription, here are your options:</p>
+
+        <div class="success-box">
+            <h4 style="margin-top: 0; color: #107C10;">🌟 Recommended: Azure for Nonprofits</h4>
+            <ol style="margin-bottom: 0;">
+                <li>Go to <a href="https://nonprofit.microsoft.com" style="color: #0078D4;">nonprofit.microsoft.com</a></li>
+                <li>Sign in with your school's Microsoft 365 admin account</li>
+                <li>Submit nonprofit verification documents (1-5 business days for approval)</li>
+                <li>Upon approval, receive <strong>$3,500 USD/year</strong> in Azure credits</li>
+                <li>Create Azure subscription linked to your M365 tenant</li>
+            </ol>
+            <p style="margin-bottom: 0; margin-top: 15px;"><strong>This solution costs ~€50/year, so credits will last many years!</strong></p>
+        </div>
+
+        <div class="highlight-box">
+            <h4 style="margin-top: 0;">Alternative: Pay-As-You-Go (Immediate)</h4>
+            <p>If you need to start immediately:</p>
+            <ol style="margin-bottom: 0;">
+                <li>Go to <a href="https://portal.azure.com" style="color: #0078D4;">portal.azure.com</a></li>
+                <li>Sign in with your M365 admin account</li>
+                <li>Create new Pay-As-You-Go subscription</li>
+                <li>Estimated cost: <strong>€7-11/month</strong></li>
+            </ol>
+        </div>
+
+        <h3>Step 2: Microsoft 365 Education (Already Have ✓)</h3>
+
+        <p>Based on your license overview, you already have everything needed:</p>
+        <ul>
+            <li><span class="check">✓</span> Office 365 A1 Plus for students (1,013 licenses)</li>
+            <li><span class="check">✓</span> Office 365 A1/A3 for faculty</li>
+            <li><span class="check">✓</span> Entra ID included with M365</li>
+        </ul>
+
+        <h3>Step 3: GitHub for IaC (Optional)</h3>
+
+        <div class="warning-box">
+            <h4 style="margin-top: 0; color: #FF8C00;">⚪ Optional: Only for Infrastructure as Code</h4>
+            <p>GitHub is <strong>NOT required</strong> for the basic solution. It's only needed if you want:</p>
+            <ul>
+                <li>Automated deployments via GitHub Actions</li>
+                <li>Version control for infrastructure code</li>
+                <li>CI/CD pipelines with OIDC federation</li>
+            </ul>
+            
+            <table style="margin: 15px 0; box-shadow: none;">
+                <thead>
+                    <tr>
+                        <th>GitHub Plan</th>
+                        <th>Regular</th>
+                        <th>Nonprofit</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GitHub Free</td>
+                        <td>€0</td>
+                        <td>€0</td>
+                        <td>Works for this solution</td>
+                    </tr>
+                    <tr>
+                        <td>GitHub Team</td>
+                        <td>€3.67/user/mo</td>
+                        <td style="color: #107C10; font-weight: bold;">Often FREE</td>
+                        <td>Apply at <a href="https://socialimpact.github.com" style="color: #0078D4;">socialimpact.github.com</a></td>
+                    </tr>
+                    <tr>
+                        <td>GitHub Enterprise</td>
+                        <td>€19.25/user/mo</td>
+                        <td>~€3.67/user/mo</td>
+                        <td>Advanced security, SAML SSO</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-bottom: 0;"><strong>Recommendation:</strong> Start with GitHub Free or apply for GitHub for Nonprofits.</p>
+        </div>
+
+        <hr class="section-divider">
+
+        <h2>⏱️ Implementation Timeline</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Phase</th>
+                    <th>Tasks</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: #e6f2ff;">
+                    <td><strong>Pre-requisites</strong></td>
+                    <td>Azure Nonprofit approval OR Pay-as-you-go setup</td>
+                    <td>1-5 days (or 15 min)</td>
+                </tr>
+                <tr>
+                    <td rowspan="5"><strong>Setup</strong></td>
+                    <td>Create/verify student security group</td>
+                    <td>15-30 min</td>
+                </tr>
+                <tr>
+                    <td>Create App Registration in Entra ID</td>
+                    <td>15-20 min</td>
+                </tr>
+                <tr>
+                    <td>Deploy Azure Automation resources</td>
+                    <td>30-45 min</td>
+                </tr>
+                <tr>
+                    <td>Configure schedules and variables</td>
+                    <td>15-20 min</td>
+                </tr>
+                <tr>
+                    <td>Import and test runbooks</td>
+                    <td>30-45 min</td>
+                </tr>
+                <tr style="background: #fff8e1;">
+                    <td><strong>Testing</strong></td>
+                    <td>Monitor with test group (2-3 accounts)</td>
+                    <td>3-5 days</td>
+                </tr>
+                <tr style="background: #e8f5e9;">
+                    <td><strong>Go-Live</strong></td>
+                    <td>Switch to production + communicate to users</td>
+                    <td>1 hour</td>
+                </tr>
+                <tr style="background: #0078D4; color: white;">
+                    <td><strong>TOTAL</strong></td>
+                    <td><strong>Active work time</strong></td>
+                    <td><strong>2-4 hours</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr class="section-divider">
+
+        <h2>📋 What Happens When Disabled?</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Student (Disabled)</th>
+                    <th>Teacher (Not Affected)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Sign in to Windows device</td>
+                    <td style="color: #D13438;">❌ Blocked</td>
+                    <td style="color: #107C10;">✓ Works</td>
+                </tr>
+                <tr>
+                    <td>Sign in to M365 web apps</td>
+                    <td style="color: #D13438;">❌ Blocked</td>
+                    <td style="color: #107C10;">✓ Works</td>
+                </tr>
+                <tr>
+                    <td>Sign in to mobile apps</td>
+                    <td style="color: #D13438;">❌ Blocked</td>
+                    <td style="color: #107C10;">✓ Works</td>
+                </tr>
+                <tr>
+                    <td>Existing active sessions</td>
+                    <td style="color: #D13438;">❌ Terminated</td>
+                    <td style="color: #107C10;">✓ Continues</td>
+                </tr>
+                <tr>
+                    <td>Teacher uses "student device"</td>
+                    <td>-</td>
+                    <td style="color: #107C10;">✓ Works (different account)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr class="section-divider">
+
+        <h2>📅 Next Steps</h2>
+
+        <p>To proceed with implementation, we need:</p>
+
+        <div class="timeline-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Confirmation</strong> that this solution meets your requirements
+            </div>
+        </div>
+        <div class="timeline-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <strong>Azure Subscription</strong> - Apply for Azure Nonprofits or create Pay-as-you-go
+            </div>
+        </div>
+        <div class="timeline-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <strong>Admin Access</strong> - Global Admin or Application Admin role confirmation
+            </div>
+        </div>
+        <div class="timeline-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <strong>Student Group</strong> - Verify or create security group with student accounts
+            </div>
+        </div>
+        <div class="timeline-step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+                <strong>Schedule Meeting</strong> - We can implement together in a 2-4 hour session
+            </div>
+        </div>
+
+        <div class="success-box">
+            <h3 style="margin-top: 0;">📦 Ready to Deploy</h3>
+            <p>We have the complete solution ready in a GitHub repository with all runbooks, deployment scripts, and Infrastructure as Code templates.</p>
+            <p style="margin-bottom: 0;">🔗 <strong>Repository:</strong> <a href="https://github.com/NorwegianPear/StudentTime-Management-M365" style="color: #0078D4;">github.com/NorwegianPear/StudentTime-Management-M365</a></p>
+        </div>
+
+        <p>Please let me know if you have any questions or would like to schedule a call to discuss further.</p>
+
+        <div class="signature">
+            <p>Best regards,</p>
+            <p><strong>Uy Le Phan</strong><br>
+            Atea AS<br>
+            <a href="mailto:Uy.Le.Phan@atea.no" style="color: #0078D4;">Uy.Le.Phan@atea.no</a></p>
+        </div>
+
+        <div class="footer">
+            <p><strong>📎 Resources</strong></p>
+            <p>
+                🔗 <a href="https://github.com/NorwegianPear/StudentTime-Management-M365" style="color: #0078D4;">GitHub Repository</a> |
+                🔗 <a href="https://nonprofit.microsoft.com" style="color: #0078D4;">Azure for Nonprofits</a> |
+                🔗 <a href="https://socialimpact.github.com" style="color: #0078D4;">GitHub for Nonprofits</a>
+            </p>
+            <p style="margin-top: 15px; font-size: 11px; color: #888;">This solution is open source under the MIT License • © 2026 Atea AS</p>
+        </div>
+    </div>
+</body>
+</html>

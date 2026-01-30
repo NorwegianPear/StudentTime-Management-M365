@@ -82,6 +82,11 @@ This solution works with your **existing M365 Education licenses**. No additiona
 
 ## 🏗️ Architecture
 
+![Solution Architecture](docs/architecture-diagram.svg)
+
+<details>
+<summary>📋 Text-based architecture (for accessibility)</summary>
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                     Azure Automation                            │
@@ -107,6 +112,8 @@ This solution works with your **existing M365 Education licenses**. No additiona
 │                    Student Accounts                             │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+</details>
 
 ---
 
