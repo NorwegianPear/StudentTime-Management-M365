@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login Time Restriction - Full Solution Proposal</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        .container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #0078d4; border-bottom: 3px solid #0078d4; padding-bottom: 10px; }
+        h2 { color: #106ebe; margin-top: 30px; border-left: 4px solid #0078d4; padding-left: 15px; }
+        h3 { color: #333; margin-top: 20px; }
+        .highlight-box { background: linear-gradient(135deg, #e8f4fd 0%, #d0e8f9 100%); border-left: 5px solid #0078d4; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .warning-box { background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%); border-left: 5px solid #ffc107; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .success-box { background: linear-gradient(135deg, #d4edda 0%, #b7dfbf 100%); border-left: 5px solid #28a745; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .danger-box { background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%); border-left: 5px solid #dc3545; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .info-box { background: linear-gradient(135deg, #e2e3e5 0%, #d6d8db 100%); border-left: 5px solid #6c757d; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 1px 5px rgba(0,0,0,0.1); }
+        th { background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%); color: white; padding: 15px; text-align: left; }
+        td { padding: 12px 15px; border-bottom: 1px solid #ddd; }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        tr:hover { background-color: #e9ecef; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .badge-success { background: #28a745; color: white; }
+        .badge-warning { background: #ffc107; color: #333; }
+        .badge-danger { background: #dc3545; color: white; }
+        .badge-info { background: #17a2b8; color: white; }
+        .badge-primary { background: #0078d4; color: white; }
+        .recommendation { border: 3px solid #28a745; border-radius: 8px; padding: 5px; }
+        code { background: #f4f4f4; padding: 3px 8px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 13px; }
+        .architecture-diagram { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; font-family: 'Consolas', monospace; white-space: pre; overflow-x: auto; line-height: 1.4; }
+        .cost-highlight { font-size: 24px; font-weight: bold; color: #28a745; }
+        .signature { margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; }
+        .footer { font-size: 12px; color: #666; margin-top: 30px; text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px; }
+        ul { padding-left: 20px; }
+        li { margin: 8px 0; }
+        .timeline { position: relative; padding-left: 30px; }
+        .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 3px; background: #0078d4; }
+        .timeline-item { position: relative; margin: 20px 0; padding-left: 20px; }
+        .timeline-item::before { content: ''; position: absolute; left: -23px; top: 5px; width: 12px; height: 12px; background: #0078d4; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 2px #0078d4; }
+        .pros-cons { display: flex; gap: 20px; flex-wrap: wrap; }
+        .pros, .cons { flex: 1; min-width: 250px; }
+        .pros li::marker { content: '✅ '; }
+        .cons li::marker { content: '⚠️ '; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Student Login Time Restriction - Full Solution Proposal</h1>
+        
+        <p>Hi Adnan,</p>
+        
+        <p>Thank you for your inquiry regarding restricting student login times in Microsoft 365. I have conducted a thorough analysis of all available options and present here a complete overview.</p>
+
+        <div class="danger-box">
+            <h3>⚠️ Critical Information from Microsoft</h3>
+            <p><strong>Microsoft confirms that native time-based login restrictions are NOT supported in cloud-only Entra ID:</strong></p>
+            <blockquote style="font-style: italic; border-left: 3px solid #dc3545; padding-left: 15px; margin: 15px 0;">
+                "Unfortunately it is not possible to restrict user login to a specific time frame on Azure AD. Azure AD / O365 does not 'understand' Logon Hours. User logon hours is an on-prem Active Directory feature."
+            </blockquote>
+            <p style="font-size: 12px; color: #666;">Source: Microsoft Support Documentation, confirmed by M365 Copilot</p>
+        </div>
+
+        <h2>📋 All Available Solutions</h2>
+
+        <p>Based on the analysis, we have identified <strong>5 main alternatives</strong> to solve this requirement. Here is a complete comparison:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Solution</th>
+                    <th>Cloud-Only</th>
+                    <th>UX Quality</th>
+                    <th>Cost</th>
+                    <th>Complexity</th>
+                    <th>Our Recommendation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="recommendation">
+                    <td><strong>1. Azure Automation</strong><br><small>Our proposed solution</small></td>
+                    <td><span class="badge badge-success">✅ Yes</span></td>
+                    <td><span class="badge badge-warning">Acceptable</span></td>
+                    <td><span class="badge badge-success">€3-6/mo</span></td>
+                    <td><span class="badge badge-info">Medium</span></td>
+                    <td><span class="badge badge-primary">⭐ RECOMMENDED</span></td>
+                </tr>
+                <tr>
+                    <td><strong>2. Hybrid AD + Pass-through Auth</strong></td>
+                    <td><span class="badge badge-warning">Partial*</span></td>
+                    <td><span class="badge badge-success">Best</span></td>
+                    <td><span class="badge badge-danger">Infrastructure</span></td>
+                    <td><span class="badge badge-danger">High</span></td>
+                    <td>Not practical</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Intune Device Control</strong></td>
+                    <td><span class="badge badge-success">✅ Yes</span></td>
+                    <td><span class="badge badge-success">Good</span></td>
+                    <td><span class="badge badge-success">Included**</span></td>
+                    <td><span class="badge badge-info">Medium</span></td>
+                    <td>Managed devices only</td>
+                </tr>
+                <tr>
+                    <td><strong>4. Conditional Access</strong></td>
+                    <td><span class="badge badge-success">✅ Yes</span></td>
+                    <td><span class="badge badge-success">Good</span></td>
+                    <td><span class="badge badge-success">Included</span></td>
+                    <td><span class="badge badge-success">Low</span></td>
+                    <td>Limited functionality***</td>
+                </tr>
+                <tr>
+                    <td><strong>5. Third-party Solutions</strong><br><small>(GoGuardian, Securly, etc.)</small></td>
+                    <td><span class="badge badge-success">✅ Yes</span></td>
+                    <td><span class="badge badge-success">Best</span></td>
+                    <td><span class="badge badge-danger">€3-8/user/yr</span></td>
+                    <td><span class="badge badge-success">Low</span></td>
+                    <td>More expensive, but best UX</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="font-size: 12px; color: #666;">
+            * Requires on-premises AD infrastructure &nbsp;|&nbsp; ** Requires Intune license and managed devices &nbsp;|&nbsp; *** Does not support time restrictions
+        </p>
+
+        <hr style="margin: 40px 0; border: none; border-top: 2px solid #eee;">
+
+        <h2>🔍 Detailed Review of Each Solution</h2>
+
+        <h3>Solution 1: Azure Automation (Our Recommendation) ⭐</h3>
+        
+        <div class="success-box">
+            <h4>How It Works</h4>
+            <p>Azure Automation runs PowerShell scripts on a schedule that:</p>
+            <ul>
+                <li><strong>07:55 AM:</strong> Enables all student accounts (5 min before school starts)</li>
+                <li><strong>04:05 PM:</strong> Disables all student accounts + signs out active sessions</li>
+            </ul>
+        </div>
+
+        <div class="architecture-diagram">
+┌─────────────────────────────────────────────────────────────────┐
+│                     AZURE AUTOMATION                            │
+├─────────────────────────────────────────────────────────────────┤
+│  ┌──────────────────┐          ┌──────────────────┐            │
+│  │ Enable-Student   │          │ Disable-Student  │            │
+│  │ Access.ps1       │          │ Access.ps1       │            │
+│  │                  │          │ + Revoke Tokens  │            │
+│  └────────┬─────────┘          └────────┬─────────┘            │
+│           │                             │                       │
+│  ⏰ 07:55 AM                    ⏰ 04:05 PM                     │
+│  Mon-Fri                        Mon-Fri                         │
+└───────────┼─────────────────────────────┼───────────────────────┘
+            │                             │
+            ▼                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              MICROSOFT GRAPH API                                │
+│     PATCH /users/{id} → accountEnabled = true/false             │
+│     POST /users/{id}/revokeSignInSessions                       │
+└─────────────────────────────────────────────────────────────────┘
+            │                             │
+            ▼                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    ENTRA ID (Azure AD)                          │
+│              Student Group: "Students-M365"                     │
+│                   ~500-5000 accounts                            │
+└─────────────────────────────────────────────────────────────────┘
+        </div>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4 style="color: #28a745;">✅ Advantages</h4>
+                <ul>
+                    <li>100% cloud-based - no on-premises infrastructure</li>
+                    <li>Very low cost (€3-6/month)</li>
+                    <li>Full control over the schedule</li>
+                    <li>Easy to customize and maintain</li>
+                    <li>Automatic logging and monitoring</li>
+                    <li>Can be easily disabled when needed</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4 style="color: #dc3545;">⚠️ Disadvantages</h4>
+                <ul>
+                    <li>Students are logged out immediately at 04:05 PM</li>
+                    <li>Unsaved work may be lost</li>
+                    <li>Students must log in again each morning</li>
+                    <li>Requires communication to students/staff</li>
+                </ul>
+            </div>
+        </div>
+
+        <h4>Implementation Plan</h4>
+        <div class="timeline">
+            <div class="timeline-item">
+                <strong>Phase 1: Setup (1-2 hours)</strong><br>
+                Create App Registration in Entra ID with required permissions
+            </div>
+            <div class="timeline-item">
+                <strong>Phase 2: Student Group (30 min)</strong><br>
+                Create/identify security group with all student accounts
+            </div>
+            <div class="timeline-item">
+                <strong>Phase 3: Deploy (30 min)</strong><br>
+                Roll out Azure Automation solution via PowerShell or Azure Portal
+            </div>
+            <div class="timeline-item">
+                <strong>Phase 4: Testing (1 hour)</strong><br>
+                Test with pilot group before full rollout
+            </div>
+            <div class="timeline-item">
+                <strong>Phase 5: Go-Live</strong><br>
+                Activate schedules and monitor
+            </div>
+        </div>
+
+        <h4>Estimated Cost</h4>
+        <table>
+            <tr>
+                <td>Azure Automation (runtime)</td>
+                <td style="text-align: right;">~€2-4/month</td>
+            </tr>
+            <tr>
+                <td>Log Analytics (optional)</td>
+                <td style="text-align: right;">~€1-2/month</td>
+            </tr>
+            <tr style="background: #d4edda; font-weight: bold;">
+                <td>TOTAL</td>
+                <td style="text-align: right;"><span class="cost-highlight">€3-6/month</span></td>
+            </tr>
+        </table>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>Solution 2: Hybrid AD with Pass-through Authentication</h3>
+        
+        <div class="info-box">
+            <h4>How It Works</h4>
+            <p>Sets up an on-premises Active Directory with Azure AD Connect and Pass-through Authentication. AD has built-in support for "Logon Hours" which is respected during authentication.</p>
+        </div>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4 style="color: #28a745;">✅ Advantages</h4>
+                <ul>
+                    <li>Native Microsoft functionality</li>
+                    <li>Best user experience</li>
+                    <li>Students get clear error message</li>
+                    <li>Granular control per user</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4 style="color: #dc3545;">⚠️ Disadvantages</h4>
+                <ul>
+                    <li>Requires on-premises server infrastructure</li>
+                    <li>Higher operational costs</li>
+                    <li>More complex architecture</li>
+                    <li>Not practical for cloud-only environment</li>
+                </ul>
+            </div>
+        </div>
+
+        <p><span class="badge badge-danger">Not recommended</span> for your environment as you are 100% cloud-based.</p>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>Solution 3: Intune Device Control</h3>
+        
+        <div class="info-box">
+            <h4>How It Works</h4>
+            <p>Uses Intune Compliance Policies and Device Configuration to restrict access at the device level, for example by locking devices outside school hours.</p>
+        </div>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4 style="color: #28a745;">✅ Advantages</h4>
+                <ul>
+                    <li>Good user experience</li>
+                    <li>Included in existing license</li>
+                    <li>Can be combined with other policies</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4 style="color: #dc3545;">⚠️ Disadvantages</h4>
+                <ul>
+                    <li>Only for Intune-managed devices</li>
+                    <li>Does not work on personal devices</li>
+                    <li>Students can log in via browser on other devices</li>
+                </ul>
+            </div>
+        </div>
+
+        <p><span class="badge badge-warning">Partial solution</span> - Can be combined with Azure Automation for better coverage.</p>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>Solution 4: Conditional Access Policies</h3>
+        
+        <div class="info-box">
+            <h4>What It Can Do</h4>
+            <p>Conditional Access in Entra ID can restrict access based on location, device, risk, etc. - but <strong>NOT based on time</strong>.</p>
+        </div>
+
+        <div class="warning-box">
+            <p><strong>Important:</strong> Conditional Access currently does NOT support time restrictions. Microsoft has this on their backlog, but no ETA has been announced.</p>
+        </div>
+
+        <p><span class="badge badge-info">Can be used together with</span> Azure Automation for extra security (e.g., require MFA, block risky sign-ins).</p>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>Solution 5: Third-party Solutions</h3>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Functionality</th>
+                    <th>Price (estimate)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>GoGuardian</strong></td>
+                    <td>Full time control, web filter, classroom management</td>
+                    <td>~€5-8/user/year</td>
+                </tr>
+                <tr>
+                    <td><strong>Securly</strong></td>
+                    <td>Web filter, time restrictions, reporting</td>
+                    <td>~€4-6/user/year</td>
+                </tr>
+                <tr>
+                    <td><strong>Lightspeed</strong></td>
+                    <td>Complete classroom management</td>
+                    <td>~€4-7/user/year</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4 style="color: #28a745;">✅ Advantages</h4>
+                <ul>
+                    <li>Best user experience</li>
+                    <li>Professional support</li>
+                    <li>Many additional features</li>
+                    <li>Easy administration</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4 style="color: #dc3545;">⚠️ Disadvantages</h4>
+                <ul>
+                    <li>Higher ongoing cost</li>
+                    <li>Dependency on external vendor</li>
+                    <li>Requires agent on devices</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr style="margin: 40px 0; border: none; border-top: 3px solid #0078d4;">
+
+        <h2>🎯 Our Recommendation</h2>
+
+        <div class="highlight-box">
+            <h3>Azure Automation Solution</h3>
+            <p>Based on your requirements and cloud-only environment, we recommend the <strong>Azure Automation solution</strong> for the following reasons:</p>
+            <ul>
+                <li>✅ Works 100% in cloud-only environment</li>
+                <li>✅ Lowest possible cost (€3-6/month vs €1000+ for third-party)</li>
+                <li>✅ Full control - we can customize everything</li>
+                <li>✅ Quick implementation (1-2 days)</li>
+                <li>✅ Easy to maintain and modify</li>
+            </ul>
+        </div>
+
+        <div class="warning-box">
+            <h3>⚠️ Important: Communication to Users</h3>
+            <p>It is critical that students and staff are informed that:</p>
+            <ul>
+                <li>Students will be logged out automatically at 04:05 PM</li>
+                <li>All work should be saved before this time</li>
+                <li>Login is not possible between 04:05 PM and 07:55 AM</li>
+            </ul>
+            <p>We recommend sending out information and possibly having a "soft launch" period where students are warned but not logged out.</p>
+        </div>
+
+        <h2>📦 What We Have Prepared</h2>
+
+        <p>We have developed a complete solution that is ready for implementation:</p>
+
+        <table>
+            <tr>
+                <td><strong>🤖 PowerShell Runbooks</strong></td>
+                <td>Ready-made scripts for enabling/disabling accounts</td>
+            </tr>
+            <tr>
+                <td><strong>🔐 Secure Credential Management</strong></td>
+                <td>Windows Credential Manager integration</td>
+            </tr>
+            <tr>
+                <td><strong>🚀 Deployment Scripts</strong></td>
+                <td>Automatic rollout to Azure</td>
+            </tr>
+            <tr>
+                <td><strong>📊 Status Reporting</strong></td>
+                <td>Overview of student accounts</td>
+            </tr>
+            <tr>
+                <td><strong>🏗️ Infrastructure as Code</strong></td>
+                <td>Bicep templates for reproducible deployment</td>
+            </tr>
+            <tr>
+                <td><strong>🧪 Testing Scripts</strong></td>
+                <td>WhatIf mode for safe testing</td>
+            </tr>
+        </table>
+
+        <h2>📅 Next Steps</h2>
+
+        <p>If you wish to proceed with this solution, we need:</p>
+        <ol>
+            <li><strong>Confirmation</strong> that the Azure Automation solution is the desired approach</li>
+            <li><strong>Access</strong> to Entra ID (Global Admin or Application Admin)</li>
+            <li><strong>Azure subscription</strong> for Automation Account</li>
+            <li><strong>Student group</strong> - name/Object ID of the security group with students</li>
+            <li><strong>Desired time</strong> - confirm 07:55-16:05 or other</li>
+        </ol>
+
+        <p>Please feel free to contact us if you have any questions or would like a walkthrough of the solution.</p>
+
+        <div class="signature">
+            <p>Best regards,</p>
+            <p><strong>Uy Le Phan</strong><br>
+            Atea AS<br>
+            <a href="mailto:Uy.Le.Phan@atea.no">Uy.Le.Phan@atea.no</a></p>
+        </div>
+
+        <div class="footer">
+            <p>📎 <strong>Attachment:</strong> GitHub Repository with complete solution and documentation<br>
+            🔗 <a href="https://github.com/atea/StudentTime-Management-M365">https://github.com/atea/StudentTime-Management-M365</a></p>
+            <p style="margin-top: 10px; font-size: 11px;">This solution is open source under the MIT License</p>
+        </div>
+    </div>
+</body>
+</html>

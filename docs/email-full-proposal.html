@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login Time Restriction - Full Solution Proposal</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        .container { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #0078d4; border-bottom: 3px solid #0078d4; padding-bottom: 10px; }
+        h2 { color: #106ebe; margin-top: 30px; border-left: 4px solid #0078d4; padding-left: 15px; }
+        h3 { color: #333; margin-top: 20px; }
+        .highlight-box { background: linear-gradient(135deg, #e8f4fd 0%, #d0e8f9 100%); border-left: 5px solid #0078d4; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .warning-box { background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%); border-left: 5px solid #ffc107; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .success-box { background: linear-gradient(135deg, #d4edda 0%, #b7dfbf 100%); border-left: 5px solid #28a745; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .danger-box { background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%); border-left: 5px solid #dc3545; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        .info-box { background: linear-gradient(135deg, #e2e3e5 0%, #d6d8db 100%); border-left: 5px solid #6c757d; padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; box-shadow: 0 1px 5px rgba(0,0,0,0.1); }
+        th { background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%); color: white; padding: 15px; text-align: left; }
+        td { padding: 12px 15px; border-bottom: 1px solid #ddd; }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        tr:hover { background-color: #e9ecef; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .badge-success { background: #28a745; color: white; }
+        .badge-warning { background: #ffc107; color: #333; }
+        .badge-danger { background: #dc3545; color: white; }
+        .badge-info { background: #17a2b8; color: white; }
+        .badge-primary { background: #0078d4; color: white; }
+        .recommendation { border: 3px solid #28a745; border-radius: 8px; padding: 5px; }
+        code { background: #f4f4f4; padding: 3px 8px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 13px; }
+        .architecture-diagram { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; font-family: 'Consolas', monospace; white-space: pre; overflow-x: auto; line-height: 1.4; }
+        .cost-highlight { font-size: 24px; font-weight: bold; color: #28a745; }
+        .signature { margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; }
+        .footer { font-size: 12px; color: #666; margin-top: 30px; text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px; }
+        ul { padding-left: 20px; }
+        li { margin: 8px 0; }
+        .timeline { position: relative; padding-left: 30px; }
+        .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 3px; background: #0078d4; }
+        .timeline-item { position: relative; margin: 20px 0; padding-left: 20px; }
+        .timeline-item::before { content: ''; position: absolute; left: -23px; top: 5px; width: 12px; height: 12px; background: #0078d4; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 2px #0078d4; }
+        .pros-cons { display: flex; gap: 20px; flex-wrap: wrap; }
+        .pros, .cons { flex: 1; min-width: 250px; }
+        .pros li::marker { content: '✅ '; }
+        .cons li::marker { content: '⚠️ '; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Student Login Time Restriction - Full Solution Proposal</h1>
+        
+        <p>Hei Adnan,</p>
+        
+        <p>Takk for henvendelsen angående begrensning av påloggingstider for studenter i Microsoft 365. Jeg har gjennomført en grundig analyse av alle tilgjengelige alternativer og presenterer her en komplett oversikt.</p>
+
+        <div class="danger-box">
+            <h3>⚠️ Kritisk Informasjon fra Microsoft</h3>
+            <p><strong>Microsoft bekrefter at native tidsbegrensning for pålogging IKKE er støttet i cloud-only Entra ID:</strong></p>
+            <blockquote style="font-style: italic; border-left: 3px solid #dc3545; padding-left: 15px; margin: 15px 0;">
+                "Unfortunately it is not possible to restrict user login to a specific time frame on Azure AD. Azure AD / O365 does not 'understand' Logon Hours. User logon hours is an on-prem Active Directory feature."
+            </blockquote>
+            <p style="font-size: 12px; color: #666;">Kilde: Microsoft Support Documentation, bekreftet av M365 Copilot</p>
+        </div>
+
+        <h2>📋 Alle Tilgjengelige Løsninger</h2>
+
+        <p>Basert på analysen har vi identifisert <strong>5 hovedalternativer</strong> for å løse dette behovet. Her er en fullstendig sammenligning:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Løsning</th>
+                    <th>Cloud-Only</th>
+                    <th>UX Kvalitet</th>
+                    <th>Kostnad</th>
+                    <th>Kompleksitet</th>
+                    <th>Vår Anbefaling</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="recommendation">
+                    <td><strong>1. Azure Automation</strong><br><small>Vår foreslåtte løsning</small></td>
+                    <td><span class="badge badge-success">✅ Ja</span></td>
+                    <td><span class="badge badge-warning">Akseptabelt</span></td>
+                    <td><span class="badge badge-success">€3-6/mnd</span></td>
+                    <td><span class="badge badge-info">Medium</span></td>
+                    <td><span class="badge badge-primary">⭐ ANBEFALT</span></td>
+                </tr>
+                <tr>
+                    <td><strong>2. Hybrid AD + Pass-through Auth</strong></td>
+                    <td><span class="badge badge-warning">Delvis*</span></td>
+                    <td><span class="badge badge-success">Beste</span></td>
+                    <td><span class="badge badge-danger">Infrastruktur</span></td>
+                    <td><span class="badge badge-danger">Høy</span></td>
+                    <td>Ikke praktisk</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Intune Device Control</strong></td>
+                    <td><span class="badge badge-success">✅ Ja</span></td>
+                    <td><span class="badge badge-success">God</span></td>
+                    <td><span class="badge badge-success">Inkludert**</span></td>
+                    <td><span class="badge badge-info">Medium</span></td>
+                    <td>Kun managed devices</td>
+                </tr>
+                <tr>
+                    <td><strong>4. Conditional Access</strong></td>
+                    <td><span class="badge badge-success">✅ Ja</span></td>
+                    <td><span class="badge badge-success">God</span></td>
+                    <td><span class="badge badge-success">Inkludert</span></td>
+                    <td><span class="badge badge-success">Lav</span></td>
+                    <td>Begrenset funksjonalitet***</td>
+                </tr>
+                <tr>
+                    <td><strong>5. Tredjepartsløsninger</strong><br><small>(GoGuardian, Securly, etc.)</small></td>
+                    <td><span class="badge badge-success">✅ Ja</span></td>
+                    <td><span class="badge badge-success">Beste</span></td>
+                    <td><span class="badge badge-danger">€3-8/bruker/år</span></td>
+                    <td><span class="badge badge-success">Lav</span></td>
+                    <td>Dyrere, men best UX</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="font-size: 12px; color: #666;">
+            * Krever lokal AD-infrastruktur &nbsp;|&nbsp; ** Krever Intune-lisens og managed devices &nbsp;|&nbsp; *** Støtter ikke tidsbegrensning
+        </p>
+
+        <hr style="margin: 40px 0; border: none; border-top: 2px solid #eee;">
+
+        <h2>🔍 Detaljert Gjennomgang av Hver Løsning</h2>
+
+        <h3>Løsning 1: Azure Automation (Vår Anbefaling) ⭐</h3>
+        
+        <div class="success-box">
+            <h4>Hvordan det fungerer</h4>
+            <p>Azure Automation kjører PowerShell-scripts på en tidsplan som:</p>
+            <ul>
+                <li><strong>07:55:</strong> Aktiverer alle studentkontoer (5 min før skolestart)</li>
+                <li><strong>16:05:</strong> Deaktiverer alle studentkontoer + logger ut aktive sesjoner</li>
+            </ul>
+        </div>
+
+        <div class="architecture-diagram">
+┌─────────────────────────────────────────────────────────────────┐
+│                     AZURE AUTOMATION                            │
+├─────────────────────────────────────────────────────────────────┤
+│  ┌──────────────────┐          ┌──────────────────┐            │
+│  │ Enable-Student   │          │ Disable-Student  │            │
+│  │ Access.ps1       │          │ Access.ps1       │            │
+│  │                  │          │ + Revoke Tokens  │            │
+│  └────────┬─────────┘          └────────┬─────────┘            │
+│           │                             │                       │
+│  ⏰ 07:55 AM                    ⏰ 16:05 PM                     │
+│  Man-Fre                        Man-Fre                         │
+└───────────┼─────────────────────────────┼───────────────────────┘
+            │                             │
+            ▼                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              MICROSOFT GRAPH API                                │
+│     PATCH /users/{id} → accountEnabled = true/false             │
+│     POST /users/{id}/revokeSignInSessions                       │
+└─────────────────────────────────────────────────────────────────┘
+            │                             │
+            ▼                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    ENTRA ID (Azure AD)                          │
+│              Studentgruppe: "Students-M365"                     │
+│                   ~500-5000 kontoer                             │
+└─────────────────────────────────────────────────────────────────┘
+        </div>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4 style="color: #28a745;">✅ Fordeler</h4>
+                <ul>
+                    <li>100% cloud-basert - ingen lokal infrastruktur</li>
+                    <li>Svært lav kostnad (€3-6/mnd)</li>
+                    <li>Full kontroll over tidsplanen</li>
+                    <li>Enkel å tilpasse og vedlikeholde</li>
+                    <li>Automatisk logging og overvåking</li>
+                    <li>Kan enkelt deaktiveres ved behov</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4 style="color: #dc3545;">⚠️ Ulemper</h4>
+                <ul>
+                    <li>Studenter logges ut umiddelbart kl. 16:05</li>
+                    <li>Ulagret arbeid kan gå tapt</li>
+                    <li>Studenter må logge inn på nytt hver morgen</li>
+                    <li>Krever kommunikasjon til studenter/ansatte</li>
+                </ul>
+            </div>
+        </div>
+
+        <h4>Implementeringsplan</h4>
+        <div class="timeline">
+            <div class="timeline-item">
+                <strong>Fase 1: Oppsett (1-2 timer)</strong><br>
+                Opprette App Registration i Entra ID med nødvendige tilganger
+            </div>
+            <div class="timeline-item">
+                <strong>Fase 2: Studentgruppe (30 min)</strong><br>
+                Opprette/identifisere sikkerhetsgruppe med alle studentkontoer
+            </div>
+            <div class="timeline-item">
+                <strong>Fase 3: Deploy (30 min)</strong><br>
+                Rulle ut Azure Automation-løsning via PowerShell eller Azure Portal
+            </div>
+            <div class="timeline-item">
+                <strong>Fase 4: Testing (1 time)</strong><br>
+                Teste med pilotgruppe før full utrulling
+            </div>
+            <div class="timeline-item">
+                <strong>Fase 5: Go-Live</strong><br>
+                Aktivere tidsplaner og overvåke
+            </div>
+        </div>
+
+        <h4>Estimert kostnad</h4>
+        <table>
+            <tr>
+                <td>Azure Automation (kjøretid)</td>
+                <td style="text-align: right;">~€2-4/mnd</td>
+            </tr>
+            <tr>
+                <td>Log Analytics (valgfritt)</td>
+                <td style="text-align: right;">~€1-2/mnd</td>
+            </tr>
+            <tr style="background: #d4edda; font-weight: bold;">
+                <td>TOTAL</td>
+                <td style="text-align: right;"><span class="cost-highlight">€3-6/mnd</span></td>
+            </tr>
+        </table>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>Løsning 2: Hybrid AD med Pass-through Authentication</h3>
+        
+        <div class="info-box">
+            <h4>Hvordan det fungerer</h4>
+            <p>Setter opp en lokal Active Directory med Azure AD Connect og Pass-through Authentication. AD har innebygd støtte for "Logon Hours" som respekteres ved autentisering.</p>
+        </div>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4 style="color: #28a745;">✅ Fordeler</h4>
+                <ul>
+                    <li>Native Microsoft-funksjonalitet</li>
+                    <li>Beste brukeropplevelse</li>
+                    <li>Studenter får tydelig feilmelding</li>
+                    <li>Granulær kontroll per bruker</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4 style="color: #dc3545;">⚠️ Ulemper</h4>
+                <ul>
+                    <li>Krever lokal server-infrastruktur</li>
+                    <li>Høyere driftskostnader</li>
+                    <li>Mer kompleks arkitektur</li>
+                    <li>Ikke praktisk for cloud-only miljø</li>
+                </ul>
+            </div>
+        </div>
+
+        <p><span class="badge badge-danger">Ikke anbefalt</span> for deres miljø da dere er 100% cloud-basert.</p>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>Løsning 3: Intune Device Control</h3>
+        
+        <div class="info-box">
+            <h4>Hvordan det fungerer</h4>
+            <p>Bruker Intune Compliance Policies og Device Configuration til å begrense tilgang på enhetsnivå, for eksempel ved å låse enheter utenfor skoletid.</p>
+        </div>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4 style="color: #28a745;">✅ Fordeler</h4>
+                <ul>
+                    <li>God brukeropplevelse</li>
+                    <li>Inkludert i eksisterende lisens</li>
+                    <li>Kan kombineres med andre policies</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4 style="color: #dc3545;">⚠️ Ulemper</h4>
+                <ul>
+                    <li>Kun for Intune-administrerte enheter</li>
+                    <li>Fungerer ikke på private enheter</li>
+                    <li>Studenter kan logge inn via nettleser på andre enheter</li>
+                </ul>
+            </div>
+        </div>
+
+        <p><span class="badge badge-warning">Delvis løsning</span> - Kan kombineres med Azure Automation for bedre dekning.</p>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>Løsning 4: Conditional Access Policies</h3>
+        
+        <div class="info-box">
+            <h4>Hva det kan gjøre</h4>
+            <p>Conditional Access i Entra ID kan begrense tilgang basert på lokasjon, enhet, risiko, etc. - men <strong>IKKE basert på tid</strong>.</p>
+        </div>
+
+        <div class="warning-box">
+            <p><strong>Viktig:</strong> Conditional Access støtter per i dag IKKE tidsbegrensninger. Microsoft har dette på sin backlog, men ingen ETA er annonsert.</p>
+        </div>
+
+        <p><span class="badge badge-info">Kan brukes sammen med</span> Azure Automation for ekstra sikkerhet (f.eks. kreve MFA, blokkere risikofylt innlogging).</p>
+
+        <hr style="margin: 30px 0;">
+
+        <h3>Løsning 5: Tredjepartsløsninger</h3>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Produkt</th>
+                    <th>Funksjonalitet</th>
+                    <th>Pris (estimat)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>GoGuardian</strong></td>
+                    <td>Full tidskontroll, web-filter, klasseromsstyring</td>
+                    <td>~€5-8/bruker/år</td>
+                </tr>
+                <tr>
+                    <td><strong>Securly</strong></td>
+                    <td>Web-filter, tidsbegrensning, rapportering</td>
+                    <td>~€4-6/bruker/år</td>
+                </tr>
+                <tr>
+                    <td><strong>Lightspeed</strong></td>
+                    <td>Komplett klasseromsstyring</td>
+                    <td>~€4-7/bruker/år</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4 style="color: #28a745;">✅ Fordeler</h4>
+                <ul>
+                    <li>Beste brukeropplevelse</li>
+                    <li>Profesjonell support</li>
+                    <li>Mange tilleggsfunksjoner</li>
+                    <li>Enkel administrasjon</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4 style="color: #dc3545;">⚠️ Ulemper</h4>
+                <ul>
+                    <li>Høyere løpende kostnad</li>
+                    <li>Avhengighet av ekstern leverandør</li>
+                    <li>Krever agent på enheter</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr style="margin: 40px 0; border: none; border-top: 3px solid #0078d4;">
+
+        <h2>🎯 Vår Anbefaling</h2>
+
+        <div class="highlight-box">
+            <h3>Azure Automation-løsningen</h3>
+            <p>Basert på deres krav og cloud-only miljø, anbefaler vi <strong>Azure Automation-løsningen</strong> av følgende grunner:</p>
+            <ul>
+                <li>✅ Fungerer 100% i cloud-only miljø</li>
+                <li>✅ Lavest mulig kostnad (€3-6/mnd vs €1000+ for tredjepart)</li>
+                <li>✅ Full kontroll - vi kan tilpasse alt</li>
+                <li>✅ Rask implementering (1-2 dager)</li>
+                <li>✅ Enkelt å vedlikeholde og modifisere</li>
+            </ul>
+        </div>
+
+        <div class="warning-box">
+            <h3>⚠️ Viktig: Kommunikasjon til brukere</h3>
+            <p>Det er kritisk at studenter og ansatte informeres om at:</p>
+            <ul>
+                <li>Studenter vil bli logget ut automatisk kl. 16:05</li>
+                <li>Alt arbeid bør lagres før dette tidspunktet</li>
+                <li>Innlogging er ikke mulig mellom kl. 16:05 og 07:55</li>
+            </ul>
+            <p>Vi anbefaler å sende ut informasjon og eventuelt ha en "soft launch" periode der studenter varsles men ikke logges ut.</p>
+        </div>
+
+        <h2>📦 Hva Vi Har Klargjort</h2>
+
+        <p>Vi har utviklet en komplett løsning som er klar til implementering:</p>
+
+        <table>
+            <tr>
+                <td><strong>🤖 PowerShell Runbooks</strong></td>
+                <td>Ferdigskrevne scripts for aktivering/deaktivering av kontoer</td>
+            </tr>
+            <tr>
+                <td><strong>🔐 Sikker Credential Management</strong></td>
+                <td>Windows Credential Manager integrasjon</td>
+            </tr>
+            <tr>
+                <td><strong>🚀 Deployment Scripts</strong></td>
+                <td>Automatisk utrulling til Azure</td>
+            </tr>
+            <tr>
+                <td><strong>📊 Status Rapportering</strong></td>
+                <td>Oversikt over studentkontoer</td>
+            </tr>
+            <tr>
+                <td><strong>🏗️ Infrastructure as Code</strong></td>
+                <td>Bicep-templates for reproducerbar deploy</td>
+            </tr>
+            <tr>
+                <td><strong>🧪 Testing Scripts</strong></td>
+                <td>WhatIf-mode for sikker testing</td>
+            </tr>
+        </table>
+
+        <h2>📅 Neste Steg</h2>
+
+        <p>Hvis dere ønsker å gå videre med denne løsningen, trenger vi:</p>
+        <ol>
+            <li><strong>Bekreftelse</strong> på at Azure Automation-løsningen er ønsket tilnærming</li>
+            <li><strong>Tilgang</strong> til Entra ID (Global Admin eller Application Admin)</li>
+            <li><strong>Azure-abonnement</strong> for Automation Account</li>
+            <li><strong>Studentgruppe</strong> - navn/Object ID på sikkerhetsgruppen med studenter</li>
+            <li><strong>Ønsket tidspunkt</strong> - bekreft 07:55-16:05 eller annet</li>
+        </ol>
+
+        <p>Ta gjerne kontakt om dere har spørsmål eller ønsker en gjennomgang av løsningen.</p>
+
+        <div class="signature">
+            <p>Med vennlig hilsen,</p>
+            <p><strong>Uy Le Phan</strong><br>
+            Atea AS<br>
+            <a href="mailto:Uy.Le.Phan@atea.no">Uy.Le.Phan@atea.no</a></p>
+        </div>
+
+        <div class="footer">
+            <p>📎 <strong>Vedlegg:</strong> GitHub Repository med komplett løsning og dokumentasjon<br>
+            🔗 <a href="https://github.com/yourorg/StudentTime-Management-M365">https://github.com/yourorg/StudentTime-Management-M365</a></p>
+        </div>
+    </div>
+</body>
+</html>

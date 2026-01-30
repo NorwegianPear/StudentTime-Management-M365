@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login Time Restriction - Implementation Guide</title>
+    <style>
+        .green-text { color: #107c10; }
+        .red-text { color: #d13438; }
+        pre.code-block { background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 5px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { color: #0078d4; border-bottom: 2px solid #0078d4; padding-bottom: 10px; }
+        h2 { color: #106ebe; margin-top: 30px; }
+        h3 { color: #333; }
+        .warning-box { background-color: #fff4ce; border-left: 4px solid #ffb900; padding: 15px; margin: 20px 0; }
+        .info-box { background-color: #e6f2ff; border-left: 4px solid #0078d4; padding: 15px; margin: 20px 0; }
+        .error-box { background-color: #fde7e9; border-left: 4px solid #d13438; padding: 15px; margin: 20px 0; }
+        .success-box { background-color: #dff6dd; border-left: 4px solid #107c10; padding: 15px; margin: 20px 0; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #0078d4; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        code { background-color: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: Consolas, monospace; }
+        .quote { font-style: italic; color: #666; border-left: 3px solid #ccc; padding-left: 15px; margin: 15px 0; }
+        ul { margin: 10px 0; }
+        li { margin: 5px 0; }
+        .emoji { font-size: 1.2em; }
+        .section { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<p>Dear Customer,</p>
+
+<p>Thank you for your inquiry regarding restricting student login times in Microsoft 365. Below is a comprehensive overview of the options available and our recommended solution.</p>
+
+<h1>🎓 Student Login Time Restriction - Implementation Guide</h1>
+
+<div class="section">
+<h2>📋 Summary</h2>
+
+<div class="error-box">
+<strong>⚠️ Important Limitation:</strong> Native time-based login restrictions are <strong>NOT available</strong> in cloud-only Microsoft 365/Entra ID. This is a known limitation confirmed by Microsoft.
+</div>
+
+<div class="quote">
+"Unfortunately it is not possible to restrict user login to a specific time frame on Azure AD. Azure AD / O365 does not 'understand' Logon Hours."
+<br><em>— Microsoft Support Documentation</em>
+</div>
+</div>
+
+<div class="section">
+<h2>🛠️ Proposed Workaround: Azure Automation</h2>
+
+<p>We can implement an <strong>Azure Automation solution</strong> that automatically manages student account access:</p>
+
+<table>
+<tr>
+    <th>Action</th>
+    <th>Time</th>
+    <th>Description</th>
+</tr>
+<tr>
+    <td class="green-text"><strong>✅ Enable Accounts</strong></td>
+    <td><strong>07:55 AM</strong></td>
+    <td>5 minutes before school starts</td>
+</tr>
+<tr>
+    <td class="red-text"><strong>❌ Disable Accounts</strong></td>
+    <td><strong>16:05 PM</strong></td>
+    <td>5 minutes after school ends</td>
+</tr>
+<tr>
+    <td>📅 Schedule</td>
+    <td>Monday - Friday</td>
+    <td>Weekdays only</td>
+</tr>
+</table>
+
+<div class="info-box">
+<strong>How it works:</strong>
+<ul>
+    <li>Azure Automation runs scheduled PowerShell scripts</li>
+    <li>Scripts use Microsoft Graph API to enable/disable accounts</li>
+    <li>When disabled, active sessions are revoked (students are logged out)</li>
+    <li>When enabled, students can sign in normally</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<h2>⚠️ User Experience Warning</h2>
+
+<div class="warning-box">
+<strong>Microsoft explicitly warns that this workaround provides a POOR USER EXPERIENCE.</strong>
+<br><br>
+This is important for you to communicate to students, parents, and teachers before implementation.
+</div>
+
+<h3>What Students Will Experience:</h3>
+
+<h4>🔴 When Accounts Are DISABLED (16:05 PM):</h4>
+<table>
+<tr>
+    <th>Scenario</th>
+    <th>Result</th>
+</tr>
+<tr>
+    <td>Active Microsoft Teams meeting</td>
+    <td>❌ <strong>Disconnected immediately</strong></td>
+</tr>
+<tr>
+    <td>Editing Word/Excel/PowerPoint online</td>
+    <td>⚠️ <strong>Signed out - unsaved work may be LOST</strong></td>
+</tr>
+<tr>
+    <td>Outlook (email)</td>
+    <td>❌ <strong>Stops working</strong>, shows error</td>
+</tr>
+<tr>
+    <td>OneDrive sync</td>
+    <td>❌ <strong>Stops syncing</strong></td>
+</tr>
+<tr>
+    <td>Error message displayed</td>
+    <td>🔴 <em>"Your account has been disabled. Contact your administrator."</em></td>
+</tr>
+</table>
+
+<h4>🔴 When Trying to Login OUTSIDE School Hours:</h4>
+<table>
+<tr>
+    <th>Scenario</th>
+    <th>Result</th>
+</tr>
+<tr>
+    <td>Any login attempt (web, desktop, mobile)</td>
+    <td>❌ <strong>BLOCKED</strong> - "Your sign-in was blocked"</td>
+</tr>
+<tr>
+    <td>Access to Teams, Outlook, OneDrive</td>
+    <td>❌ <strong>No access</strong></td>
+</tr>
+<tr>
+    <td>Weekend access</td>
+    <td>❌ <strong>Blocked</strong> (accounts remain disabled)</td>
+</tr>
+</table>
+
+<h4>🟢 When Accounts Are ENABLED (07:55 AM):</h4>
+<table>
+<tr>
+    <th>Scenario</th>
+    <th>Result</th>
+</tr>
+<tr>
+    <td>Login to any M365 app</td>
+    <td>✅ <strong>Works normally</strong></td>
+</tr>
+<tr>
+    <td>Authentication</td>
+    <td>✅ Must re-enter password (fresh login required)</td>
+</tr>
+</table>
+</div>
+
+<div class="section">
+<h2>📚 Recommendations</h2>
+
+<div class="success-box">
+<strong>To minimize disruption, we recommend:</strong>
+<ol>
+    <li><strong>Communicate clearly</strong> to students and parents about the schedule before implementation</li>
+    <li><strong>Teach students</strong> to save all work before 16:00</li>
+    <li><strong>Display reminders</strong> in classrooms: "Save your work before 4 PM!"</li>
+    <li><strong>Provide advance notice</strong> (at least 1-2 weeks) before going live</li>
+    <li><strong>Consider exceptions</strong> for exam periods or special events</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<h2>🔄 Alternative Options</h2>
+
+<table>
+<tr>
+    <th>Option</th>
+    <th>Description</th>
+    <th>Pros</th>
+    <th>Cons</th>
+</tr>
+<tr>
+    <td><strong>Azure Automation</strong><br>(Recommended)</td>
+    <td>Automated account enable/disable</td>
+    <td>Works cloud-only, low cost</td>
+    <td>Disruptive UX</td>
+</tr>
+<tr>
+    <td><strong>Intune Device Control</strong></td>
+    <td>Restrict device usage hours</td>
+    <td>Better UX, device-level</td>
+    <td>Only managed devices</td>
+</tr>
+<tr>
+    <td><strong>Third-Party Tools</strong><br>(GoGuardian, Lightspeed)</td>
+    <td>Classroom management software</td>
+    <td>Purpose-built for schools</td>
+    <td>Additional cost</td>
+</tr>
+<tr>
+    <td><strong>Hybrid AD + PTA</strong></td>
+    <td>On-premises AD logon hours</td>
+    <td>Native Microsoft solution</td>
+    <td>Requires on-prem infrastructure</td>
+</tr>
+</table>
+</div>
+
+<div class="section">
+<h2>💰 Cost Estimate</h2>
+
+<table>
+<tr>
+    <th>Resource</th>
+    <th>Monthly Cost</th>
+</tr>
+<tr>
+    <td>Azure Automation</td>
+    <td>~€3-5/month (500 minutes free included)</td>
+</tr>
+<tr>
+    <td>Additional Microsoft licensing</td>
+    <td>None required</td>
+</tr>
+<tr>
+    <td><strong>Total</strong></td>
+    <td><strong>~€3-6/month</strong></td>
+</tr>
+</table>
+</div>
+
+<div class="section">
+<h2>🚀 Deployment Options</h2>
+
+<p>We have prepared a complete solution that can be deployed in multiple ways:</p>
+
+<div class="info-box">
+<strong>📦 GitHub Repository Available:</strong>
+<br><br>
+We have a ready-to-deploy solution at:<br>
+<code>https://github.com/[your-org]/StudentTime-Management-M365</code>
+<br><br>
+This repository includes:
+<ul>
+    <li>✅ PowerShell runbooks for Azure Automation</li>
+    <li>✅ Interactive menu-driven deployment script</li>
+    <li>✅ Infrastructure as Code (Bicep templates)</li>
+    <li>✅ GitHub Actions for automated deployment</li>
+    <li>✅ Azure-GitHub federation setup (OIDC - no secrets needed)</li>
+    <li>✅ Complete documentation</li>
+</ul>
+</div>
+
+<h3>Option A: Interactive Menu Deployment</h3>
+<p>Run the menu script for guided setup:</p>
+<pre class="code-block">
+.\scripts\Start-StudentAccessMenu.ps1
+</pre>
+
+<h3>Option B: Infrastructure as Code (GitHub Actions)</h3>
+<p>For automated deployments with Azure-GitHub federation:</p>
+<ol>
+    <li>Fork/clone the repository</li>
+    <li>Run <code>.\scripts\New-GitHubFederation.ps1</code> to set up OIDC</li>
+    <li>Add required secrets to GitHub</li>
+    <li>Push to main branch to trigger deployment</li>
+</ol>
+
+<h3>Option C: Manual Azure Portal Setup</h3>
+<p>Step-by-step instructions are included in the repository README.</p>
+</div>
+
+<div class="section">
+<h2>📞 Next Steps</h2>
+
+<p>Please let us know:</p>
+<ol>
+    <li>Do you want to proceed with the <strong>Azure Automation solution</strong>?</li>
+    <li>Do you need us to <strong>deploy this for you</strong>, or would you prefer to use the repository?</li>
+    <li>What is your preferred <strong>schedule</strong> (we've defaulted to 07:55-16:05)?</li>
+    <li>Do you have any <strong>exception requirements</strong> (exam periods, holidays)?</li>
+</ol>
+
+<p>We're happy to schedule a call to discuss further or proceed with implementation.</p>
+</div>
+
+<p>Best regards,<br>
+<strong>[Your Name]</strong><br>
+[Your Title]</p>
+
+</body>
+</html>

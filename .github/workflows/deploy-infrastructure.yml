@@ -1,0 +1,157 @@
+name: Deploy Student Access Automation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'infrastructure/**'
+      - '.github/workflows/deploy-infrastructure.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'infrastructure/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_RESOURCE_GROUP: rg-student-access-automation
+  AZURE_LOCATION: westeurope
+  AUTOMATION_ACCOUNT_NAME: StudentAccessAutomation
+
+jobs:
+  validate:
+    name: Validate Bicep
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Validate Bicep Template
+        uses: azure/arm-deploy@v2
+        with:
+          scope: subscription
+          region: ${{ env.AZURE_LOCATION }}
+          template: infrastructure/main.bicep
+          parameters: >
+            resourceGroupName=${{ env.AZURE_RESOURCE_GROUP }}
+            location=${{ env.AZURE_LOCATION }}
+            automationAccountName=${{ env.AUTOMATION_ACCOUNT_NAME }}
+            tenantId=${{ secrets.AZURE_TENANT_ID }}
+            graphClientId=${{ secrets.GRAPH_CLIENT_ID }}
+            graphClientSecret=${{ secrets.GRAPH_CLIENT_SECRET }}
+            studentGroupId=${{ secrets.STUDENT_GROUP_ID }}
+          deploymentMode: Validate
+
+  deploy:
+    name: Deploy Infrastructure
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    environment: production
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Create Resource Group
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az group create \
+              --name ${{ env.AZURE_RESOURCE_GROUP }} \
+              --location ${{ env.AZURE_LOCATION }}
+
+      - name: Deploy Bicep Template
+        uses: azure/arm-deploy@v2
+        with:
+          scope: resourcegroup
+          resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP }}
+          template: infrastructure/main.bicep
+          parameters: >
+            location=${{ env.AZURE_LOCATION }}
+            automationAccountName=${{ env.AUTOMATION_ACCOUNT_NAME }}
+            tenantId=${{ secrets.AZURE_TENANT_ID }}
+            graphClientId=${{ secrets.GRAPH_CLIENT_ID }}
+            graphClientSecret=${{ secrets.GRAPH_CLIENT_SECRET }}
+            studentGroupId=${{ secrets.STUDENT_GROUP_ID }}
+            enableTime=07:55
+            disableTime=16:05
+            timeZone=W. Europe Standard Time
+
+      - name: Import Runbooks
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            # Import Enable-StudentAccess runbook
+            az automation runbook replace-content \
+              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+              --automation-account-name ${{ env.AUTOMATION_ACCOUNT_NAME }} \
+              --name "Enable-StudentAccess" \
+              --content @runbooks/Enable-StudentAccess.ps1
+            
+            az automation runbook publish \
+              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+              --automation-account-name ${{ env.AUTOMATION_ACCOUNT_NAME }} \
+              --name "Enable-StudentAccess"
+            
+            # Import Disable-StudentAccess runbook
+            az automation runbook replace-content \
+              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+              --automation-account-name ${{ env.AUTOMATION_ACCOUNT_NAME }} \
+              --name "Disable-StudentAccess" \
+              --content @runbooks/Disable-StudentAccess.ps1
+            
+            az automation runbook publish \
+              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+              --automation-account-name ${{ env.AUTOMATION_ACCOUNT_NAME }} \
+              --name "Disable-StudentAccess"
+            
+            # Import Get-StudentAccessStatus runbook
+            az automation runbook replace-content \
+              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+              --automation-account-name ${{ env.AUTOMATION_ACCOUNT_NAME }} \
+              --name "Get-StudentAccessStatus" \
+              --content @runbooks/Get-StudentAccessStatus.ps1
+            
+            az automation runbook publish \
+              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+              --automation-account-name ${{ env.AUTOMATION_ACCOUNT_NAME }} \
+              --name "Get-StudentAccessStatus"
+
+      - name: Deployment Summary
+        run: |
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Resource | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Resource Group | ${{ env.AZURE_RESOURCE_GROUP }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Automation Account | ${{ env.AUTOMATION_ACCOUNT_NAME }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Location | ${{ env.AZURE_LOCATION }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Enable Schedule | 07:55 AM Mon-Fri |" >> $GITHUB_STEP_SUMMARY
+          echo "| Disable Schedule | 16:05 PM Mon-Fri |" >> $GITHUB_STEP_SUMMARY

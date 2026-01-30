@@ -1,0 +1,16 @@
+{
+    "TenantId": "<YOUR-TENANT-ID>",
+    "ClientId": "<YOUR-APP-REGISTRATION-CLIENT-ID>",
+    "ClientSecret": "<YOUR-CLIENT-SECRET>",
+    "StudentGroupId": "<YOUR-STUDENT-SECURITY-GROUP-OBJECT-ID>",
+    "AutomationAccountName": "StudentAccessAutomation",
+    "ResourceGroupName": "rg-student-access-automation",
+    "Location": "westeurope",
+    "RevokeTokens": true,
+    "Schedules": {
+        "EnableTime": "07:55",
+        "DisableTime": "16:05",
+        "TimeZone": "W. Europe Standard Time",
+        "DaysOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    }
+}
