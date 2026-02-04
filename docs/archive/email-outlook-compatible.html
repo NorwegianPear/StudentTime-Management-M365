@@ -720,98 +720,28 @@
     
     <p style="font-size: 12px; color: #605E5C; margin-top: 10px;">* Calendar duration ~1 week due to testing over multiple days (waiting for scheduled runs). Nonprofit verification takes 1-5 business days.</p>
 
-    <!-- ACCESS REQUIRED FOR DEPLOYMENT -->
-    <h2 style="color: #005A9E; border-left: 4px solid #D13438; padding-left: 15px; margin-top: 35px; background: #FFF8E1; padding: 15px; padding-left: 20px;">&#128273; Access Required for Deployment</h2>
-
-    <p style="margin: 15px 0;">To deploy this solution, I will need the following access to your environment:</p>
-
-    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 2px solid #D13438;">
-        <tr bgcolor="#D13438">
-            <th style="color: white; text-align: left; padding: 15px; width: 30%;">Access Type</th>
-            <th style="color: white; text-align: left; padding: 15px; width: 35%;">Role/Permission</th>
-            <th style="color: white; text-align: left; padding: 15px; width: 35%;">Purpose</th>
-        </tr>
-        <tr bgcolor="#FFEBEE">
-            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128274; Entra ID (Azure AD)</strong></td>
-            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><code style="background: #f0f0f0; padding: 2px 6px;">Global Administrator</code><br/><span style="font-size: 11px; color: #605E5C;">or Application Administrator</span></td>
-            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Create App Registration and grant admin consent for Graph API permissions</td>
-        </tr>
-        <tr bgcolor="#ffffff">
-            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#9729; Azure Subscription</strong></td>
-            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><code style="background: #f0f0f0; padding: 2px 6px;">Contributor</code><br/><span style="font-size: 11px; color: #605E5C;">on subscription or resource group</span></td>
-            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Create Azure Automation Account, configure runbooks, schedules, and variables</td>
-        </tr>
-        <tr bgcolor="#FFEBEE">
-            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128101; Security Group</strong></td>
-            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><code style="background: #f0f0f0; padding: 2px 6px;">Read access</code><br/><span style="font-size: 11px; color: #605E5C;">to student group Object ID</span></td>
-            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Configure automation to target the correct student accounts</td>
-        </tr>
-    </table>
-
-    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #FFF8E1; border-left: 5px solid #FFB900; margin: 20px 0;">
-        <tr>
-            <td>
-                <h4 style="margin: 0 0 10px 0; color: #FF8C00;">&#128274; Security Note</h4>
-                <p style="margin: 0;">Access can be granted temporarily during deployment and revoked afterward. The App Registration will use its own service principal with <strong>least-privilege permissions</strong> (User.ReadWrite.All, Group.Read.All) - no ongoing admin access required.</p>
-            </td>
-        </tr>
-    </table>
-
-    <!-- WHAT CUSTOMER NEEDS TO PROVIDE -->
-    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px;">&#128203; What You Need to Provide</h2>
+    <!-- NEXT STEPS -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px;">&#128203; Next Steps</h2>
 
     <table cellpadding="10" cellspacing="10" style="width: 100%; margin: 20px 0;">
         <tr>
             <td style="width: 40px; background: #0078D4; color: white; text-align: center; font-weight: bold; border-radius: 50%; height: 40px; vertical-align: middle;">1</td>
-            <td style="vertical-align: middle;"><strong>Azure Subscription</strong> - Either apply for Azure Nonprofits (~40,000 kr/year free credits) or create Pay-as-you-go</td>
+            <td style="vertical-align: middle;"><strong>Confirm</strong> - Let us know if this solution meets your requirements</td>
         </tr>
         <tr>
             <td style="background: #0078D4; color: white; text-align: center; font-weight: bold; border-radius: 50%; height: 40px; vertical-align: middle;">2</td>
-            <td style="vertical-align: middle;"><strong>Temporary Admin Access</strong> - Grant me Guest access with Global Admin or Application Admin role</td>
+            <td style="vertical-align: middle;"><strong>Azure Setup</strong> - Apply for Azure Nonprofits or create Pay-as-you-go subscription</td>
         </tr>
         <tr>
             <td style="background: #0078D4; color: white; text-align: center; font-weight: bold; border-radius: 50%; height: 40px; vertical-align: middle;">3</td>
-            <td style="vertical-align: middle;"><strong>Student Group Info</strong> - Name or Object ID of the security group containing all student accounts</td>
-        </tr>
-        <tr>
-            <td style="background: #0078D4; color: white; text-align: center; font-weight: bold; border-radius: 50%; height: 40px; vertical-align: middle;">4</td>
-            <td style="vertical-align: middle;"><strong>Schedule Confirmation</strong> - Confirm school hours (default: 07:55 AM - 04:05 PM, Mon-Fri)</td>
+            <td style="vertical-align: middle;"><strong>Schedule</strong> - Book a 2-4 hour session for implementation</td>
         </tr>
     </table>
 
-    <!-- NEXT STEPS -->
-    <h2 style="color: #005A9E; border-left: 4px solid #107C10; padding-left: 15px; margin-top: 35px;">&#128640; Next Steps</h2>
-
-    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #E8F5E9; border: 2px solid #107C10; margin: 20px 0;">
+    <table cellpadding="20" cellspacing="0" style="width: 100%; background: #E8F5E9; border-left: 5px solid #107C10; margin: 25px 0;">
         <tr>
             <td>
-                <p style="margin: 0 0 15px 0;"><strong>Once you confirm the above access, I can begin deployment immediately.</strong></p>
-                <table cellpadding="5" cellspacing="0" style="width: 100%;">
-                    <tr>
-                        <td style="width: 20px; color: #107C10; font-weight: bold;">✓</td>
-                        <td>Review this proposal and confirm it meets your requirements</td>
-                    </tr>
-                    <tr>
-                        <td style="color: #107C10; font-weight: bold;">✓</td>
-                        <td>Set up Azure subscription (if not already done)</td>
-                    </tr>
-                    <tr>
-                        <td style="color: #107C10; font-weight: bold;">✓</td>
-                        <td>Grant me the required access (see table above)</td>
-                    </tr>
-                    <tr>
-                        <td style="color: #107C10; font-weight: bold;">✓</td>
-                        <td>Schedule a 2-4 hour session for implementation</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-
-    <table cellpadding="20" cellspacing="0" style="width: 100%; background: #e6f2ff; border-left: 5px solid #0078D4; margin: 25px 0;">
-        <tr>
-            <td>
-                <h3 style="margin: 0 0 10px 0; color: #0078D4;">&#128230; Solution Repository</h3>
+                <h3 style="margin: 0 0 10px 0; color: #107C10;">&#128230; Ready to Deploy</h3>
                 <p style="margin: 0;">Complete solution with all scripts, runbooks, and documentation is available at:</p>
                 <p style="margin: 10px 0 0 0; font-size: 16px;">&#128279; <a href="https://github.com/NorwegianPear/StudentTime-Management-M365" style="color: #0078D4; font-weight: bold;">github.com/NorwegianPear/StudentTime-Management-M365</a></p>
             </td>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<!--
+    EMAIL TEMPLATE - Inline styles are INTENTIONAL and REQUIRED
+    Email clients (Outlook, Gmail, etc.) do not support external CSS files.
+    Inline styles are the only reliable way to style HTML emails.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Request - Student Login Time Restriction Implementation</title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; color: #323130; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #ffffff;">
+    
+    <h1 style="color: #0078D4; border-bottom: 3px solid #0078D4; padding-bottom: 15px;">&#128273; Access Request - Student Login Time Restriction</h1>
+    
+    <p>Hi Adnan,</p>
+    
+    <p>Following our previous discussion about the Student Login Time Restriction solution, this email outlines the access permissions required for deployment. Below you'll find the specific roles and information needed.</p>
+
+    <!-- SUMMARY BOX -->
+    <table cellpadding="20" cellspacing="0" style="width: 100%; background: #e6f2ff; border-left: 5px solid #0078D4; margin: 25px 0;">
+        <tr>
+            <td>
+                <h3 style="margin: 0 0 10px 0; color: #0078D4;">&#128221; Access Requirements Summary</h3>
+                <ol style="margin: 0; padding-left: 20px;">
+                    <li><strong>Entra ID Access</strong> - Application Administrator + admin consent capability</li>
+                    <li><strong>Azure Access</strong> - Contributor role on a subscription or resource group</li>
+                    <li><strong>Student Group Information</strong> - Object ID of your student security group</li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- DETAILED ACCESS REQUIREMENTS -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px;">&#128274; Required Access Details</h2>
+
+    <!-- Section 1: Entra ID -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr>
+            <td bgcolor="#5C2D91" style="color: white; padding: 12px; font-weight: bold;">
+                1️⃣ Microsoft Entra ID (Azure AD) Access
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 20px;">
+                <p style="margin: 0 0 15px 0;"><strong>Purpose:</strong> Create and configure the App Registration that allows the automation to manage student accounts.</p>
+                
+                <table cellpadding="10" cellspacing="0" style="width: 100%; border: 1px solid #e6e6e6; margin-bottom: 15px;">
+                    <tr bgcolor="#f8f9fa">
+                        <th style="text-align: left; padding: 10px; width: 30%;">Required Role</th>
+                        <th style="text-align: left; padding: 10px;">What It Allows</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border-top: 1px solid #e6e6e6;"><strong>Application Administrator</strong></td>
+                        <td style="padding: 10px; border-top: 1px solid #e6e6e6;">Create App Registration, configure API permissions, create client secrets</td>
+                    </tr>
+                    <tr bgcolor="#FFF8E1">
+                        <td style="padding: 10px; border-top: 1px solid #e6e6e6;"><strong>Global Administrator</strong><br/><span style="font-size: 11px; color: #605E5C;">(or Privileged Role Admin)</span></td>
+                        <td style="padding: 10px; border-top: 1px solid #e6e6e6;">Grant admin consent for API permissions<br/><span style="font-size: 11px; color: #D13438;">⚠️ Required - cannot proceed without this</span></td>
+                    </tr>
+                </table>
+
+                <table cellpadding="12" cellspacing="0" style="width: 100%; background: #FFF8E1; border: 1px solid #FFB900;">
+                    <tr>
+                        <td>
+                            <strong>&#128161; Option A (Easiest):</strong> Add my account as <strong>Global Administrator</strong> temporarily during implementation. I can be removed after deployment is complete.<br/><br/>
+                            <strong>&#128161; Option B:</strong> You grant admin consent yourself after I configure the permissions - I'll guide you through this step.
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Section 2: Azure -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr>
+            <td bgcolor="#0078D4" style="color: white; padding: 12px; font-weight: bold;">
+                2️⃣ Azure Subscription Access
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 20px;">
+                <p style="margin: 0 0 15px 0;"><strong>Purpose:</strong> Deploy the Azure Automation Account, runbooks, and schedules.</p>
+                
+                <table cellpadding="10" cellspacing="0" style="width: 100%; border: 1px solid #e6e6e6; margin-bottom: 15px;">
+                    <tr bgcolor="#f8f9fa">
+                        <th style="text-align: left; padding: 10px; width: 30%;">Required Role</th>
+                        <th style="text-align: left; padding: 10px;">What It Allows</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; border-top: 1px solid #e6e6e6;"><strong>Contributor</strong></td>
+                        <td style="padding: 10px; border-top: 1px solid #e6e6e6;">Create resource groups, automation accounts, runbooks, schedules, and variables</td>
+                    </tr>
+                </table>
+
+                <p style="margin: 0;"><strong>Scope options:</strong></p>
+                <ul style="margin: 5px 0;">
+                    <li><strong>Subscription level</strong> - I can create a new resource group</li>
+                    <li><strong>Resource Group level</strong> - You create a resource group first, I deploy into it</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Section 3: Student Group -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr>
+            <td bgcolor="#107C10" style="color: white; padding: 12px; font-weight: bold;">
+                3️⃣ Student Group Information
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 20px;">
+                <p style="margin: 0 0 15px 0;"><strong>Purpose:</strong> The automation targets students based on group membership.</p>
+                
+                <p>Please provide the <strong>Object ID</strong> of your student security group. You can find this in:</p>
+                <ol style="margin: 10px 0;">
+                    <li>Go to <a href="https://entra.microsoft.com" style="color: #0078D4;">entra.microsoft.com</a></li>
+                    <li>Navigate to <strong>Groups</strong> → <strong>All groups</strong></li>
+                    <li>Search for your student group</li>
+                    <li>Click on it and copy the <strong>Object ID</strong></li>
+                </ol>
+
+                <table cellpadding="12" cellspacing="0" style="width: 100%; background: #E8F5E9; border: 1px solid #107C10;">
+                    <tr>
+                        <td>
+                            <strong>&#10004; Example:</strong> <code style="background: #f0f0f0; padding: 2px 8px;">a1b2c3d4-e5f6-7890-abcd-ef1234567890</code>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- HOW TO GRANT ACCESS -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px;">&#128295; How to Grant Me Access</h2>
+
+    <h3 style="color: #323130;">Step 1: Add me to Entra ID</h3>
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0; border: 1px solid #e6e6e6;">
+        <tr>
+            <td style="padding: 15px;">
+                <ol style="margin: 0;">
+                    <li>Go to <a href="https://entra.microsoft.com" style="color: #0078D4;">entra.microsoft.com</a></li>
+                    <li>Navigate to <strong>Roles and administrators</strong></li>
+                    <li>Search for <strong>Global Administrator</strong> (or Application Administrator)</li>
+                    <li>Click <strong>Add assignments</strong></li>
+                    <li>Search for my email: <strong style="color: #0078D4;">Uy.Le.Phan@atea.no</strong></li>
+                    <li>Select and click <strong>Add</strong></li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <h3 style="color: #323130;">Step 2: Add me to Azure Subscription</h3>
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0; border: 1px solid #e6e6e6;">
+        <tr>
+            <td style="padding: 15px;">
+                <ol style="margin: 0;">
+                    <li>Go to <a href="https://portal.azure.com" style="color: #0078D4;">portal.azure.com</a></li>
+                    <li>Navigate to <strong>Subscriptions</strong> → Select your subscription</li>
+                    <li>Click <strong>Access control (IAM)</strong></li>
+                    <li>Click <strong>Add</strong> → <strong>Add role assignment</strong></li>
+                    <li>Select role: <strong>Contributor</strong></li>
+                    <li>Search for my email: <strong style="color: #0078D4;">Uy.Le.Phan@atea.no</strong></li>
+                    <li>Click <strong>Review + assign</strong></li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- SECURITY ASSURANCE -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px;">&#128737; Security &amp; Access Removal</h2>
+
+    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #E8F5E9; border-left: 5px solid #107C10; margin: 20px 0;">
+        <tr>
+            <td>
+                <h4 style="margin: 0 0 10px 0; color: #107C10;">&#10004; After Implementation</h4>
+                <ul style="margin: 0; padding-left: 20px;">
+                    <li>My elevated Entra ID access can be <strong>removed immediately</strong></li>
+                    <li>Azure Contributor can be reduced to <strong>Reader</strong> for ongoing support</li>
+                    <li>All credentials remain encrypted in your Azure Automation account</li>
+                    <li>Only the App Registration (service account) retains access to manage students</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- DOCUMENTATION ACCESS -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px;">&#128214; Solution Documentation</h2>
+
+    <table cellpadding="20" cellspacing="0" style="width: 100%; background: #f8f9fa; border: 1px solid #e6e6e6; margin: 20px 0;">
+        <tr>
+            <td>
+                <p style="margin: 0 0 15px 0;">I've prepared complete documentation for this solution, including:</p>
+                <ul style="margin: 0 0 15px 0;">
+                    <li>&#128462; Required roles and permissions guide</li>
+                    <li>&#128462; Operations guide for day-to-day management</li>
+                    <li>&#128462; Troubleshooting procedures</li>
+                    <li>&#128462; All PowerShell scripts and runbooks</li>
+                </ul>
+                <p style="margin: 0;"><strong>I've invited you to the GitHub repository:</strong></p>
+                <p style="margin: 10px 0 0 0; text-align: center;">
+                    <a href="https://github.com/NorwegianPear/StudentTime-Management-M365" style="display: inline-block; background: #0078D4; color: white; padding: 12px 25px; text-decoration: none; font-weight: bold; border-radius: 4px;">&#128279; View Documentation &amp; Code</a>
+                </p>
+                <p style="margin: 15px 0 0 0; font-size: 12px; color: #605E5C; text-align: center;">You should receive a GitHub invitation email shortly. Accept it to access the private repository.</p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- TIMELINE -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px;">&#128197; Next Steps &amp; Timeline</h2>
+
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#0078D4">
+            <th style="color: white; text-align: center; padding: 12px; width: 15%;">Step</th>
+            <th style="color: white; text-align: left; padding: 12px;">Action</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 20%;">Who</th>
+        </tr>
+        <tr>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold; color: #0078D4;">1</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Grant me Entra ID and Azure access (see above)</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">You</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold; color: #0078D4;">2</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Send me the Student Group Object ID</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">You</td>
+        </tr>
+        <tr>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold; color: #0078D4;">3</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Deploy solution (4-6 hours over ~1 week)</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Me</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold; color: #0078D4;">4</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Testing &amp; verification together</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Both</td>
+        </tr>
+        <tr bgcolor="#E8F5E9">
+            <td style="padding: 12px; text-align: center; font-weight: bold; color: #107C10;">5</td>
+            <td style="padding: 12px;">Go-live + remove my elevated access</td>
+            <td style="padding: 12px; text-align: center;">Both</td>
+        </tr>
+    </table>
+
+    <!-- CHECKLIST -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px;">&#9745; Quick Checklist</h2>
+
+    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #FFF8E1; border: 1px solid #FFB900; margin: 20px 0;">
+        <tr>
+            <td>
+                <p style="margin: 0 0 10px 0; font-weight: bold;">Please reply with:</p>
+                <table cellpadding="5" cellspacing="0" style="width: 100%;">
+                    <tr>
+                        <td style="width: 30px;">☐</td>
+                        <td>Confirmation that access has been granted</td>
+                    </tr>
+                    <tr>
+                        <td>☐</td>
+                        <td>Student Group Object ID: <code style="background: #f0f0f0; padding: 2px 8px;">________________</code></td>
+                    </tr>
+                    <tr>
+                        <td>☐</td>
+                        <td>Preferred implementation start date</td>
+                    </tr>
+                    <tr>
+                        <td>☐</td>
+                        <td>Any questions or concerns</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <p>Let me know if you have any questions about these requirements or if there's a preferred approach for your organization.</p>
+
+    <div style="margin-top: 40px; padding-top: 25px; border-top: 2px solid #e6e6e6;">
+        <p>Best regards,</p>
+        <p><strong>Uy Le Phan</strong><br>
+        Atea AS<br>
+        <a href="mailto:Uy.Le.Phan@atea.no" style="color: #0078D4;">Uy.Le.Phan@atea.no</a></p>
+    </div>
+
+    <div style="font-size: 12px; color: #605E5C; margin-top: 30px; text-align: center; padding: 20px; background: #f8f9fa;">
+        <p style="margin: 0;"><strong>&#128206; Resources:</strong> 
+            <a href="https://github.com/NorwegianPear/StudentTime-Management-M365" style="color: #0078D4;">GitHub Repository</a> • 
+            <a href="https://entra.microsoft.com" style="color: #0078D4;">Entra Admin Center</a> •
+            <a href="https://portal.azure.com" style="color: #0078D4;">Azure Portal</a>
+        </p>
+    </div>
+
+</body>
+</html>

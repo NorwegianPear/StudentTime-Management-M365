@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<!--
+    OPERATIONS GUIDE - HTML Format with GUI Instructions
+    Inline styles are INTENTIONAL for standalone viewing
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operations Guide - Student Time Management for M365</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            line-height: 1.6;
+            color: #323130;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+        h1 { color: #0078D4; border-bottom: 3px solid #0078D4; padding-bottom: 15px; }
+        h2 { color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px; }
+        h3 { color: #323130; margin-top: 25px; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+        th, td { padding: 12px; text-align: left; border: 1px solid #e6e6e6; }
+        th { background: #0078D4; color: white; }
+        code { background: #f0f0f0; padding: 2px 6px; font-family: Consolas, monospace; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 4px; overflow-x: auto; }
+        .info-box { background: #e6f2ff; border-left: 5px solid #0078D4; padding: 15px; margin: 15px 0; }
+        .success-box { background: #E8F5E9; border-left: 5px solid #107C10; padding: 15px; margin: 15px 0; }
+        .warning-box { background: #FFF8E1; border-left: 5px solid #FFB900; padding: 15px; margin: 15px 0; }
+        .danger-box { background: #FFEBEE; border-left: 5px solid #D13438; padding: 15px; margin: 15px 0; }
+        .screenshot-placeholder {
+            background: #f8f9fa;
+            border: 2px dashed #c0c0c0;
+            padding: 40px;
+            text-align: center;
+            color: #605E5C;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #0078D4;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .gui-path {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Segoe UI', sans-serif;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .gui-path span {
+            color: #0078D4;
+            font-weight: bold;
+        }
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 5px 0; }
+        .toc a { color: #0078D4; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <h1>&#128214; Operations Guide - Student Time Management</h1>
+    
+    <p>This guide provides step-by-step instructions for operating and maintaining the Student Time Management solution.</p>
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="toc">
+        <h3 style="margin-top: 0;">&#128203; Table of Contents</h3>
+        <ul>
+            <li><a href="#overview">1. Daily Operations Overview</a></li>
+            <li><a href="#monitoring">2. Monitoring Automation Jobs</a></li>
+            <li><a href="#manual-ops">3. Manual Operations (Enable/Disable)</a></li>
+            <li><a href="#schedules">4. Managing Schedules</a></li>
+            <li><a href="#student-group">5. Managing the Student Group</a></li>
+            <li><a href="#troubleshooting">6. Troubleshooting</a></li>
+            <li><a href="#maintenance">7. Maintenance Tasks</a></li>
+            <li><a href="#emergency">8. Emergency Procedures</a></li>
+        </ul>
+    </div>
+
+    <!-- SECTION 1: OVERVIEW -->
+    <h2 id="overview">&#128260; 1. Daily Operations Overview</h2>
+    
+    <p>The solution runs <strong>automatically</strong> with no daily intervention required.</p>
+
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>Action</th>
+            <th>Runbook</th>
+            <th>Result</th>
+        </tr>
+        <tr>
+            <td><strong>07:55 AM</strong></td>
+            <td>Enable student accounts</td>
+            <td><code>Enable-StudentAccess</code></td>
+            <td style="color: #107C10;">&#128994; Students can log in</td>
+        </tr>
+        <tr>
+            <td><strong>04:05 PM</strong></td>
+            <td>Disable student accounts</td>
+            <td><code>Disable-StudentAccess</code></td>
+            <td style="color: #D13438;">&#128308; Students logged out</td>
+        </tr>
+    </table>
+
+    <h3>Weekly Schedule Visualization</h3>
+    <table>
+        <tr>
+            <th>Day</th>
+            <th>00:00 - 07:55</th>
+            <th>07:55 - 16:05</th>
+            <th>16:05 - 24:00</th>
+        </tr>
+        <tr>
+            <td><strong>Monday - Friday</strong></td>
+            <td style="background: #FFEBEE; color: #D13438; text-align: center;">&#128308; Disabled</td>
+            <td style="background: #E8F5E9; color: #107C10; text-align: center; font-weight: bold;">&#128994; ENABLED</td>
+            <td style="background: #FFEBEE; color: #D13438; text-align: center;">&#128308; Disabled</td>
+        </tr>
+        <tr>
+            <td><strong>Saturday - Sunday</strong></td>
+            <td colspan="3" style="background: #FFEBEE; color: #D13438; text-align: center; font-weight: bold;">&#128308; DISABLED ALL DAY</td>
+        </tr>
+    </table>
+
+    <!-- SECTION 2: MONITORING -->
+    <h2 id="monitoring">&#128202; 2. Monitoring Automation Jobs</h2>
+
+    <h3>How to View Job History</h3>
+    
+    <div class="gui-path">
+        <span>Azure Portal</span> → <span>Automation Accounts</span> → <span>StudentAccessAutomation</span> → <span>Jobs</span>
+    </div>
+
+    <h4>Step-by-Step Instructions:</h4>
+    
+    <ol>
+        <li>
+            <span class="step-number">1</span>
+            Open <a href="https://portal.azure.com" target="_blank" rel="noopener">portal.azure.com</a> and sign in
+        </li>
+        <li>
+            <span class="step-number">2</span>
+            In the search bar at the top, type <strong>"Automation Accounts"</strong> and select it
+            <div class="screenshot-placeholder">
+                &#128247; Screenshot: Azure Portal search bar with "Automation Accounts"
+            </div>
+        </li>
+        <li>
+            <span class="step-number">3</span>
+            Click on your automation account (e.g., <strong>StudentAccessAutomation</strong>)
+        </li>
+        <li>
+            <span class="step-number">4</span>
+            In the left menu, under <strong>Process Automation</strong>, click <strong>Jobs</strong>
+            <div class="screenshot-placeholder">
+                &#128247; Screenshot: Automation Account left menu showing "Jobs" option
+            </div>
+        </li>
+        <li>
+            <span class="step-number">5</span>
+            You'll see a list of recent jobs with their status
+        </li>
+    </ol>
+
+    <h3>Understanding Job Status</h3>
+    <table>
+        <tr>
+            <th>Status</th>
+            <th>Icon</th>
+            <th>Meaning</th>
+            <th>Action Required</th>
+        </tr>
+        <tr>
+            <td><strong>Completed</strong></td>
+            <td style="color: #107C10; font-size: 20px;">✓</td>
+            <td>Job finished successfully</td>
+            <td>None - working as expected</td>
+        </tr>
+        <tr>
+            <td><strong>Running</strong></td>
+            <td style="color: #0078D4; font-size: 20px;">↻</td>
+            <td>Job is currently executing</td>
+            <td>Wait for completion (usually &lt; 5 minutes)</td>
+        </tr>
+        <tr>
+            <td><strong>Failed</strong></td>
+            <td style="color: #D13438; font-size: 20px;">✗</td>
+            <td>Job encountered an error</td>
+            <td>Click to view error details, see Troubleshooting</td>
+        </tr>
+        <tr>
+            <td><strong>Queued</strong></td>
+            <td style="color: #FFB900; font-size: 20px;">⏳</td>
+            <td>Job waiting to start</td>
+            <td>Will start automatically</td>
+        </tr>
+    </table>
+
+    <h3>Viewing Job Output</h3>
+    <ol>
+        <li>Click on a specific job in the Jobs list</li>
+        <li>Select the <strong>Output</strong> tab to see detailed logs</li>
+    </ol>
+
+    <div class="info-box">
+        <strong>&#128161; What to look for in the output:</strong>
+        <ul>
+            <li>Total students processed</li>
+            <li>Number of accounts enabled/disabled</li>
+            <li>Any error messages</li>
+        </ul>
+    </div>
+
+    <h4>Example Job Output:</h4>
+    <pre>
+============================================
+Student Access Automation - ENABLE
+============================================
+Timestamp: 2026-02-04 07:55:02
+Connected to Microsoft Graph
+Processing student group: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+============================================
+Found 1013 members in student group
+--------------------------------------------
+[ENABLED] Anna Hansen (anna.hansen@school.no)
+[ALREADY ENABLED] Erik Olsen
+[ENABLED] Maria Johansen (maria.johansen@school.no)
+...
+============================================
+SUMMARY
+============================================
+Total students processed: 1013
+Accounts enabled: 856
+Already enabled: 157
+Errors: 0
+============================================
+    </pre>
+
+    <!-- SECTION 3: MANUAL OPERATIONS -->
+    <h2 id="manual-ops">&#128295; 3. Manual Operations</h2>
+
+    <div class="warning-box">
+        <strong>&#9888; When to use manual operations:</strong>
+        <ul>
+            <li>Testing the solution</li>
+            <li>Emergency enable/disable outside schedule</li>
+            <li>Verifying the automation works correctly</li>
+        </ul>
+    </div>
+
+    <h3>How to Run a Runbook Manually (Azure Portal)</h3>
+
+    <div class="gui-path">
+        <span>Automation Account</span> → <span>Runbooks</span> → <span>[Select Runbook]</span> → <span>Start</span>
+    </div>
+
+    <ol>
+        <li>
+            <span class="step-number">1</span>
+            In your Automation Account, click <strong>Runbooks</strong> in the left menu
+            <div class="screenshot-placeholder">
+                &#128247; Screenshot: Automation Account showing Runbooks menu item
+            </div>
+        </li>
+        <li>
+            <span class="step-number">2</span>
+            Click on the runbook you want to run:
+            <ul>
+                <li><code>Enable-StudentAccess</code> - to enable all students</li>
+                <li><code>Disable-StudentAccess</code> - to disable all students</li>
+                <li><code>Get-StudentAccessStatus</code> - to view current status</li>
+            </ul>
+            <div class="screenshot-placeholder">
+                &#128247; Screenshot: List of runbooks showing the three available runbooks
+            </div>
+        </li>
+        <li>
+            <span class="step-number">3</span>
+            Click the <strong>Start</strong> button at the top
+            <div class="screenshot-placeholder">
+                &#128247; Screenshot: Runbook page with "Start" button highlighted
+            </div>
+        </li>
+        <li>
+            <span class="step-number">4</span>
+            Confirm by clicking <strong>OK</strong> (no parameters needed)
+        </li>
+        <li>
+            <span class="step-number">5</span>
+            Monitor the job in the <strong>Jobs</strong> view
+        </li>
+    </ol>
+
+    <h3>Check Current Student Status</h3>
+    <p>Run the <code>Get-StudentAccessStatus</code> runbook to see a report of all students and whether they are currently enabled or disabled.</p>
+
+    <!-- SECTION 4: SCHEDULES -->
+    <h2 id="schedules">&#128197; 4. Managing Schedules</h2>
+
+    <h3>View Current Schedules</h3>
+
+    <div class="gui-path">
+        <span>Automation Account</span> → <span>Schedules</span>
+    </div>
+
+    <ol>
+        <li>
+            <span class="step-number">1</span>
+            In your Automation Account, click <strong>Schedules</strong> in the left menu
+        </li>
+        <li>
+            <span class="step-number">2</span>
+            You'll see the configured schedules:
+            <table>
+                <tr>
+                    <th>Schedule Name</th>
+                    <th>Time</th>
+                    <th>Days</th>
+                    <th>Linked Runbook</th>
+                </tr>
+                <tr>
+                    <td>Enable-Students-Morning</td>
+                    <td>07:55 AM</td>
+                    <td>Mon-Fri</td>
+                    <td>Enable-StudentAccess</td>
+                </tr>
+                <tr>
+                    <td>Disable-Students-Afternoon</td>
+                    <td>04:05 PM</td>
+                    <td>Mon-Fri</td>
+                    <td>Disable-StudentAccess</td>
+                </tr>
+            </table>
+        </li>
+    </ol>
+
+    <h3>Modify Schedule Times</h3>
+    <ol>
+        <li>
+            <span class="step-number">1</span>
+            Click on the schedule name you want to modify
+        </li>
+        <li>
+            <span class="step-number">2</span>
+            Update the <strong>Start time</strong>
+            <div class="screenshot-placeholder">
+                &#128247; Screenshot: Schedule edit page with time field highlighted
+            </div>
+        </li>
+        <li>
+            <span class="step-number">3</span>
+            Click <strong>Save</strong>
+        </li>
+    </ol>
+
+    <div class="info-box">
+        <strong>&#128161; Note:</strong> Changes take effect from the next scheduled run, not immediately.
+    </div>
+
+    <h3>Disable a Schedule Temporarily (e.g., for Holidays)</h3>
+    <ol>
+        <li>Click on the schedule name</li>
+        <li>Toggle <strong>Enabled</strong> to <strong>No</strong></li>
+        <li>Click <strong>Save</strong></li>
+    </ol>
+
+    <div class="warning-box">
+        <strong>&#9888; Holiday Reminder:</strong> Before school holidays, remember to either:
+        <ul>
+            <li>Disable the <code>Enable-Students-Morning</code> schedule, OR</li>
+            <li>Run <code>Disable-StudentAccess</code> manually on the last day</li>
+        </ul>
+        After the holiday, re-enable the schedule.
+    </div>
+
+    <!-- SECTION 5: STUDENT GROUP -->
+    <h2 id="student-group">&#128101; 5. Managing the Student Group</h2>
+
+    <h3>Find the Student Group</h3>
+
+    <div class="gui-path">
+        <span>Entra Admin Center</span> → <span>Groups</span> → <span>All groups</span> → <span>[Search for your group]</span>
+    </div>
+
+    <ol>
+        <li>
+            <span class="step-number">1</span>
+            Go to <a href="https://entra.microsoft.com" target="_blank" rel="noopener">entra.microsoft.com</a>
+        </li>
+        <li>
+            <span class="step-number">2</span>
+            In the left menu, expand <strong>Groups</strong> and click <strong>All groups</strong>
+            <div class="screenshot-placeholder">
+                &#128247; Screenshot: Entra Admin Center left menu showing Groups
+            </div>
+        </li>
+        <li>
+            <span class="step-number">3</span>
+            Search for your student group name in the search box
+        </li>
+        <li>
+            <span class="step-number">4</span>
+            Click on the group to view details
+        </li>
+    </ol>
+
+    <h3>Add a Student to the Group</h3>
+    <ol>
+        <li>
+            <span class="step-number">1</span>
+            Open the student group
+        </li>
+        <li>
+            <span class="step-number">2</span>
+            Click <strong>Members</strong> in the left menu
+        </li>
+        <li>
+            <span class="step-number">3</span>
+            Click <strong>+ Add members</strong>
+            <div class="screenshot-placeholder">
+                &#128247; Screenshot: Group members page with "Add members" button
+            </div>
+        </li>
+        <li>
+            <span class="step-number">4</span>
+            Search for the student by name or email
+        </li>
+        <li>
+            <span class="step-number">5</span>
+            Select the student and click <strong>Select</strong>
+        </li>
+    </ol>
+
+    <div class="success-box">
+        <strong>&#10004; Result:</strong> The student will be included in the next automation run. They will be enabled/disabled according to the schedule.
+    </div>
+
+    <h3>Remove a Student from the Group</h3>
+    <ol>
+        <li>Open the group → <strong>Members</strong></li>
+        <li>Find and select the student(s) to remove</li>
+        <li>Click <strong>Remove</strong></li>
+    </ol>
+
+    <div class="warning-box">
+        <strong>&#9888; Note:</strong> Removed students will no longer be affected by the automation. Their account will remain in whatever state it was (enabled or disabled).
+    </div>
+
+    <!-- SECTION 6: TROUBLESHOOTING -->
+    <h2 id="troubleshooting">&#128270; 6. Troubleshooting</h2>
+
+    <h3>Problem: Job Failed with "Access Denied"</h3>
+    <table>
+        <tr>
+            <th style="width: 30%;">Possible Cause</th>
+            <th>Solution</th>
+        </tr>
+        <tr>
+            <td>Client secret expired</td>
+            <td>
+                <ol>
+                    <li>Go to Entra Admin Center → App registrations</li>
+                    <li>Find the StudentAccessAutomation app</li>
+                    <li>Check Certificates &amp; secrets for expired secrets</li>
+                    <li>Create a new secret and update the Automation variable</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>API permissions not consented</td>
+            <td>
+                <ol>
+                    <li>Go to Entra Admin Center → App registrations</li>
+                    <li>Open the app → API permissions</li>
+                    <li>Click "Grant admin consent"</li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Problem: Job Completes but "0 members found"</h3>
+    <table>
+        <tr>
+            <th style="width: 30%;">Possible Cause</th>
+            <th>Solution</th>
+        </tr>
+        <tr>
+            <td>Wrong StudentGroupId</td>
+            <td>
+                <ol>
+                    <li>Verify the group Object ID in Entra Admin Center</li>
+                    <li>Update the <code>StudentGroupId</code> variable in Automation Account → Variables</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>Group has no members</td>
+            <td>Add students to the group (see Section 5)</td>
+        </tr>
+        <tr>
+            <td>Wrong group type</td>
+            <td>Ensure it's a <strong>Security</strong> group, not an M365 Group</td>
+        </tr>
+    </table>
+
+    <h3>Problem: Schedule Not Running</h3>
+    <table>
+        <tr>
+            <th style="width: 30%;">Check</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Schedule is disabled</td>
+            <td>Go to Schedules → Click the schedule → Ensure "Enabled" is "Yes"</td>
+        </tr>
+        <tr>
+            <td>Schedule not linked</td>
+            <td>Go to the Runbook → Schedules → Verify it's linked to the schedule</td>
+        </tr>
+        <tr>
+            <td>Wrong timezone</td>
+            <td>Verify schedule timezone matches your location (W. Europe Standard Time for Norway)</td>
+        </tr>
+    </table>
+
+    <h3>How to View Error Details</h3>
+    <ol>
+        <li>Go to Automation Account → Jobs</li>
+        <li>Click on the failed job</li>
+        <li>Click <strong>All Logs</strong> tab</li>
+        <li>Filter by <strong>Error</strong> stream</li>
+    </ol>
+
+    <div class="screenshot-placeholder">
+        &#128247; Screenshot: Job details page showing "All Logs" tab with error filter
+    </div>
+
+    <!-- SECTION 7: MAINTENANCE -->
+    <h2 id="maintenance">&#128736; 7. Maintenance Tasks</h2>
+
+    <h3>Weekly Tasks</h3>
+    <table>
+        <tr>
+            <th>Task</th>
+            <th>How</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>Review job history</td>
+            <td>Automation Account → Jobs</td>
+            <td>Ensure jobs complete successfully</td>
+        </tr>
+        <tr>
+            <td>Check for errors</td>
+            <td>Filter jobs by "Failed"</td>
+            <td>Identify and fix issues early</td>
+        </tr>
+    </table>
+
+    <h3>Monthly Tasks</h3>
+    <table>
+        <tr>
+            <th>Task</th>
+            <th>How</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>Review student group</td>
+            <td>Entra Admin Center → Groups</td>
+            <td>Ensure membership is current</td>
+        </tr>
+        <tr>
+            <td>Check Azure costs</td>
+            <td>Azure Portal → Cost Analysis</td>
+            <td>Monitor spending (should be 0-50 kr)</td>
+        </tr>
+    </table>
+
+    <h3>Annual Tasks</h3>
+    <table>
+        <tr>
+            <th>Task</th>
+            <th>How</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td><strong style="color: #D13438;">Rotate client secret</strong></td>
+            <td>See procedure below</td>
+            <td>Security best practice</td>
+        </tr>
+        <tr>
+            <td>Review API permissions</td>
+            <td>Entra → App registrations</td>
+            <td>Ensure least privilege</td>
+        </tr>
+    </table>
+
+    <h3>How to Rotate the Client Secret (Annual)</h3>
+    
+    <div class="danger-box">
+        <strong>&#9888; Important:</strong> Client secrets expire. You must rotate them before expiration to avoid service interruption.
+    </div>
+
+    <ol>
+        <li>
+            <span class="step-number">1</span>
+            <strong>Create new secret:</strong>
+            <div class="gui-path">
+                <span>Entra Admin Center</span> → <span>App registrations</span> → <span>StudentAccessAutomation</span> → <span>Certificates &amp; secrets</span>
+            </div>
+            <ul>
+                <li>Click <strong>+ New client secret</strong></li>
+                <li>Set expiration (recommend 12 months)</li>
+                <li>Click <strong>Add</strong></li>
+                <li><strong style="color: #D13438;">Copy the Value immediately!</strong> (it won't be shown again)</li>
+            </ul>
+        </li>
+        <li>
+            <span class="step-number">2</span>
+            <strong>Update Automation variable:</strong>
+            <div class="gui-path">
+                <span>Azure Portal</span> → <span>Automation Account</span> → <span>Variables</span> → <span>ClientSecret</span>
+            </div>
+            <ul>
+                <li>Click <strong>Edit</strong></li>
+                <li>Paste the new secret value</li>
+                <li>Click <strong>Save</strong></li>
+            </ul>
+        </li>
+        <li>
+            <span class="step-number">3</span>
+            <strong>Test:</strong> Run <code>Get-StudentAccessStatus</code> manually to verify
+        </li>
+        <li>
+            <span class="step-number">4</span>
+            <strong>Delete old secret:</strong> Return to App registrations and delete the expired secret
+        </li>
+    </ol>
+
+    <!-- SECTION 8: EMERGENCY -->
+    <h2 id="emergency">&#128680; 8. Emergency Procedures</h2>
+
+    <h3 style="color: #107C10;">Emergency: Enable All Students NOW</h3>
+    <div class="success-box">
+        <strong>Scenario:</strong> School needs all students enabled outside normal hours
+        <ol>
+            <li>Go to <strong>Automation Account → Runbooks</strong></li>
+            <li>Click <strong>Enable-StudentAccess</strong></li>
+            <li>Click <strong>Start</strong></li>
+            <li>Wait for completion (usually &lt; 5 minutes)</li>
+        </ol>
+    </div>
+
+    <h3 style="color: #D13438;">Emergency: Disable All Students NOW</h3>
+    <div class="danger-box">
+        <strong>Scenario:</strong> Security incident requires immediate lockout
+        <ol>
+            <li>Go to <strong>Automation Account → Runbooks</strong></li>
+            <li>Click <strong>Disable-StudentAccess</strong></li>
+            <li>Click <strong>Start</strong></li>
+            <li>Wait for completion</li>
+        </ol>
+    </div>
+
+    <h3>Emergency: Stop All Automation</h3>
+    <div class="warning-box">
+        <strong>Scenario:</strong> Need to completely stop the automation from running
+        <ol>
+            <li>Go to <strong>Automation Account → Schedules</strong></li>
+            <li>Click <strong>Enable-Students-Morning</strong> → Set Enabled = <strong>No</strong> → Save</li>
+            <li>Click <strong>Disable-Students-Afternoon</strong> → Set Enabled = <strong>No</strong> → Save</li>
+        </ol>
+        <p><strong>Result:</strong> No scheduled jobs will run until you re-enable the schedules.</p>
+    </div>
+
+    <h3>Enable/Disable a Single Student</h3>
+    <p>If you need to make an exception for one student:</p>
+
+    <div class="gui-path">
+        <span>Entra Admin Center</span> → <span>Users</span> → <span>[Search student]</span> → <span>Edit properties</span>
+    </div>
+
+    <ol>
+        <li>Find the student in Users</li>
+        <li>Click <strong>Edit properties</strong></li>
+        <li>Under <strong>Account</strong>, toggle <strong>Account enabled</strong></li>
+        <li>Click <strong>Save</strong></li>
+    </ol>
+
+    <div class="info-box">
+        <strong>&#128161; Note:</strong> This change will be overwritten by the next automation run unless you also remove the student from the group.
+    </div>
+
+    <!-- QUICK REFERENCE -->
+    <h2>&#128221; Quick Reference</h2>
+
+    <h3>Important URLs</h3>
+    <table>
+        <tr>
+            <th>Portal</th>
+            <th>URL</th>
+            <th>Use For</th>
+        </tr>
+        <tr>
+            <td>Azure Portal</td>
+            <td><a href="https://portal.azure.com">portal.azure.com</a></td>
+            <td>Automation jobs, schedules, costs</td>
+        </tr>
+        <tr>
+            <td>Entra Admin Center</td>
+            <td><a href="https://entra.microsoft.com">entra.microsoft.com</a></td>
+            <td>Users, groups, app registrations</td>
+        </tr>
+        <tr>
+            <td>GitHub Repository</td>
+            <td><a href="https://github.com/NorwegianPear/StudentTime-Management-M365">github.com/NorwegianPear/...</a></td>
+            <td>Documentation, scripts</td>
+        </tr>
+    </table>
+
+    <h3>Key Variables to Remember</h3>
+    <table>
+        <tr>
+            <th>Variable</th>
+            <th>Value (fill in)</th>
+        </tr>
+        <tr>
+            <td>Student Group Object ID</td>
+            <td><code>________________________________</code></td>
+        </tr>
+        <tr>
+            <td>Automation Account Name</td>
+            <td><code>________________________________</code></td>
+        </tr>
+        <tr>
+            <td>Resource Group</td>
+            <td><code>________________________________</code></td>
+        </tr>
+        <tr>
+            <td>Client Secret Expiry Date</td>
+            <td><code>________________________________</code></td>
+        </tr>
+    </table>
+
+    <!-- FOOTER -->
+    <div style="margin-top: 40px; padding-top: 25px; border-top: 2px solid #e6e6e6; text-align: center; color: #605E5C;">
+        <p><strong>Student Time Management for M365</strong></p>
+        <p>
+            <a href="https://github.com/NorwegianPear/StudentTime-Management-M365" style="color: #0078D4;">GitHub Repository</a> •
+            Questions? Contact <a href="mailto:Uy.Le.Phan@atea.no" style="color: #0078D4;">Uy.Le.Phan@atea.no</a>
+        </p>
+        <p style="font-size: 11px; color: #888;">Version 1.0 • February 2026</p>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "selector-no-qualifying-type": null,
+    "no-inline-styles": null
+  },
+  "ignoreFiles": [
+    "docs/**/*.html"
+  ]
+}

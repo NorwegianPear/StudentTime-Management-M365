@@ -80,6 +80,20 @@ This solution works with your **existing M365 Education licenses**. No additiona
 
 ---
 
+## 📚 Documentation
+
+| Document | Description | Format |
+|----------|-------------|--------|
+| [Required Roles & Permissions](docs/REQUIRED-ROLES.md) | All roles needed for deployment | Markdown |
+| [Required Roles (HTML)](docs/required-roles.html) | Detailed guide with GUI instructions | HTML |
+| [Operations Guide](docs/OPERATIONS-GUIDE.md) | Day-to-day operations and maintenance | Markdown |
+| [Operations Guide (HTML)](docs/operations-guide.html) | Visual guide with screenshots placeholders | HTML |
+| [Solution Architecture](docs/SOLUTION-ARCHITECTURE.md) | Technical architecture details | Markdown |
+| [Email: Access Request](docs/email-access-request.html) | Request deployment access from customer | HTML |
+| [Email Templates](docs/archive/) | Archived customer proposal email templates | HTML |
+
+---
+
 ## 🏗️ Architecture
 
 ![Solution Architecture](docs/architecture-diagram.svg)

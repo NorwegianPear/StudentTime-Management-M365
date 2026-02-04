@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<!--
+    REQUIRED ROLES DOCUMENTATION - HTML Format with GUI Instructions
+    Inline styles are INTENTIONAL for standalone viewing
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Required Roles &amp; Permissions - Student Time Management for M365</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            line-height: 1.6;
+            color: #323130;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+        h1 { color: #0078D4; border-bottom: 3px solid #0078D4; padding-bottom: 15px; }
+        h2 { color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px; }
+        h3 { color: #323130; margin-top: 25px; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+        th, td { padding: 12px; text-align: left; border: 1px solid #e6e6e6; }
+        th { background: #0078D4; color: white; }
+        code { background: #f0f0f0; padding: 2px 6px; font-family: Consolas, monospace; }
+        .info-box { background: #e6f2ff; border-left: 5px solid #0078D4; padding: 15px; margin: 15px 0; }
+        .success-box { background: #E8F5E9; border-left: 5px solid #107C10; padding: 15px; margin: 15px 0; }
+        .warning-box { background: #FFF8E1; border-left: 5px solid #FFB900; padding: 15px; margin: 15px 0; }
+        .danger-box { background: #FFEBEE; border-left: 5px solid #D13438; padding: 15px; margin: 15px 0; }
+        .screenshot-placeholder {
+            background: #f8f9fa;
+            border: 2px dashed #c0c0c0;
+            padding: 40px;
+            text-align: center;
+            color: #605E5C;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #0078D4;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .gui-path {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Segoe UI', sans-serif;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .gui-path span {
+            color: #0078D4;
+            font-weight: bold;
+        }
+        .required-badge {
+            display: inline-block;
+            background: #D13438;
+            color: white;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+        .optional-badge {
+            display: inline-block;
+            background: #107C10;
+            color: white;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { padding: 5px 0; }
+        .toc a { color: #0078D4; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .version-text {
+            font-size: 11px;
+            color: #888;
+        }
+        .role-card {
+            border: 2px solid #e6e6e6;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .role-card-header {
+            background: #5C2D91;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+        }
+        .role-card-body {
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>&#128274; Required Roles &amp; Permissions</h1>
+    
+    <p>This document outlines all roles and permissions needed to deploy and operate the Student Time Management solution.</p>
+
+    <!-- SUMMARY TABLE -->
+    <h2>&#128203; Summary Overview</h2>
+
+    <table>
+        <tr>
+            <th>Task</th>
+            <th>Required Role</th>
+            <th>Where</th>
+            <th>Who</th>
+        </tr>
+        <tr>
+            <td>Create App Registration</td>
+            <td><strong>Application Administrator</strong></td>
+            <td>Entra ID</td>
+            <td>IT Admin (one-time)</td>
+        </tr>
+        <tr style="background: #FFF8E1;">
+            <td>Grant Admin Consent</td>
+            <td><strong>Global Administrator</strong> <span class="required-badge">REQUIRED</span></td>
+            <td>Entra ID</td>
+            <td>IT Admin (one-time)</td>
+        </tr>
+        <tr>
+            <td>Create Azure Resources</td>
+            <td><strong>Contributor</strong></td>
+            <td>Azure Subscription</td>
+            <td>IT Admin (one-time)</td>
+        </tr>
+        <tr>
+            <td>Manage Student Group</td>
+            <td><strong>Groups Administrator</strong></td>
+            <td>Entra ID</td>
+            <td>IT Admin (ongoing)</td>
+        </tr>
+        <tr>
+            <td>View Job History</td>
+            <td><strong>Reader</strong></td>
+            <td>Automation Account</td>
+            <td>Support Staff</td>
+        </tr>
+    </table>
+
+    <!-- ENTRA ID ROLES -->
+    <h2>&#128100; Microsoft Entra ID Roles</h2>
+
+    <p>These roles are needed in the <a href="https://entra.microsoft.com" target="_blank" rel="noopener">Entra Admin Center</a>.</p>
+
+    <!-- Role Card: Global Administrator -->
+    <div class="role-card">
+        <div class="role-card-header" style="background: #D13438;">
+            &#128081; Global Administrator <span class="required-badge" style="background: white; color: #D13438;">REQUIRED FOR DEPLOYMENT</span>
+        </div>
+        <div class="role-card-body">
+            <p><strong>Why needed:</strong> To grant admin consent for Microsoft Graph API permissions. Without this, the App Registration cannot access user data.</p>
+            
+            <table>
+                <tr>
+                    <th style="width: 30%;">Capability</th>
+                    <th>Needed For</th>
+                </tr>
+                <tr>
+                    <td>Grant admin consent</td>
+                    <td>Approving User.ReadWrite.All and Group.Read.All permissions</td>
+                </tr>
+                <tr>
+                    <td>Full tenant access</td>
+                    <td>Can perform all Entra ID administrative tasks</td>
+                </tr>
+            </table>
+
+            <div class="warning-box">
+                <strong>&#9888; Alternatives:</strong>
+                <ul>
+                    <li><strong>Privileged Role Administrator</strong> - can also grant admin consent</li>
+                    <li><strong>Cloud Application Administrator</strong> - can create apps but cannot grant consent</li>
+                </ul>
+            </div>
+
+            <h4>How to Assign This Role:</h4>
+            <div class="gui-path">
+                <span>Entra Admin Center</span> → <span>Roles and administrators</span> → <span>Global Administrator</span> → <span>Add assignments</span>
+            </div>
+            <ol>
+                <li>
+                    <span class="step-number">1</span>
+                    Go to <a href="https://entra.microsoft.com" target="_blank" rel="noopener">entra.microsoft.com</a>
+                </li>
+                <li>
+                    <span class="step-number">2</span>
+                    In the left menu, click <strong>Roles and administrators</strong>
+                    <div class="screenshot-placeholder">
+                        &#128247; Screenshot: Entra Admin Center showing "Roles and administrators" in menu
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">3</span>
+                    Search for <strong>Global Administrator</strong> and click on it
+                    <div class="screenshot-placeholder">
+                        &#128247; Screenshot: Role list with Global Administrator highlighted
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">4</span>
+                    Click <strong>+ Add assignments</strong>
+                    <div class="screenshot-placeholder">
+                        &#128247; Screenshot: Global Administrator role page with "Add assignments" button
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">5</span>
+                    Search for the user by name or email, select them, and click <strong>Add</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Role Card: Application Administrator -->
+    <div class="role-card">
+        <div class="role-card-header" style="background: #0078D4;">
+            &#128187; Application Administrator <span class="optional-badge">ALTERNATIVE</span>
+        </div>
+        <div class="role-card-body">
+            <p><strong>Why needed:</strong> To create and configure the App Registration.</p>
+            
+            <table>
+                <tr>
+                    <th style="width: 30%;">Capability</th>
+                    <th>Needed For</th>
+                </tr>
+                <tr>
+                    <td>Create app registrations</td>
+                    <td>Creating the StudentAccessAutomation app</td>
+                </tr>
+                <tr>
+                    <td>Configure API permissions</td>
+                    <td>Adding Microsoft Graph permissions</td>
+                </tr>
+                <tr>
+                    <td>Manage client secrets</td>
+                    <td>Creating and rotating secrets</td>
+                </tr>
+            </table>
+
+            <div class="info-box">
+                <strong>&#128161; Note:</strong> This role CANNOT grant admin consent. You still need Global Administrator or Privileged Role Administrator to complete deployment.
+            </div>
+        </div>
+    </div>
+
+    <!-- Role Card: Groups Administrator -->
+    <div class="role-card">
+        <div class="role-card-header" style="background: #107C10;">
+            &#128101; Groups Administrator <span class="optional-badge">FOR OPERATIONS</span>
+        </div>
+        <div class="role-card-body">
+            <p><strong>Why needed:</strong> To manage the student security group membership.</p>
+            
+            <table>
+                <tr>
+                    <th style="width: 30%;">Capability</th>
+                    <th>Needed For</th>
+                </tr>
+                <tr>
+                    <td>Create groups</td>
+                    <td>Creating the student security group (if needed)</td>
+                </tr>
+                <tr>
+                    <td>Manage membership</td>
+                    <td>Adding/removing students from the group</td>
+                </tr>
+                <tr>
+                    <td>View group details</td>
+                    <td>Getting the group Object ID</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- AZURE RBAC -->
+    <h2>&#9729; Azure Subscription Roles (RBAC)</h2>
+
+    <p>These roles are needed in the <a href="https://portal.azure.com" target="_blank" rel="noopener">Azure Portal</a>.</p>
+
+    <!-- Role Card: Contributor -->
+    <div class="role-card">
+        <div class="role-card-header" style="background: #0078D4;">
+            &#9997; Contributor <span class="required-badge">REQUIRED FOR DEPLOYMENT</span>
+        </div>
+        <div class="role-card-body">
+            <p><strong>Why needed:</strong> To create and configure all Azure resources.</p>
+            
+            <table>
+                <tr>
+                    <th style="width: 30%;">Capability</th>
+                    <th>Needed For</th>
+                </tr>
+                <tr>
+                    <td>Create resources</td>
+                    <td>Resource group, Automation Account</td>
+                </tr>
+                <tr>
+                    <td>Configure resources</td>
+                    <td>Runbooks, schedules, variables</td>
+                </tr>
+                <tr>
+                    <td>Manage resources</td>
+                    <td>Start jobs, modify schedules</td>
+                </tr>
+            </table>
+
+            <h4>How to Assign This Role:</h4>
+            <div class="gui-path">
+                <span>Azure Portal</span> → <span>Subscriptions</span> → <span>[Your Subscription]</span> → <span>Access control (IAM)</span> → <span>Add role assignment</span>
+            </div>
+            <ol>
+                <li>
+                    <span class="step-number">1</span>
+                    Go to <a href="https://portal.azure.com" target="_blank" rel="noopener">portal.azure.com</a>
+                </li>
+                <li>
+                    <span class="step-number">2</span>
+                    Search for <strong>Subscriptions</strong> and click on your subscription
+                    <div class="screenshot-placeholder">
+                        &#128247; Screenshot: Azure Portal subscription list
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">3</span>
+                    In the left menu, click <strong>Access control (IAM)</strong>
+                    <div class="screenshot-placeholder">
+                        &#128247; Screenshot: Subscription page with Access control (IAM) in menu
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">4</span>
+                    Click <strong>+ Add</strong> → <strong>Add role assignment</strong>
+                    <div class="screenshot-placeholder">
+                        &#128247; Screenshot: IAM page with "Add role assignment" button
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">5</span>
+                    In the Role tab, search for <strong>Contributor</strong> and select it
+                    <div class="screenshot-placeholder">
+                        &#128247; Screenshot: Role selection showing Contributor role
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">6</span>
+                    Click <strong>Next</strong>, then <strong>+ Select members</strong>
+                </li>
+                <li>
+                    <span class="step-number">7</span>
+                    Search for the user by name or email, select them
+                    <div class="screenshot-placeholder">
+                        &#128247; Screenshot: Member selection dialog
+                    </div>
+                </li>
+                <li>
+                    <span class="step-number">8</span>
+                    Click <strong>Select</strong>, then <strong>Review + assign</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Role Card: Reader -->
+    <div class="role-card">
+        <div class="role-card-header" style="background: #107C10;">
+            &#128065; Reader <span class="optional-badge">FOR OPERATIONS/SUPPORT</span>
+        </div>
+        <div class="role-card-body">
+            <p><strong>Why needed:</strong> For support staff to view job history and status without making changes.</p>
+            
+            <table>
+                <tr>
+                    <th style="width: 30%;">Capability</th>
+                    <th>Needed For</th>
+                </tr>
+                <tr>
+                    <td>View resources</td>
+                    <td>Seeing job history, runbook status</td>
+                </tr>
+                <tr>
+                    <td>View logs</td>
+                    <td>Reading job output and errors</td>
+                </tr>
+            </table>
+
+            <div class="info-box">
+                <strong>&#128161; Best Practice:</strong> Assign Reader role to support staff who only need to monitor, not manage, the solution.
+            </div>
+        </div>
+    </div>
+
+    <!-- GRAPH API PERMISSIONS -->
+    <h2>&#128279; Microsoft Graph API Permissions</h2>
+
+    <p>These permissions are configured on the App Registration and allow the automation to manage student accounts.</p>
+
+    <table>
+        <tr>
+            <th>Permission</th>
+            <th>Type</th>
+            <th>Purpose</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td><code>User.ReadWrite.All</code></td>
+            <td>Application</td>
+            <td>Enable/disable user accounts by setting <code>accountEnabled</code> property</td>
+            <td><span class="required-badge">REQUIRED</span></td>
+        </tr>
+        <tr>
+            <td><code>Group.Read.All</code></td>
+            <td>Application</td>
+            <td>Read student group membership to know which accounts to process</td>
+            <td><span class="required-badge">REQUIRED</span></td>
+        </tr>
+        <tr>
+            <td><code>Directory.Read.All</code></td>
+            <td>Application</td>
+            <td>Read directory data for better error messages</td>
+            <td><span class="optional-badge">RECOMMENDED</span></td>
+        </tr>
+    </table>
+
+    <div class="danger-box">
+        <strong>&#9888; Important: Admin Consent Required</strong>
+        <p>These are <strong>Application permissions</strong>, not Delegated permissions. This means:</p>
+        <ul>
+            <li>The app acts with its own identity, not on behalf of a user</li>
+            <li>A <strong>Global Administrator</strong> must grant admin consent before the app works</li>
+            <li>Without admin consent, all automation jobs will fail with "Access Denied"</li>
+        </ul>
+    </div>
+
+    <h3>How to Grant Admin Consent</h3>
+    <div class="gui-path">
+        <span>Entra Admin Center</span> → <span>App registrations</span> → <span>StudentAccessAutomation</span> → <span>API permissions</span> → <span>Grant admin consent</span>
+    </div>
+    <ol>
+        <li>
+            <span class="step-number">1</span>
+            Go to <a href="https://entra.microsoft.com" target="_blank" rel="noopener">entra.microsoft.com</a>
+        </li>
+        <li>
+            <span class="step-number">2</span>
+            Navigate to <strong>App registrations</strong>
+        </li>
+        <li>
+            <span class="step-number">3</span>
+            Click on <strong>StudentAccessAutomation</strong> (or your app name)
+        </li>
+        <li>
+            <span class="step-number">4</span>
+            Click <strong>API permissions</strong> in the left menu
+            <div class="screenshot-placeholder">
+                &#128247; Screenshot: App registration page showing API permissions
+            </div>
+        </li>
+        <li>
+            <span class="step-number">5</span>
+            Click <strong>Grant admin consent for [Your Organization]</strong>
+            <div class="screenshot-placeholder">
+                &#128247; Screenshot: API permissions page with "Grant admin consent" button highlighted
+            </div>
+        </li>
+        <li>
+            <span class="step-number">6</span>
+            Confirm by clicking <strong>Yes</strong>
+        </li>
+        <li>
+            <span class="step-number">7</span>
+            Verify all permissions show a green checkmark ✓ in the Status column
+        </li>
+    </ol>
+
+    <!-- ACCESS AFTER DEPLOYMENT -->
+    <h2>&#128274; Access Requirements Summary</h2>
+
+    <h3>During Deployment</h3>
+    <table>
+        <tr>
+            <th>Person</th>
+            <th>Entra ID Role</th>
+            <th>Azure Role</th>
+        </tr>
+        <tr>
+            <td>Consultant/Deployer</td>
+            <td>Global Administrator (temporary)</td>
+            <td>Contributor on Subscription</td>
+        </tr>
+    </table>
+
+    <h3>After Deployment (Ongoing Operations)</h3>
+    <table>
+        <tr>
+            <th>Person</th>
+            <th>Entra ID Role</th>
+            <th>Azure Role</th>
+        </tr>
+        <tr>
+            <td>IT Administrator</td>
+            <td>Groups Administrator</td>
+            <td>Contributor on Resource Group</td>
+        </tr>
+        <tr>
+            <td>Support Staff</td>
+            <td>None needed</td>
+            <td>Reader on Automation Account</td>
+        </tr>
+    </table>
+
+    <div class="success-box">
+        <strong>&#10004; Security Best Practice:</strong> After deployment, remove the Global Administrator role from the consultant/deployer. The automation uses the App Registration credentials, not user accounts.
+    </div>
+
+    <!-- CHECKLIST -->
+    <h2>&#9745; Pre-Deployment Checklist</h2>
+
+    <table>
+        <tr>
+            <th style="width: 50px;">&#9745;</th>
+            <th>Item</th>
+            <th>How to Verify</th>
+        </tr>
+        <tr>
+            <td>☐</td>
+            <td>Azure subscription exists</td>
+            <td>Can access <a href="https://portal.azure.com">portal.azure.com</a></td>
+        </tr>
+        <tr>
+            <td>☐</td>
+            <td>Deployer has Global Administrator</td>
+            <td>Entra → Roles and administrators → Check assignments</td>
+        </tr>
+        <tr>
+            <td>☐</td>
+            <td>Deployer has Contributor on Azure</td>
+            <td>Azure → Subscription → Access control (IAM) → Check access</td>
+        </tr>
+        <tr>
+            <td>☐</td>
+            <td>Student group exists or can be created</td>
+            <td>Entra → Groups → Search for student group</td>
+        </tr>
+        <tr>
+            <td>☐</td>
+            <td>Student group Object ID available</td>
+            <td>Group details page shows Object ID</td>
+        </tr>
+    </table>
+
+    <!-- FOOTER -->
+    <div style="margin-top: 40px; padding-top: 25px; border-top: 2px solid #e6e6e6; text-align: center; color: #605E5C;">
+        <p><strong>Student Time Management for M365</strong></p>
+        <p>
+            <a href="https://github.com/NorwegianPear/StudentTime-Management-M365" style="color: #0078D4;">GitHub Repository</a> •
+            Questions? Contact <a href="mailto:Uy.Le.Phan@atea.no" style="color: #0078D4;">Uy.Le.Phan@atea.no</a>
+        </p>
+        <p style="font-size: 11px; color: #888;">Version 1.0 • February 2026</p>
+    </div>
+
+</body>
+</html>
