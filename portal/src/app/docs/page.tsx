@@ -361,11 +361,11 @@ export default function DocsPage() {
           </div>
         </div>
 
-        {/* Managed Identity Recommendation */}
-        <div className="border-2 border-amber-300 dark:border-amber-700 rounded-lg p-5 bg-amber-50/50 dark:bg-amber-950/20">
+        {/* Managed Identity — Active */}
+        <div className="border-2 border-emerald-300 dark:border-emerald-700 rounded-lg p-5 bg-emerald-50/50 dark:bg-emerald-950/20">
           <div className="flex items-center gap-3 mb-3">
-            <span className="text-2xl">💡</span>
-            <h3 className="font-semibold text-amber-800 dark:text-amber-300">{t("docs.securityMiTitle")}</h3>
+            <span className="text-2xl">🛡️</span>
+            <h3 className="font-semibold text-emerald-800 dark:text-emerald-300">{t("docs.securityMiTitle")}</h3>
           </div>
           <p className="text-sm theme-text-secondary mb-4 leading-relaxed">{t("docs.securityMiDesc")}</p>
 
@@ -374,30 +374,30 @@ export default function DocsPage() {
               <thead>
                 <tr className="border-b theme-border">
                   <th className="text-left px-3 py-2 font-semibold theme-text-primary">{t("docs.securityMiAspect")}</th>
-                  <th className="text-center px-3 py-2 font-semibold theme-text-primary">{t("docs.securityMiCurrent")}</th>
-                  <th className="text-center px-3 py-2 font-semibold text-amber-700 dark:text-amber-300">{t("docs.securityMiManaged")}</th>
+                  <th className="text-center px-3 py-2 font-semibold theme-text-secondary">{t("docs.securityMiCurrent")}</th>
+                  <th className="text-center px-3 py-2 font-semibold text-emerald-700 dark:text-emerald-300">{t("docs.securityMiManaged")}</th>
                 </tr>
               </thead>
               <tbody className="theme-text-secondary text-xs">
                 <tr className="border-b theme-border">
                   <td className="px-3 py-2">{t("docs.securityMiSecretMgmt")}</td>
-                  <td className="px-3 py-2 text-center">⚠️ {t("docs.securityMiSecretManual")}</td>
-                  <td className="px-3 py-2 text-center text-amber-700 dark:text-amber-300 font-medium">✅ {t("docs.securityMiSecretAuto")}</td>
+                  <td className="px-3 py-2 text-center theme-text-secondary">⚠️ {t("docs.securityMiSecretManual")}</td>
+                  <td className="px-3 py-2 text-center text-emerald-700 dark:text-emerald-300 font-medium">✅ {t("docs.securityMiSecretAuto")}</td>
                 </tr>
                 <tr className="border-b theme-border">
                   <td className="px-3 py-2">{t("docs.securityMiRotation")}</td>
-                  <td className="px-3 py-2 text-center">⚠️ {t("docs.securityMiRotationManual")}</td>
-                  <td className="px-3 py-2 text-center text-amber-700 dark:text-amber-300 font-medium">✅ {t("docs.securityMiRotationAuto")}</td>
+                  <td className="px-3 py-2 text-center theme-text-secondary">⚠️ {t("docs.securityMiRotationManual")}</td>
+                  <td className="px-3 py-2 text-center text-emerald-700 dark:text-emerald-300 font-medium">✅ {t("docs.securityMiRotationAuto")}</td>
                 </tr>
                 <tr className="border-b theme-border">
                   <td className="px-3 py-2">{t("docs.securityMiLeakRisk")}</td>
-                  <td className="px-3 py-2 text-center">⚠️ {t("docs.securityMiLeakLow")}</td>
-                  <td className="px-3 py-2 text-center text-amber-700 dark:text-amber-300 font-medium">✅ {t("docs.securityMiLeakNone")}</td>
+                  <td className="px-3 py-2 text-center theme-text-secondary">⚠️ {t("docs.securityMiLeakLow")}</td>
+                  <td className="px-3 py-2 text-center text-emerald-700 dark:text-emerald-300 font-medium">✅ {t("docs.securityMiLeakNone")}</td>
                 </tr>
                 <tr className="border-b theme-border">
                   <td className="px-3 py-2">{t("docs.securityMiSetup")}</td>
                   <td className="px-3 py-2 text-center">✅ {t("docs.securityMiSetupSimple")}</td>
-                  <td className="px-3 py-2 text-center">🟡 {t("docs.securityMiSetupGraph")}</td>
+                  <td className="px-3 py-2 text-center">✅ {t("docs.securityMiSetupGraph")}</td>
                 </tr>
                 <tr className="border-b theme-border">
                   <td className="px-3 py-2">{t("docs.securityMiCiCd")}</td>
@@ -408,8 +408,8 @@ export default function DocsPage() {
             </table>
           </div>
 
-          <div className="mt-4 p-3 bg-amber-100 dark:bg-amber-900/20 rounded-lg">
-            <p className="text-xs font-semibold text-amber-800 dark:text-amber-300 mb-1">📋 {t("docs.securityMiRecommendation")}</p>
+          <div className="mt-4 p-3 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg">
+            <p className="text-xs font-semibold text-emerald-800 dark:text-emerald-300 mb-1">✅ {t("docs.securityMiRecommendation")}</p>
             <p className="text-xs theme-text-secondary leading-relaxed">{t("docs.securityMiRecommendationDesc")}</p>
           </div>
         </div>
