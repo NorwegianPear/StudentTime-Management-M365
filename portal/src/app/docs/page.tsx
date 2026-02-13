@@ -203,6 +203,239 @@ export default function DocsPage() {
         </div>
       </section>
 
+      {/* Security & Identity Architecture */}
+      <section className="theme-surface rounded-xl border theme-border p-6 mb-8">
+        <h2 className="text-lg font-semibold theme-text-primary mb-2 flex items-center gap-2">
+          🔒 {t("docs.securityTitle")}
+        </h2>
+        <p className="theme-text-secondary text-sm mb-6 leading-relaxed">
+          {t("docs.securitySubtitle")}
+        </p>
+
+        {/* Security Architecture Diagram */}
+        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-lg border theme-border p-6 mb-6 overflow-x-auto">
+          <div className="min-w-[700px]">
+            {/* Top: Identity Flows */}
+            <div className="flex justify-center mb-4">
+              <div className="bg-indigo-600 text-white px-6 py-3 rounded-lg text-sm font-semibold shadow-lg">
+                🔐 {t("docs.securityIdentityFlows")}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4 mb-4">
+              {/* CI/CD OIDC Federation */}
+              <div className="border-2 border-cyan-400 rounded-xl p-4 bg-cyan-50 dark:bg-cyan-950/30">
+                <h4 className="text-xs font-bold text-cyan-700 dark:text-cyan-300 uppercase tracking-wider mb-3">
+                  {t("docs.securityCiCd")}
+                </h4>
+                <div className="space-y-2">
+                  <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-cyan-200 dark:border-cyan-800 text-center">
+                    <div className="text-lg mb-1">🐙</div>
+                    <div className="text-xs font-semibold theme-text-primary">GitHub Actions</div>
+                    <div className="text-[10px] theme-text-muted mt-1">{t("docs.securityOidcToken")}</div>
+                  </div>
+                  <div className="flex justify-center">
+                    <div className="text-cyan-500 text-xs font-bold">OIDC ↕️</div>
+                  </div>
+                  <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-cyan-200 dark:border-cyan-800 text-center">
+                    <div className="text-lg mb-1">☁️</div>
+                    <div className="text-xs font-semibold theme-text-primary">Azure</div>
+                    <div className="text-[10px] theme-text-muted mt-1">{t("docs.securityFederatedCred")}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Runbook Graph API */}
+              <div className="border-2 border-purple-400 rounded-xl p-4 bg-purple-50 dark:bg-purple-950/30">
+                <h4 className="text-xs font-bold text-purple-700 dark:text-purple-300 uppercase tracking-wider mb-3">
+                  {t("docs.securityRunbooks")}
+                </h4>
+                <div className="space-y-2">
+                  <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-purple-200 dark:border-purple-800 text-center">
+                    <div className="text-lg mb-1">📋</div>
+                    <div className="text-xs font-semibold theme-text-primary">Azure Automation</div>
+                    <div className="text-[10px] theme-text-muted mt-1">{t("docs.securityEncryptedVars")}</div>
+                  </div>
+                  <div className="flex justify-center">
+                    <div className="text-purple-500 text-xs font-bold">Client Secret ↕️</div>
+                  </div>
+                  <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-purple-200 dark:border-purple-800 text-center">
+                    <div className="text-lg mb-1">📊</div>
+                    <div className="text-xs font-semibold theme-text-primary">Graph API</div>
+                    <div className="text-[10px] theme-text-muted mt-1">{t("docs.securityAppPermissions")}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Portal User Auth */}
+              <div className="border-2 border-green-400 rounded-xl p-4 bg-green-50 dark:bg-green-950/30">
+                <h4 className="text-xs font-bold text-green-700 dark:text-green-300 uppercase tracking-wider mb-3">
+                  {t("docs.securityPortalAuth")}
+                </h4>
+                <div className="space-y-2">
+                  <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-green-200 dark:border-green-800 text-center">
+                    <div className="text-lg mb-1">👤</div>
+                    <div className="text-xs font-semibold theme-text-primary">{t("docs.securityAdminUser")}</div>
+                    <div className="text-[10px] theme-text-muted mt-1">{t("docs.securityBrowserLogin")}</div>
+                  </div>
+                  <div className="flex justify-center">
+                    <div className="text-green-500 text-xs font-bold">OAuth 2.0 ↕️</div>
+                  </div>
+                  <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-green-200 dark:border-green-800 text-center">
+                    <div className="text-lg mb-1">🌐</div>
+                    <div className="text-xs font-semibold theme-text-primary">Entra ID</div>
+                    <div className="text-[10px] theme-text-muted mt-1">{t("docs.securityNextAuth")}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Three security pillars */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          {/* OIDC Federation */}
+          <div className="border border-cyan-200 dark:border-cyan-800 rounded-lg p-5 bg-cyan-50/50 dark:bg-cyan-950/20">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl">🔗</span>
+              <h3 className="font-semibold text-cyan-800 dark:text-cyan-300 text-sm">{t("docs.securityOidcTitle")}</h3>
+            </div>
+            <p className="text-xs theme-text-secondary mb-3 leading-relaxed">{t("docs.securityOidcDesc")}</p>
+            <ol className="space-y-1.5 text-xs theme-text-secondary">
+              <li className="flex items-start gap-2">
+                <span className="bg-cyan-200 dark:bg-cyan-800 text-cyan-800 dark:text-cyan-200 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">1</span>
+                {t("docs.securityOidcStep1")}
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="bg-cyan-200 dark:bg-cyan-800 text-cyan-800 dark:text-cyan-200 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">2</span>
+                {t("docs.securityOidcStep2")}
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="bg-cyan-200 dark:bg-cyan-800 text-cyan-800 dark:text-cyan-200 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">3</span>
+                {t("docs.securityOidcStep3")}
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="bg-cyan-200 dark:bg-cyan-800 text-cyan-800 dark:text-cyan-200 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0">4</span>
+                {t("docs.securityOidcStep4")}
+              </li>
+            </ol>
+            <div className="mt-3 p-2 bg-cyan-100 dark:bg-cyan-900/30 rounded text-[10px] text-cyan-700 dark:text-cyan-300 font-medium">
+              ✅ {t("docs.securityOidcBenefit")}
+            </div>
+          </div>
+
+          {/* Secret Handling */}
+          <div className="border border-purple-200 dark:border-purple-800 rounded-lg p-5 bg-purple-50/50 dark:bg-purple-950/20">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl">🔐</span>
+              <h3 className="font-semibold text-purple-800 dark:text-purple-300 text-sm">{t("docs.securitySecretsTitle")}</h3>
+            </div>
+            <p className="text-xs theme-text-secondary mb-3 leading-relaxed">{t("docs.securitySecretsDesc")}</p>
+            <ul className="space-y-1.5 text-xs theme-text-secondary">
+              <li className="flex items-start gap-2">🔒 {t("docs.securitySecretsItem1")}</li>
+              <li className="flex items-start gap-2">🔒 {t("docs.securitySecretsItem2")}</li>
+              <li className="flex items-start gap-2">🔒 {t("docs.securitySecretsItem3")}</li>
+              <li className="flex items-start gap-2">🔒 {t("docs.securitySecretsItem4")}</li>
+            </ul>
+            <div className="mt-3 p-2 bg-purple-100 dark:bg-purple-900/30 rounded text-[10px] text-purple-700 dark:text-purple-300 font-medium">
+              🛡️ {t("docs.securitySecretsBenefit")}
+            </div>
+          </div>
+
+          {/* Portal RBAC */}
+          <div className="border border-green-200 dark:border-green-800 rounded-lg p-5 bg-green-50/50 dark:bg-green-950/20">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-2xl">👥</span>
+              <h3 className="font-semibold text-green-800 dark:text-green-300 text-sm">{t("docs.securityRbacTitle")}</h3>
+            </div>
+            <p className="text-xs theme-text-secondary mb-3 leading-relaxed">{t("docs.securityRbacDesc")}</p>
+            <ul className="space-y-1.5 text-xs theme-text-secondary">
+              <li className="flex items-start gap-2">👑 {t("docs.securityRbacAdmin")}</li>
+              <li className="flex items-start gap-2">👁️ {t("docs.securityRbacViewer")}</li>
+              <li className="flex items-start gap-2">🏢 {t("docs.securityRbacDomain")}</li>
+              <li className="flex items-start gap-2">⚙️ {t("docs.securityRbacEnvVar")}</li>
+            </ul>
+            <div className="mt-3 p-2 bg-green-100 dark:bg-green-900/30 rounded text-[10px] text-green-700 dark:text-green-300 font-medium">
+              ✅ {t("docs.securityRbacBenefit")}
+            </div>
+          </div>
+        </div>
+
+        {/* Managed Identity Recommendation */}
+        <div className="border-2 border-amber-300 dark:border-amber-700 rounded-lg p-5 bg-amber-50/50 dark:bg-amber-950/20">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-2xl">💡</span>
+            <h3 className="font-semibold text-amber-800 dark:text-amber-300">{t("docs.securityMiTitle")}</h3>
+          </div>
+          <p className="text-sm theme-text-secondary mb-4 leading-relaxed">{t("docs.securityMiDesc")}</p>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b theme-border">
+                  <th className="text-left px-3 py-2 font-semibold theme-text-primary">{t("docs.securityMiAspect")}</th>
+                  <th className="text-center px-3 py-2 font-semibold theme-text-primary">{t("docs.securityMiCurrent")}</th>
+                  <th className="text-center px-3 py-2 font-semibold text-amber-700 dark:text-amber-300">{t("docs.securityMiManaged")}</th>
+                </tr>
+              </thead>
+              <tbody className="theme-text-secondary text-xs">
+                <tr className="border-b theme-border">
+                  <td className="px-3 py-2">{t("docs.securityMiSecretMgmt")}</td>
+                  <td className="px-3 py-2 text-center">⚠️ {t("docs.securityMiSecretManual")}</td>
+                  <td className="px-3 py-2 text-center text-amber-700 dark:text-amber-300 font-medium">✅ {t("docs.securityMiSecretAuto")}</td>
+                </tr>
+                <tr className="border-b theme-border">
+                  <td className="px-3 py-2">{t("docs.securityMiRotation")}</td>
+                  <td className="px-3 py-2 text-center">⚠️ {t("docs.securityMiRotationManual")}</td>
+                  <td className="px-3 py-2 text-center text-amber-700 dark:text-amber-300 font-medium">✅ {t("docs.securityMiRotationAuto")}</td>
+                </tr>
+                <tr className="border-b theme-border">
+                  <td className="px-3 py-2">{t("docs.securityMiLeakRisk")}</td>
+                  <td className="px-3 py-2 text-center">⚠️ {t("docs.securityMiLeakLow")}</td>
+                  <td className="px-3 py-2 text-center text-amber-700 dark:text-amber-300 font-medium">✅ {t("docs.securityMiLeakNone")}</td>
+                </tr>
+                <tr className="border-b theme-border">
+                  <td className="px-3 py-2">{t("docs.securityMiSetup")}</td>
+                  <td className="px-3 py-2 text-center">✅ {t("docs.securityMiSetupSimple")}</td>
+                  <td className="px-3 py-2 text-center">🟡 {t("docs.securityMiSetupGraph")}</td>
+                </tr>
+                <tr className="border-b theme-border">
+                  <td className="px-3 py-2">{t("docs.securityMiCiCd")}</td>
+                  <td className="px-3 py-2 text-center">✅ {t("docs.securityMiCiCdOidc")}</td>
+                  <td className="px-3 py-2 text-center">— {t("docs.securityMiCiCdNa")}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-4 p-3 bg-amber-100 dark:bg-amber-900/20 rounded-lg">
+            <p className="text-xs font-semibold text-amber-800 dark:text-amber-300 mb-1">📋 {t("docs.securityMiRecommendation")}</p>
+            <p className="text-xs theme-text-secondary leading-relaxed">{t("docs.securityMiRecommendationDesc")}</p>
+          </div>
+        </div>
+
+        {/* What's stored where summary */}
+        <div className="mt-6">
+          <h3 className="text-sm font-semibold theme-text-primary mb-3">📍 {t("docs.securityWhereStored")}</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              { icon: "🐙", location: "GitHub Secrets", items: t("docs.securityGhSecrets") },
+              { icon: "☁️", location: "Azure Automation", items: t("docs.securityAzAutomation") },
+              { icon: "🌐", location: "App Service", items: t("docs.securityAppService") },
+              { icon: "🆔", location: "Entra ID", items: t("docs.securityEntraId") },
+            ].map((item, i) => (
+              <div key={i} className="p-3 rounded-lg theme-surface-secondary border theme-border">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-lg">{item.icon}</span>
+                  <span className="text-xs font-semibold theme-text-primary">{item.location}</span>
+                </div>
+                <p className="text-[10px] theme-text-muted leading-relaxed">{item.items}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Solution Comparison & Cost */}
       <section className="theme-surface rounded-xl border theme-border p-6 mb-8">
         <h2 className="text-lg font-semibold theme-text-primary mb-2 flex items-center gap-2">
