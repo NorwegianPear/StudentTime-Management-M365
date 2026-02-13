@@ -113,6 +113,13 @@
       "metadata": {
         "description": "Student Group ID"
       }
+    },
+    "groupNamePrefix": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Group name prefix to filter relevant groups (e.g. Demo-, School-)"
+      }
     }
   },
   "resources": [
@@ -429,6 +436,10 @@
                     {
                       "name": "STUDENT_GROUP_ID",
                       "value": "[parameters('studentGroupId')]"
+                    },
+                    {
+                      "name": "GROUP_NAME_PREFIX",
+                      "value": "[parameters('groupNamePrefix')]"
                     },
                     {
                       "name": "WEBSITE_NODE_DEFAULT_VERSION",

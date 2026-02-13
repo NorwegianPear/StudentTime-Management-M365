@@ -34,6 +34,9 @@ param nextAuthSecret string
 @description('Student Security Group ID')
 param studentGroupId string
 
+@description('Group name prefix to filter relevant groups (e.g. Demo-, School-)')
+param groupNamePrefix string = ''
+
 // App Service Plan (Linux)
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: appServicePlanName
@@ -89,6 +92,10 @@ resource appService 'Microsoft.Web/sites@2023-12-01' = {
         {
           name: 'STUDENT_GROUP_ID'
           value: studentGroupId
+        }
+        {
+          name: 'GROUP_NAME_PREFIX'
+          value: groupNamePrefix
         }
         {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'
