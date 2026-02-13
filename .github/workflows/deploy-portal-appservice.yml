@@ -14,10 +14,10 @@ on:
       environment:
         description: 'Deployment environment'
         required: true
-        default: 'production'
+        default: 'demo'
         type: choice
         options:
-          - production
+          - demo
           - staging
 
 permissions:
@@ -71,7 +71,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment:
-      name: ${{ inputs.environment || 'production' }}
+      name: ${{ inputs.environment || 'demo' }}
       url: https://${{ env.APP_SERVICE_NAME }}.azurewebsites.net
     steps:
       - name: Download deployment package
@@ -90,9 +90,8 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.APP_SERVICE_NAME }}
-          slot-name: ${{ (inputs.environment || 'production') == 'staging' && 'staging' || 'production' }}
           package: portal-deploy.zip
-          startup-command: 'npm run start'
+          startup-command: 'node server.js'
 
       - name: Swap staging to production
         if: inputs.environment == 'staging'
