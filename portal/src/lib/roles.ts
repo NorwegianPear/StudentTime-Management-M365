@@ -36,8 +36,12 @@ function getRoleMappings(): RoleMapping[] {
   return [
     // All atea.no users get read-only access by default
     { domain: "atea.no", role: "viewer" },
-    // Specific atea.no users get admin access (add real emails here)
-    // { email: "consultant@atea.no", role: "admin" },
+    // Specific atea.no users promoted to admin
+    { email: "veronica.hogemark@atea.no", role: "admin" },
+    { email: "roy-arne.hogestol@atea.no", role: "admin" },
+    { email: "anders.dramstad@atea.no", role: "admin" },
+    { email: "paul.johnny.klock@atea.no", role: "admin" },
+    { email: "uy.le.thai.phan@atea.no", role: "admin" },
   ];
 }
 
