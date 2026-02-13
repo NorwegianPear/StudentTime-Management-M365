@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { StatCard } from "@/components/StatCard";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { PageHeader } from "@/components/PageHeader";
 import { useTranslation } from "@/lib/i18n";
 import { useRole } from "@/lib/use-role";
 import type { DashboardStats } from "@/types";
@@ -85,27 +86,25 @@ export default function DashboardPage() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="flex items-center gap-3 theme-text-muted">
-          <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-          {t("common.loading")}
+          <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+          <span className="text-sm">{t("common.loading")}</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold theme-text-primary">{t("dashboard.title")}</h1>
-        <p className="theme-text-secondary mt-1">
-          {dateStr} — {timeStr}
-        </p>
-      </div>
+    <div>
+      <PageHeader
+        title={t("dashboard.title")}
+        subtitle={`${dateStr} — ${timeStr}`}
+      />
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-          {error}
-          <button onClick={() => setError(null)} className="ml-2 underline">
+        <div className="mb-6 p-4 rounded-xl text-sm flex items-center justify-between"
+          style={{ backgroundColor: "var(--badge-red-bg)", color: "var(--badge-red-text)", border: "1px solid var(--badge-red-border)" }}>
+          <span>{error}</span>
+          <button onClick={() => setError(null)} className="ml-3 underline text-xs opacity-80 hover:opacity-100">
             {t("common.dismiss")}
           </button>
         </div>
@@ -113,78 +112,51 @@ export default function DashboardPage() {
 
       {/* Welcome / Feature Overview */}
       {showWelcome && (
-        <div className="mb-8 theme-surface rounded-xl border theme-border overflow-hidden">
-          {/* Banner */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5 flex items-start justify-between">
+        <div className="mb-8 rounded-2xl overflow-hidden shadow-sm" style={{ border: "1px solid var(--surface-border)" }}>
+          <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 px-6 py-5 flex items-start justify-between">
             <div>
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
                 🎓 {t("dashboard.welcomeTitle")}
               </h2>
-              <p className="text-blue-100 text-sm mt-1 max-w-3xl leading-relaxed">
+              <p className="text-blue-100 text-sm mt-1.5 max-w-3xl leading-relaxed">
                 {t("dashboard.welcomeDescription")}
               </p>
             </div>
             <button
               onClick={dismissWelcome}
-              className="text-blue-200 hover:text-white transition-colors ml-4 mt-1 shrink-0"
+              className="text-blue-200 hover:text-white transition-colors ml-4 mt-0.5 shrink-0 p-1 rounded-lg hover:bg-white/10"
               aria-label={t("common.close")}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
-          {/* Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
-            <div className="flex items-start gap-3 p-3 rounded-lg theme-surface-secondary">
-              <span className="text-2xl shrink-0">⏰</span>
-              <div>
-                <p className="font-semibold text-sm theme-text-primary">{t("dashboard.featureSchedules")}</p>
-                <p className="text-xs theme-text-muted mt-0.5 leading-relaxed">{t("dashboard.featureSchedulesDesc")}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 p-5" style={{ backgroundColor: "var(--surface)" }}>
+            {[
+              { icon: "⏰", titleKey: "dashboard.featureSchedules", descKey: "dashboard.featureSchedulesDesc" },
+              { icon: "👥", titleKey: "dashboard.featureStudents", descKey: "dashboard.featureStudentsDesc" },
+              { icon: "📋", titleKey: "dashboard.featurePolicies", descKey: "dashboard.featurePoliciesDesc" },
+              { icon: "📁", titleKey: "dashboard.featureGroups", descKey: "dashboard.featureGroupsDesc" },
+              { icon: "📜", titleKey: "dashboard.featureAudit", descKey: "dashboard.featureAuditDesc" },
+              { icon: "🌐", titleKey: "dashboard.featureMultiLang", descKey: "dashboard.featureMultiLangDesc" },
+            ].map((f) => (
+              <div key={f.titleKey} className="flex items-start gap-3 p-3 rounded-xl transition-colors"
+                style={{ backgroundColor: "var(--surface-secondary)" }}>
+                <span className="text-xl shrink-0 mt-0.5">{f.icon}</span>
+                <div>
+                  <p className="font-medium text-sm theme-text-primary">{t(f.titleKey)}</p>
+                  <p className="text-xs theme-text-muted mt-0.5 leading-relaxed">{t(f.descKey)}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg theme-surface-secondary">
-              <span className="text-2xl shrink-0">👥</span>
-              <div>
-                <p className="font-semibold text-sm theme-text-primary">{t("dashboard.featureStudents")}</p>
-                <p className="text-xs theme-text-muted mt-0.5 leading-relaxed">{t("dashboard.featureStudentsDesc")}</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg theme-surface-secondary">
-              <span className="text-2xl shrink-0">📋</span>
-              <div>
-                <p className="font-semibold text-sm theme-text-primary">{t("dashboard.featurePolicies")}</p>
-                <p className="text-xs theme-text-muted mt-0.5 leading-relaxed">{t("dashboard.featurePoliciesDesc")}</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg theme-surface-secondary">
-              <span className="text-2xl shrink-0">📁</span>
-              <div>
-                <p className="font-semibold text-sm theme-text-primary">{t("dashboard.featureGroups")}</p>
-                <p className="text-xs theme-text-muted mt-0.5 leading-relaxed">{t("dashboard.featureGroupsDesc")}</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg theme-surface-secondary">
-              <span className="text-2xl shrink-0">📜</span>
-              <div>
-                <p className="font-semibold text-sm theme-text-primary">{t("dashboard.featureAudit")}</p>
-                <p className="text-xs theme-text-muted mt-0.5 leading-relaxed">{t("dashboard.featureAuditDesc")}</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 p-3 rounded-lg theme-surface-secondary">
-              <span className="text-2xl shrink-0">🌐</span>
-              <div>
-                <p className="font-semibold text-sm theme-text-primary">{t("dashboard.featureMultiLang")}</p>
-                <p className="text-xs theme-text-muted mt-0.5 leading-relaxed">{t("dashboard.featureMultiLangDesc")}</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       )}
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         <StatCard
           label={t("dashboard.totalStudents")}
           value={stats?.totalStudents ?? 0}
@@ -220,61 +192,63 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Quick Actions */}
-      <div className="theme-surface rounded-xl border theme-border p-6 mb-8">
-        <h2 className="text-lg font-semibold theme-text-primary mb-4">
-          {t("dashboard.quickActions")}
-        </h2>
-        <div className="flex flex-wrap gap-3">
-          {canWrite && (
-            <>
-              <button
-                onClick={() => setBulkAction("enable")}
-                className="px-4 py-2.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
-              >
-                {t("dashboard.enableAll")}
-              </button>
-              <button
-                onClick={() => setBulkAction("disable")}
-                className="px-4 py-2.5 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
-              >
-                {t("dashboard.disableAll")}
-              </button>
-            </>
-          )}
-          <button
-            onClick={fetchStats}
-            className="px-4 py-2.5 theme-surface-secondary theme-text-primary text-sm font-medium rounded-lg hover:opacity-80 transition-colors"
-          >
-            {t("common.refresh")}
-          </button>
-        </div>
-      </div>
-
-      {/* Schedule Info */}
-      <div className="theme-surface rounded-xl border theme-border p-6">
-        <h2 className="text-lg font-semibold theme-text-primary mb-4">
-          {t("dashboard.automatedSchedule")}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg border border-green-200">
-            <div className="text-3xl">🟢</div>
-            <div>
-              <p className="font-semibold text-green-800">{t("dashboard.enableAccess")}</p>
-              <p className="text-sm text-green-600">{t("dashboard.enableSchedule")}</p>
-              <p className="text-xs text-green-500 mt-1">
-                {t("dashboard.enableDesc")}
-              </p>
-            </div>
+      {/* Quick Actions + Schedule in a 2-column layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Quick Actions */}
+        <div className="rounded-2xl p-6 shadow-sm"
+          style={{ backgroundColor: "var(--surface)", border: "1px solid var(--surface-border)" }}>
+          <h2 className="text-base font-semibold theme-text-primary mb-4">
+            {t("dashboard.quickActions")}
+          </h2>
+          <div className="flex flex-wrap gap-2.5">
+            {canWrite && (
+              <>
+                <button
+                  onClick={() => setBulkAction("enable")}
+                  className="px-4 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 transition-colors shadow-sm"
+                >
+                  {t("dashboard.enableAll")}
+                </button>
+                <button
+                  onClick={() => setBulkAction("disable")}
+                  className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors shadow-sm"
+                >
+                  {t("dashboard.disableAll")}
+                </button>
+              </>
+            )}
+            <button
+              onClick={fetchStats}
+              className="px-4 py-2 text-sm font-medium rounded-lg transition-colors shadow-sm"
+              style={{ backgroundColor: "var(--surface-secondary)", color: "var(--text-primary)" }}
+            >
+              {t("common.refresh")}
+            </button>
           </div>
-          <div className="flex items-center gap-4 p-4 bg-red-50 rounded-lg border border-red-200">
-            <div className="text-3xl">🔴</div>
-            <div>
-              <p className="font-semibold text-red-800">{t("dashboard.disableAccess")}</p>
-              <p className="text-sm text-red-600">{t("dashboard.disableSchedule")}</p>
-              <p className="text-xs text-red-500 mt-1">
-                {t("dashboard.disableDesc")}
-              </p>
+        </div>
+
+        {/* Schedule Info */}
+        <div className="rounded-2xl p-6 shadow-sm"
+          style={{ backgroundColor: "var(--surface)", border: "1px solid var(--surface-border)" }}>
+          <h2 className="text-base font-semibold theme-text-primary mb-4">
+            {t("dashboard.automatedSchedule")}
+          </h2>
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 p-3.5 rounded-xl"
+              style={{ backgroundColor: "var(--badge-green-bg)", border: "1px solid var(--badge-green-border)" }}>
+              <div className="text-2xl">🟢</div>
+              <div>
+                <p className="font-semibold text-sm" style={{ color: "var(--badge-green-text)" }}>{t("dashboard.enableAccess")}</p>
+                <p className="text-xs mt-0.5" style={{ color: "var(--badge-green-text)", opacity: 0.8 }}>{t("dashboard.enableSchedule")}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3.5 rounded-xl"
+              style={{ backgroundColor: "var(--badge-red-bg)", border: "1px solid var(--badge-red-border)" }}>
+              <div className="text-2xl">🔴</div>
+              <div>
+                <p className="font-semibold text-sm" style={{ color: "var(--badge-red-text)" }}>{t("dashboard.disableAccess")}</p>
+                <p className="text-xs mt-0.5" style={{ color: "var(--badge-red-text)", opacity: 0.8 }}>{t("dashboard.disableSchedule")}</p>
+              </div>
             </div>
           </div>
         </div>

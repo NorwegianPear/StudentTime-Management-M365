@@ -1,18 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Sidebar } from "@/components/Sidebar";
-import { TopBar } from "@/components/TopBar";
 import { auth } from "@/lib/auth";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -30,18 +24,15 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${inter.variable} antialiased`}>
         <Providers>
           {session ? (
             <div className="flex min-h-screen">
               <Sidebar />
-              <main className="flex-1 theme-page-bg p-8 relative">
-                <div className="absolute top-4 right-8 z-30">
-                  <TopBar />
+              <main className="flex-1 theme-page-bg overflow-y-auto">
+                <div className="px-8 py-6 max-w-[1400px]">
+                  {children}
                 </div>
-                {children}
               </main>
             </div>
           ) : (

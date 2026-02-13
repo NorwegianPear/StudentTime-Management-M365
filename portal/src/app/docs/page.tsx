@@ -1,17 +1,14 @@
 "use client";
 
 import { useTranslation } from "@/lib/i18n";
+import { PageHeader } from "@/components/PageHeader";
 
 export default function DocsPage() {
   const { t } = useTranslation();
 
   return (
-    <div className="max-w-6xl">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold theme-text-primary">{t("docs.title")}</h1>
-        <p className="theme-text-secondary mt-1">{t("docs.subtitle")}</p>
-      </div>
+    <div>
+      <PageHeader title={t("docs.title")} subtitle={t("docs.subtitle")} />
 
       {/* Architecture Overview */}
       <section className="theme-surface rounded-xl border theme-border p-6 mb-8">

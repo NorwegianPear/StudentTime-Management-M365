@@ -8,6 +8,7 @@ import { SuspendDialog } from "@/components/SuspendDialog";
 import { TransferDialog } from "@/components/TransferDialog";
 import { NewStudentDialog } from "@/components/NewStudentDialog";
 import { PromoteDialog } from "@/components/PromoteDialog";
+import { PageHeader } from "@/components/PageHeader";
 import type { StudentUser, GroupInfo, SchedulePolicy } from "@/types";
 import { useTranslation } from "@/lib/i18n";
 
@@ -313,49 +314,20 @@ export default function StudentsPage() {
   // ── Render ─────────────────────────────────────────────────────────────
 
   return (
-    <div className="max-w-7xl">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold theme-text-primary">{t("students.title")}</h1>
-          <p className="theme-text-secondary mt-1">
-            {t("students.subtitle", { total: students.length, enabled: enabledCount, disabled: disabledCount })}
-            {suspendedCount > 0 && t("students.subtitleSuspended", { count: suspendedCount })}
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setShowNewStudent(true)}
-            className="px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            ➕ {t("students.newStudent")}
-          </button>
-          <button
-            onClick={() => setBulkAction("enable")}
-            className="px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
-          >
-            {t("dashboard.enableAll")}
-          </button>
-          <button
-            onClick={() => setBulkAction("disable")}
-            className="px-3 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors"
-          >
-            {t("dashboard.disableAll")}
-          </button>
-          <button
-            onClick={() => setShowPromote(true)}
-            className="px-3 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors"
-          >
-            🎓 {t("students.promoteClasses")}
-          </button>
-          <button
-            onClick={() => { fetchStudents(); fetchGroups(); fetchPolicies(); }}
-            className="px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            🔄 {t("common.refresh")}
-          </button>
-        </div>
-      </div>
+    <div>
+      <PageHeader
+        title={t("students.title")}
+        subtitle={`${t("students.subtitle", { total: students.length, enabled: enabledCount, disabled: disabledCount })}${suspendedCount > 0 ? t("students.subtitleSuspended", { count: suspendedCount }) : ""}`}
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => setShowNewStudent(true)} className="px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">➕ {t("students.newStudent")}</button>
+            <button onClick={() => setBulkAction("enable")} className="px-3 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 transition-colors shadow-sm">{t("dashboard.enableAll")}</button>
+            <button onClick={() => setBulkAction("disable")} className="px-3 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors shadow-sm">{t("dashboard.disableAll")}</button>
+            <button onClick={() => setShowPromote(true)} className="px-3 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors shadow-sm">🎓 {t("students.promoteClasses")}</button>
+            <button onClick={() => { fetchStudents(); fetchGroups(); fetchPolicies(); }} className="px-3 py-2 text-sm font-medium rounded-lg transition-colors shadow-sm" style={{ backgroundColor: "var(--surface-secondary)", color: "var(--text-primary)" }}>🔄 {t("common.refresh")}</button>
+          </div>
+        }
+      />
 
       {/* Alerts */}
       {error && (

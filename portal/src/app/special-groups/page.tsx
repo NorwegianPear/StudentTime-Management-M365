@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { PageHeader } from "@/components/PageHeader";
 import type { SpecialGroup, GroupInfo, SchedulePolicy } from "@/types";
 import { useTranslation } from "@/lib/i18n";
 
@@ -116,22 +117,19 @@ export default function SpecialGroupsPage() {
   }
 
   return (
-    <div className="max-w-6xl">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold theme-text-primary">{t("specialGroups.title")}</h1>
-          <p className="text-gray-500 mt-1">
-            {t("specialGroups.subtitle")}
-          </p>
-        </div>
-        <button
-          onClick={() => setShowCreate(!showCreate)}
-          className="px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors"
-        >
-          {showCreate ? t("common.cancel") : "➕ " + t("specialGroups.newGroup")}
-        </button>
-      </div>
+    <div>
+      <PageHeader
+        title={t("specialGroups.title")}
+        subtitle={t("specialGroups.subtitle")}
+        actions={
+          <button
+            onClick={() => setShowCreate(!showCreate)}
+            className="px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors shadow-sm"
+          >
+            {showCreate ? t("common.cancel") : "➕ " + t("specialGroups.newGroup")}
+          </button>
+        }
+      />
 
       {/* Alerts */}
       {error && (

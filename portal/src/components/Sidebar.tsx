@@ -23,61 +23,68 @@ export function Sidebar() {
   const { t } = useTranslation();
 
   return (
-    <aside className="w-64 theme-sidebar min-h-screen flex flex-col">
+    <aside className="w-[260px] theme-sidebar min-h-screen flex flex-col shrink-0">
       {/* Logo/Brand */}
-      <div className="p-6 border-b" style={{ borderColor: "var(--sidebar-border)" }}>
-        <h1 className="text-lg font-bold text-white">{t("nav.brand")}</h1>
-        <p className="text-xs mt-1" style={{ color: "var(--sidebar-text)" }}>{t("nav.brandSub")}</p>
+      <div className="px-5 py-5 border-b" style={{ borderColor: "var(--sidebar-border)" }}>
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm"
+            style={{ backgroundColor: "var(--sidebar-active)" }}>
+            SA
+          </div>
+          <div>
+            <h1 className="text-sm font-semibold text-white leading-tight">{t("nav.brand")}</h1>
+            <p className="text-[11px] mt-0.5 leading-tight" style={{ color: "var(--sidebar-text)" }}>{t("nav.brandSub")}</p>
+          </div>
+        </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4">
-        <ul className="space-y-1">
+      <nav className="flex-1 px-3 py-4 overflow-y-auto">
+        <div className="space-y-0.5">
           {navItems.map((item) => {
             const isActive =
               item.href === "/"
                 ? pathname === "/"
                 : pathname.startsWith(item.href);
             return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-colors ${
-                    isActive
-                      ? "theme-sidebar-active text-white"
-                      : "theme-sidebar-hover"
-                  }`}
-                  style={!isActive ? { color: "var(--sidebar-text)" } : undefined}
-                >
-                  <span>{item.icon}</span>
-                  <span>{t(item.labelKey)}</span>
-                </Link>
-              </li>
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 ${
+                  isActive
+                    ? "theme-sidebar-active text-white shadow-sm"
+                    : "theme-sidebar-hover"
+                }`}
+                style={!isActive ? { color: "var(--sidebar-text)" } : undefined}
+              >
+                <span className="text-base w-5 text-center">{item.icon}</span>
+                <span>{t(item.labelKey)}</span>
+              </Link>
             );
           })}
-        </ul>
+        </div>
       </nav>
 
       {/* User Profile */}
       {session?.user && (
-        <div className="p-4 border-t" style={{ borderColor: "var(--sidebar-border)" }}>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white"
+        <div className="px-3 py-4 border-t" style={{ borderColor: "var(--sidebar-border)" }}>
+          <div className="flex items-center gap-2.5 px-2 mb-2">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
               style={{ backgroundColor: "var(--sidebar-active)" }}>
-              {session.user.name?.[0] || "?"}
+              {session.user.name?.[0]?.toUpperCase() || "?"}
             </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate text-white">
+            <div className="min-w-0 flex-1">
+              <p className="text-[13px] font-medium truncate text-white leading-tight">
                 {session.user.name}
               </p>
-              <p className="text-xs truncate" style={{ color: "var(--sidebar-text)" }}>
+              <p className="text-[11px] truncate leading-tight" style={{ color: "var(--sidebar-text)" }}>
                 {session.user.email}
               </p>
             </div>
           </div>
           <button
             onClick={() => signOut()}
-            className="w-full px-3 py-1.5 text-xs rounded transition-colors theme-sidebar-hover"
+            className="w-full px-3 py-1.5 text-xs rounded-lg transition-colors theme-sidebar-hover text-center"
             style={{ color: "var(--sidebar-text)" }}
           >
             {t("common.signOut")}

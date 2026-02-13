@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { PageHeader } from "@/components/PageHeader";
 import type { SchedulePolicy, GroupInfo } from "@/types";
 import { useTranslation } from "@/lib/i18n";
 
@@ -195,25 +196,19 @@ export default function PoliciesPage() {
   }
 
   return (
-    <div className="max-w-6xl">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold theme-text-primary">{t("policies.title")}</h1>
-          <p className="text-gray-500 mt-1">
-            {t("policies.subtitle")}
-          </p>
-        </div>
-        <button
-          onClick={() => {
-            setShowCreate(true);
-            setEditingId(null);
-            setFormData({ ...emptyForm });
-          }}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-        >
-          {t("policies.newPolicy")}
-        </button>
-      </div>
+    <div>
+      <PageHeader
+        title={t("policies.title")}
+        subtitle={t("policies.subtitle")}
+        actions={
+          <button
+            onClick={() => { setShowCreate(true); setEditingId(null); setFormData({ ...emptyForm }); }}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm"
+          >
+            {t("policies.newPolicy")}
+          </button>
+        }
+      />
 
       {error && (
         <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">

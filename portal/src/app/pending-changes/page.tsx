@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import type { PendingGroupChange } from "@/types";
+import { PageHeader } from "@/components/PageHeader";
 import { useTranslation } from "@/lib/i18n";
 
 export default function PendingChangesPage() {
@@ -45,21 +46,20 @@ export default function PendingChangesPage() {
   }
 
   return (
-    <div className="max-w-5xl">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold theme-text-primary">{t("pendingChanges.title")}</h1>
-          <p className="text-gray-500 mt-1">
-            {t("pendingChanges.subtitle")}
-          </p>
-        </div>
-        <button
-          onClick={fetchChanges}
-          className="px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
-        >
-          🔄 {t("common.refresh")}
-        </button>
-      </div>
+    <div>
+      <PageHeader
+        title={t("pendingChanges.title")}
+        subtitle={t("pendingChanges.subtitle")}
+        actions={
+          <button
+            onClick={fetchChanges}
+            className="px-3 py-2 text-sm font-medium rounded-lg transition-colors shadow-sm"
+            style={{ backgroundColor: "var(--surface-secondary)", color: "var(--text-primary)" }}
+          >
+            🔄 {t("common.refresh")}
+          </button>
+        }
+      />
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4 mb-6">

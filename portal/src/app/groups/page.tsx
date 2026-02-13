@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { GroupInfo } from "@/types";
+import { PageHeader } from "@/components/PageHeader";
 import { useTranslation } from "@/lib/i18n";
 
 export default function GroupsPage() {
@@ -41,13 +42,8 @@ export default function GroupsPage() {
   }
 
   return (
-    <div className="max-w-6xl">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold theme-text-primary">{t("groups.title")}</h1>
-        <p className="theme-text-secondary mt-1">
-          {t("groups.subtitle")}
-        </p>
-      </div>
+    <div>
+      <PageHeader title={t("groups.title")} subtitle={t("groups.subtitle")} />
 
       {error && (
         <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">

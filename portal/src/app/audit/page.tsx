@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import type { AuditLogEntry } from "@/types";
+import { PageHeader } from "@/components/PageHeader";
 import { useTranslation } from "@/lib/i18n";
 
 // ─── Action badge colors ─────────────────────────────────────────────────
@@ -127,14 +128,8 @@ export default function AuditPage() {
   const allActions = Object.keys(ACTION_CONFIG);
 
   return (
-    <div className="max-w-7xl">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold theme-text-primary">{t("audit.title")}</h1>
-        <p className="text-gray-500 mt-1">
-          {t("audit.subtitle")}
-        </p>
-      </div>
+    <div>
+      <PageHeader title={t("audit.title")} subtitle={t("audit.subtitle")} />
 
       {/* Info Banner */}
       <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
