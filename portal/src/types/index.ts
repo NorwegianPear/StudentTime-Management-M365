@@ -190,3 +190,60 @@ export interface ApiResponse<T> {
   data?: T;
   error?: string;
 }
+
+// ─── Staff / User Administration ─────────────────────────────────────────
+
+export type StaffRole = "Teacher" | "IT-Staff" | "Administrative" | "Principal" | "Other";
+
+export interface StaffUser {
+  id: string;
+  displayName: string;
+  userPrincipalName: string;
+  mail?: string;
+  accountEnabled: boolean;
+  jobTitle?: string;
+  department?: string;
+  officeLocation?: string;
+  mobilePhone?: string;
+  assignedLicenses?: LicenseAssignment[];
+  createdDateTime?: string;
+}
+
+export interface LicenseAssignment {
+  skuId: string;
+  skuPartNumber?: string;
+  displayName?: string;
+  disabledPlans?: string[];
+}
+
+export interface AvailableLicense {
+  skuId: string;
+  skuPartNumber: string;
+  displayName: string;
+  consumedUnits: number;
+  prepaidUnitsEnabled: number;
+  availableUnits: number;
+}
+
+export interface OnboardStaffRequest {
+  firstName: string;
+  lastName: string;
+  role: StaffRole;
+  department?: string;
+  jobTitle?: string;
+  officeLocation?: string;
+  mobilePhone?: string;
+  licenseSkuIds: string[];   // licenses to auto-assign
+  groupIds?: string[];       // optional groups to add to
+}
+
+export interface OffboardStaffRequest {
+  userId: string;
+  removeLicenses: boolean;       // unassign all licenses
+  disableAccount: boolean;        // disable sign-in
+  revokeSessions: boolean;        // revoke all refresh tokens
+  removeFromGroups: boolean;      // remove from all groups
+  convertToSharedMailbox: boolean; // convert mailbox to shared
+  forwardEmail?: string;           // set email forwarding to this address
+  offboardReason: string;          // why they are leaving
+}

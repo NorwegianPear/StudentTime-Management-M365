@@ -8,6 +8,7 @@ import { useTranslation } from "@/lib/i18n";
 const navItems = [
   { labelKey: "nav.dashboard", href: "/", icon: "📊" },
   { labelKey: "nav.students", href: "/students", icon: "👥" },
+  { labelKey: "nav.staffAdmin", href: "/staff", icon: "🏢" },
   { labelKey: "nav.groups", href: "/groups", icon: "📁" },
   { labelKey: "nav.specialGroups", href: "/special-groups", icon: "⭐" },
   { labelKey: "nav.policies", href: "/policies", icon: "🕒" },
