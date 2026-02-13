@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { useTranslation } from "@/lib/i18n";
-import { SettingsPanel } from "@/components/SettingsPanel";
 
 const navItems = [
   { labelKey: "nav.dashboard", href: "/", icon: "📊" },
@@ -57,11 +56,6 @@ export function Sidebar() {
           })}
         </ul>
       </nav>
-
-      {/* Settings Panel */}
-      <div className="px-4 pb-2">
-        <SettingsPanel />
-      </div>
 
       {/* User Profile */}
       {session?.user && (
