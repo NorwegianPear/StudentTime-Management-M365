@@ -14,6 +14,7 @@ const navItems = [
   { labelKey: "nav.schedules", href: "/schedules", icon: "📅" },
   { labelKey: "nav.pendingChanges", href: "/pending-changes", icon: "🔄" },
   { labelKey: "nav.auditLog", href: "/audit", icon: "📋" },
+  { labelKey: "nav.docs", href: "/docs", icon: "📖" },
 ];
 
 export function Sidebar() {

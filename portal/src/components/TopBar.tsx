@@ -33,7 +33,7 @@ export function TopBar() {
   }, []);
 
   return (
-    <div className="flex items-center justify-end gap-2 mb-6">
+    <div className="flex items-center gap-2">
       {/* Theme Toggle */}
       <div className="relative" ref={themeRef}>
         <button
