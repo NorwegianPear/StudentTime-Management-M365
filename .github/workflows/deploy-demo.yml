@@ -1,0 +1,155 @@
+# GitHub Actions CI/CD Pipeline for Demo Environment
+# Uses OIDC federation (no secrets stored) to deploy to Atea Lab Azure
+
+name: Deploy Demo Environment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'infrastructure/**'
+      - 'runbooks/**'
+      - '.github/workflows/deploy-demo.yml'
+  workflow_dispatch:
+    inputs:
+      deploy_infra:
+        description: 'Deploy infrastructure (Bicep)'
+        required: false
+        default: 'true'
+        type: choice
+        options: ['true', 'false']
+      deploy_runbooks:
+        description: 'Deploy runbooks'
+        required: false
+        default: 'true'
+        type: choice
+        options: ['true', 'false']
+
+permissions:
+  id-token: write   # Required for OIDC federation
+  contents: read
+
+env:
+  RESOURCE_GROUP: rg-studentaccess-demo
+  AUTOMATION_ACCOUNT: StudentAccessDemo
+  LOCATION: westeurope
+
+jobs:
+  # ─── Deploy Infrastructure ──────────────────────────────────────────────
+  deploy-infrastructure:
+    name: Deploy Azure Infrastructure
+    runs-on: ubuntu-latest
+    if: github.event.inputs.deploy_infra != 'false'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC Federation)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Create Resource Group
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az group create \
+              --name ${{ env.RESOURCE_GROUP }} \
+              --location ${{ env.LOCATION }} \
+              --tags environment=demo project=student-access-management
+
+      - name: Deploy Bicep Template
+        uses: azure/arm-deploy@v2
+        with:
+          scope: resourcegroup
+          resourceGroupName: ${{ env.RESOURCE_GROUP }}
+          template: ./infrastructure/main.bicep
+          parameters: >
+            automationAccountName=${{ env.AUTOMATION_ACCOUNT }}
+            tenantId=${{ secrets.AZURE_TENANT_ID }}
+            graphClientId=${{ secrets.GRAPH_CLIENT_ID }}
+            graphClientSecret=${{ secrets.GRAPH_CLIENT_SECRET }}
+            studentGroupId=${{ secrets.STUDENT_GROUP_ID }}
+            enableTime=07:55
+            disableTime=16:05
+          failOnStdErr: false
+
+  # ─── Deploy Runbooks ────────────────────────────────────────────────────
+  deploy-runbooks:
+    name: Deploy Runbooks
+    runs-on: ubuntu-latest
+    needs: deploy-infrastructure
+    if: always() && github.event.inputs.deploy_runbooks != 'false'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login (OIDC Federation)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy Enable-StudentAccess Runbook
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az automation runbook replace-content \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --automation-account-name ${{ env.AUTOMATION_ACCOUNT }} \
+              --name Enable-StudentAccess \
+              --content @runbooks/Enable-StudentAccess.ps1
+
+            az automation runbook publish \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --automation-account-name ${{ env.AUTOMATION_ACCOUNT }} \
+              --name Enable-StudentAccess
+
+      - name: Deploy Disable-StudentAccess Runbook
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az automation runbook replace-content \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --automation-account-name ${{ env.AUTOMATION_ACCOUNT }} \
+              --name Disable-StudentAccess \
+              --content @runbooks/Disable-StudentAccess.ps1
+
+            az automation runbook publish \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --automation-account-name ${{ env.AUTOMATION_ACCOUNT }} \
+              --name Disable-StudentAccess
+
+      - name: Deploy Get-StudentAccessStatus Runbook
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az automation runbook replace-content \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --automation-account-name ${{ env.AUTOMATION_ACCOUNT }} \
+              --name Get-StudentAccessStatus \
+              --content @runbooks/Get-StudentAccessStatus.ps1
+
+            az automation runbook publish \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --automation-account-name ${{ env.AUTOMATION_ACCOUNT }} \
+              --name Get-StudentAccessStatus
+
+      - name: Deployment Summary
+        run: |
+          echo "## 🚀 Demo Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Resource Group | \`${{ env.RESOURCE_GROUP }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Automation Account | \`${{ env.AUTOMATION_ACCOUNT }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Enable Runbook | ✅ Published |" >> $GITHUB_STEP_SUMMARY
+          echo "| Disable Runbook | ✅ Published |" >> $GITHUB_STEP_SUMMARY
+          echo "| Status Runbook | ✅ Published |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Federation: OIDC (no secrets stored in GitHub)" >> $GITHUB_STEP_SUMMARY

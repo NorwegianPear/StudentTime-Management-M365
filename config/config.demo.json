@@ -1,0 +1,39 @@
+{
+    "TenantId": "973a580f-021f-4dc0-88de-48b060e43df1",
+    "SubscriptionId": "ecfca6b3-6f73-421f-8d02-7f31ed0978bc",
+    "SubscriptionName": "Microsoft Azure",
+    "AdminUPN": "uy.le.thai.phan@ateara.onmicrosoft.com",
+    "ResourceGroupName": "rg-studentaccess-demo",
+    "AutomationAccountName": "StudentAccessDemo",
+    "Location": "westeurope",
+    "DemoSchool": "Bergan International School (Demo)",
+    "GitHubRepo": "NorwegianPear/StudentTime-Management-M365",
+    "Environment": "demo",
+    "Portal": {
+        "AppName": "app-atea-sam-portal",
+        "DisplayName": "Atea SAM Portal (School Access Management)",
+        "DeploymentTarget": "StaticWebApp",
+        "StaticWebApp": {
+            "Url": "https://app-atea-sam-portal.azurestaticapps.net",
+            "Sku": "Free",
+            "Cost": "0 kr/mo"
+        },
+        "AppService": {
+            "Url": "https://app-atea-sam-portal.azurewebsites.net",
+            "AliasUrls": [
+                "https://sam-portal.azurewebsites.net",
+                "https://atea-sam-portal.azurewebsites.net"
+            ],
+            "Sku": "B1",
+            "Cost": "~115 kr/mo"
+        },
+        "RedirectUris": [
+            "http://localhost:3000/api/auth/callback/microsoft-entra-id",
+            "https://app-atea-sam-portal.azurestaticapps.net/api/auth/callback/microsoft-entra-id",
+            "https://app-atea-sam-portal.azurewebsites.net/api/auth/callback/microsoft-entra-id",
+            "https://sam-portal.azurewebsites.net/api/auth/callback/microsoft-entra-id",
+            "https://atea-sam-portal.azurewebsites.net/api/auth/callback/microsoft-entra-id"
+        ],
+        "ApiScopes": ["User.ReadWrite.All", "Group.Read.All", "Directory.Read.All"]
+    }
+}

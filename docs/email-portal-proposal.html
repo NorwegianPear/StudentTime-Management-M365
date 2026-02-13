@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<!--
+    EMAIL TEMPLATE - Student Access Management: Azure Costs & Capabilities
+    Inline styles are INTENTIONAL and REQUIRED for email clients.
+    Do not move styles to external CSS - it will break email rendering.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Access Management - Azure Costs &amp; Portal Capabilities</title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.6; color: #323130; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #ffffff;">
+
+    <h1 style="color: #0078D4; border-bottom: 3px solid #0078D4; padding-bottom: 15px;">&#128274; Student Access Management - Azure Costs &amp; Portal Capabilities</h1>
+
+    <p>Hi Adnan,</p>
+
+    <p>Following up on the Student Time Management solution we've deployed, I'd like to give you an overview of the <strong>Azure running costs</strong>, what the application actually does in your tenant (permissions and operations), and what a <strong>management portal</strong> could look like as a future expansion.</p>
+
+    <p>This email covers:</p>
+    <ul>
+        <li>What the application does and which permissions it uses</li>
+        <li>Azure monthly running costs (current solution)</li>
+        <li>What a management portal could offer your staff</li>
+        <li>GitHub + Azure CI/CD federation (source code management)</li>
+    </ul>
+
+    <!-- TOP SUMMARY BOXES -->
+    <table cellpadding="0" cellspacing="15" style="width: 100%; margin: 25px 0;">
+        <tr>
+            <td bgcolor="#0078D4" style="width: 33%; color: white; padding: 25px; text-align: center;">
+                <div style="font-size: 14px;">&#9729; AZURE MONTHLY</div>
+                <div style="font-size: 28px; font-weight: bold; margin: 10px 0;">0-50 kr</div>
+                <div style="font-size: 12px;">Non-Profit w/ Credits</div>
+            </td>
+            <td bgcolor="#5C2D91" style="width: 33%; color: white; padding: 25px; text-align: center;">
+                <div style="font-size: 14px;">&#128736; FEDERATION</div>
+                <div style="font-size: 28px; font-weight: bold; margin: 10px 0;">FREE</div>
+                <div style="font-size: 12px;">GitHub + Azure OIDC</div>
+            </td>
+            <td bgcolor="#107C10" style="width: 33%; color: white; padding: 25px; text-align: center;">
+                <div style="font-size: 14px;">&#128273; EXTRA LICENSES</div>
+                <div style="font-size: 28px; font-weight: bold; margin: 10px 0;">NONE</div>
+                <div style="font-size: 12px;">Required</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- WHAT THE APPLICATION DOES -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px;">&#128274; What the Application Does &amp; Permissions</h2>
+
+    <p>The automation runs on a schedule in Azure and performs <strong>write and read operations</strong> against your Microsoft 365 tenant via the Microsoft Graph API. Here's exactly what it does and why each permission is needed:</p>
+
+    <!-- Operations Table -->
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#5C2D91">
+            <th style="color: white; text-align: left; padding: 12px; width: 25%;">Operation</th>
+            <th style="color: white; text-align: left; padding: 12px; width: 20%;">Access Type</th>
+            <th style="color: white; text-align: left; padding: 12px; width: 55%;">What It Does</th>
+        </tr>
+        <tr bgcolor="#FFEBEE">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128275; Enable Accounts</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><span style="background: #D13438; color: white; padding: 2px 8px; font-size: 11px; font-weight: bold;">WRITE</span></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Sets <code style="background: #f0f0f0; padding: 2px 6px;">accountEnabled = true</code> on student accounts at login time (e.g., 07:55)</td>
+        </tr>
+        <tr bgcolor="#FFEBEE">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128274; Disable Accounts</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><span style="background: #D13438; color: white; padding: 2px 8px; font-size: 11px; font-weight: bold;">WRITE</span></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Sets <code style="background: #f0f0f0; padding: 2px 6px;">accountEnabled = false</code> on student accounts at end of day (e.g., 16:05)</td>
+        </tr>
+        <tr bgcolor="#FFEBEE">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128683; Revoke Sessions</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><span style="background: #D13438; color: white; padding: 2px 8px; font-size: 11px; font-weight: bold;">WRITE</span></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Revokes active login tokens so students are immediately signed out (optional, configurable)</td>
+        </tr>
+        <tr bgcolor="#e6f2ff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128101; Read Group Members</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><span style="background: #0078D4; color: white; padding: 2px 8px; font-size: 11px; font-weight: bold;">READ</span></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Reads the student security group to know which accounts to enable/disable</td>
+        </tr>
+        <tr bgcolor="#e6f2ff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128100; Read User Details</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><span style="background: #0078D4; color: white; padding: 2px 8px; font-size: 11px; font-weight: bold;">READ</span></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Reads display name, UPN, and current account status for reporting &amp; logging</td>
+        </tr>
+        <tr bgcolor="#E8F5E9">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128202; Status Check</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><span style="background: #107C10; color: white; padding: 2px 8px; font-size: 11px; font-weight: bold;">READ</span></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Reports how many students are enabled/disabled — for monitoring and verification</td>
+        </tr>
+    </table>
+
+    <!-- API Permissions -->
+    <h3 style="color: #323130; margin-top: 25px;">Microsoft Graph API Permissions (App Registration)</h3>
+
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#0078D4">
+            <th style="color: white; text-align: left; padding: 12px; width: 30%;">Permission</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 15%;">Type</th>
+            <th style="color: white; text-align: left; padding: 12px; width: 35%;">Used For</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 20%;">Access</th>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong><code style="background: #f0f0f0; padding: 2px 6px;">User.ReadWrite.All</code></strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Application</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Enable/disable accounts, revoke sessions</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;"><span style="background: #D13438; color: white; padding: 2px 8px; font-size: 11px; font-weight: bold;">READ + WRITE</span></td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong><code style="background: #f0f0f0; padding: 2px 6px;">Group.Read.All</code></strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Application</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Read student group membership</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;"><span style="background: #0078D4; color: white; padding: 2px 8px; font-size: 11px; font-weight: bold;">READ ONLY</span></td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong><code style="background: #f0f0f0; padding: 2px 6px;">Directory.Read.All</code></strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Application</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Directory data for error reporting</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;"><span style="background: #0078D4; color: white; padding: 2px 8px; font-size: 11px; font-weight: bold;">READ ONLY</span></td>
+        </tr>
+    </table>
+
+    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #FFF8E1; border-left: 5px solid #FFB900; margin: 20px 0;">
+        <tr>
+            <td>
+                <strong>&#128274; Security Notes:</strong>
+                <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+                    <li>These are <strong>Application permissions</strong> — the app acts with its own identity, not as a user</li>
+                    <li>A <strong>Global Administrator</strong> must grant admin consent before the app works</li>
+                    <li>The app <strong>only writes to the <code style="background: #f0f0f0; padding: 2px 6px;">accountEnabled</code> property</strong> — it cannot modify passwords, names, or other user data</li>
+                    <li>All operations are <strong>scoped to one security group</strong> — it processes only students in that group</li>
+                    <li>The client secret is stored <strong>encrypted</strong> in Azure Automation variables</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- SCHEDULE / HOW IT WORKS -->
+    <h3 style="color: #323130; margin-top: 25px;">Daily Operation Schedule</h3>
+
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#0078D4">
+            <th style="color: white; text-align: center; padding: 12px; width: 20%;">Time</th>
+            <th style="color: white; text-align: left; padding: 12px; width: 30%;">Runbook</th>
+            <th style="color: white; text-align: left; padding: 12px; width: 35%;">Action</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 15%;">Days</th>
+        </tr>
+        <tr bgcolor="#E8F5E9">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold; font-size: 16px; color: #107C10;">07:55</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Enable-StudentAccess</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">&#128275; Enables all student accounts (accountEnabled = true)</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Mon-Fri</td>
+        </tr>
+        <tr bgcolor="#FFEBEE">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold; font-size: 16px; color: #D13438;">16:05</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Disable-StudentAccess</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">&#128274; Disables all student accounts + revokes sessions</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Mon-Fri</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #605E5C;">On demand</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Get-StudentAccessStatus</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">&#128202; Reports current status of all students in the group</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Any time</td>
+        </tr>
+    </table>
+
+    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #e6f2ff; border-left: 5px solid #0078D4; margin: 20px 0;">
+        <tr>
+            <td>
+                <strong>&#128161; Note:</strong> The schedule times (07:55 and 16:05) and days (Mon-Fri) are fully configurable. Weekends and holidays can be handled by modifying the schedule or adding custom logic.
+            </td>
+        </tr>
+    </table>
+
+    <p>A portal could include capabilities such as:</p>
+
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#5C2D91">
+            <th style="color: white; text-align: left; padding: 12px; width: 35%;">Capability</th>
+            <th style="color: white; text-align: left; padding: 12px; width: 65%;">Description</th>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128202; Live Dashboard</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Real-time overview — which students are enabled/disabled right now</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128275; Manual Override</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Enable/disable individual students or entire groups with one click</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128274; Entra ID SSO</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Staff sign in with existing M365 accounts — no new passwords</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128218; Class-Level Rules</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Set different schedules per class (e.g., "10A: 08:00-15:30")</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128101; Group Rules</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Rules for special groups (e.g., "After-school program: until 18:00")</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128100; Student Overrides</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Per-student exceptions (e.g., "Student X: always enabled")</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128203; Audit Trail</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Full log of who changed what and when — for compliance</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128276; Notifications</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Email alerts when accounts are enabled/disabled or rules change</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128236; Access Requests</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Students/parents can request extended access — staff approves in portal</td>
+        </tr>
+    </table>
+
+    <!-- ROLE-BASED ACCESS -->
+    <h3 style="color: #323130; margin-top: 25px;">Possible Portal Roles (Staff Only — No Students)</h3>
+
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#5C2D91">
+            <th style="color: white; text-align: left; padding: 12px; width: 25%;">Portal Role</th>
+            <th style="color: white; text-align: left; padding: 12px; width: 25%;">Who</th>
+            <th style="color: white; text-align: left; padding: 12px; width: 50%;">Can Do</th>
+        </tr>
+        <tr bgcolor="#FFEBEE">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128081; Administrator</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">IT Admin</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Create/edit/delete all rules, manage all groups, view all logs, configure settings</td>
+        </tr>
+        <tr bgcolor="#FFF8E1">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128218; Class Manager</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Teacher / Coordinator</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">View &amp; manage rules for <em>their assigned classes only</em>, request overrides</td>
+        </tr>
+        <tr bgcolor="#E8F5E9">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128065; Viewer</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Support Staff</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">View current status and logs — no changes allowed</td>
+        </tr>
+    </table>
+
+    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #E8F5E9; border-left: 5px solid #107C10; margin: 20px 0;">
+        <tr>
+            <td>
+                <strong>&#128274; Security:</strong> Authentication is handled by your existing Entra ID (M365 login). Portal roles are controlled via Entra ID App Roles — managed the same way you manage other M365 app access today. No new accounts or passwords needed.
+            </td>
+        </tr>
+    </table>
+
+    <!-- HOW RULES COULD WORK -->
+    <h3 style="color: #323130; margin-top: 25px;">Rule Priority System (Granular Scheduling)</h3>
+
+    <p>When multiple rules apply to a student, the most specific rule wins:</p>
+
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#0078D4">
+            <th style="color: white; text-align: center; padding: 12px; width: 15%;">Priority</th>
+            <th style="color: white; text-align: left; padding: 12px; width: 30%;">Rule Type</th>
+            <th style="color: white; text-align: left; padding: 12px; width: 55%;">Example</th>
+        </tr>
+        <tr bgcolor="#FFEBEE">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold; font-size: 18px; color: #D13438;">1</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>Student Override</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">"Ola Nordmann: always enabled" (highest priority)</td>
+        </tr>
+        <tr bgcolor="#FFF8E1">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold; font-size: 18px; color: #FF8C00;">2</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>Special Group Rule</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">"After-school program group: enabled until 18:00"</td>
+        </tr>
+        <tr bgcolor="#e6f2ff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold; font-size: 18px; color: #0078D4;">3</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>Class-Level Rule</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">"Class 10A: 08:00-15:30 Mon-Fri"</td>
+        </tr>
+        <tr bgcolor="#E8F5E9">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold; font-size: 18px; color: #107C10;">4</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>Default Rule</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">"All students: 07:55-16:05 Mon-Fri" (current behavior)</td>
+        </tr>
+    </table>
+
+    <!-- GITHUB + AZURE FEDERATION -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px;">&#128279; GitHub + Azure Federation (CI/CD)</h2>
+
+    <p>To keep the source code version-controlled and enable automatic deployments, we use <strong>GitHub-Azure OIDC federation</strong> — a secure, secretless connection between GitHub and your Azure subscription.</p>
+
+    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #f8f9fa; border: 1px solid #e6e6e6; margin: 20px 0;">
+        <tr>
+            <td style="text-align: center;">
+                <p style="font-weight: bold; color: #0078D4; margin-bottom: 15px;">How Deployments Work</p>
+
+                <!-- GitHub box -->
+                <table cellpadding="0" cellspacing="0" style="width: 80%; margin: 0 auto 10px auto; border: 2px solid #323130; background: white;">
+                    <tr>
+                        <td bgcolor="#323130" style="color: white; padding: 8px; text-align: center; font-weight: bold;">&#128025; GitHub Repository (Source Code)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; text-align: center; font-size: 13px;">
+                            Portal code + Runbooks + Bicep templates + GitHub Actions pipeline
+                        </td>
+                    </tr>
+                </table>
+
+                <p style="font-size: 20px; color: #0078D4; margin: 5px 0;">&#11015; OIDC Federation (no secrets stored)</p>
+
+                <!-- Azure box -->
+                <table cellpadding="0" cellspacing="0" style="width: 80%; margin: 0 auto 10px auto; border: 2px solid #0078D4; background: white;">
+                    <tr>
+                        <td bgcolor="#0078D4" style="color: white; padding: 8px; text-align: center; font-weight: bold;">&#9729; Azure (Your Subscription)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; text-align: center; font-size: 13px;">
+                            Static Web Apps + Azure Functions + Automation Account
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#323130">
+            <th style="color: white; text-align: left; padding: 12px; width: 35%;">Federation Benefit</th>
+            <th style="color: white; text-align: left; padding: 12px; width: 65%;">What It Means</th>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128274; No secrets to rotate</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Uses OIDC tokens — no passwords or keys stored in GitHub</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128640; Automatic deploys</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Push code to GitHub → automatically deploys to Azure</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128176; Cost</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Completely free (GitHub Free + Entra ID federated credential)</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128736; Already prepared</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Setup script is ready in the current solution repository</td>
+        </tr>
+    </table>
+
+    <!-- AZURE COST BREAKDOWN -->
+    <h2 style="color: #005A9E; border-left: 4px solid #107C10; padding-left: 15px; margin-top: 35px;">&#128176; Azure Monthly Running Costs</h2>
+
+    <p>Here is what the current solution costs to run in your Azure subscription:</p>
+
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#107C10">
+            <th style="color: white; text-align: left; padding: 12px; width: 35%;">Azure Component</th>
+            <th style="color: white; text-align: left; padding: 12px; width: 30%;">What It Does</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 17%;">Non-Profit<br><span style="font-size: 10px; font-weight: normal;">(w/ Credits)</span></th>
+            <th style="color: white; text-align: center; padding: 12px; width: 18%;">Regular<br><span style="font-size: 10px; font-weight: normal;">(Without Credits)</span></th>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#9729; Azure Automation Account</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Runs the PowerShell runbooks on schedule</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">0-45 kr/mo</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">55-90 kr/mo</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; padding-left: 30px; font-size: 13px; color: #605E5C;">&#8627; Job runtime (Enable)</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; font-size: 13px; color: #605E5C;">~1-3 min/run &times; 5 days/week</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-size: 13px; color: #605E5C;">Included</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-size: 13px; color: #605E5C;">~15 kr</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; padding-left: 30px; font-size: 13px; color: #605E5C;">&#8627; Job runtime (Disable)</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; font-size: 13px; color: #605E5C;">~1-3 min/run &times; 5 days/week</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-size: 13px; color: #605E5C;">Included</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-size: 13px; color: #605E5C;">~15 kr</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; padding-left: 30px; font-size: 13px; color: #605E5C;">&#8627; PowerShell modules</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; font-size: 13px; color: #605E5C;">Microsoft.Graph.* modules stored in account</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-size: 13px; color: #605E5C;">Included</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-size: 13px; color: #605E5C;">~10 kr</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128274; App Registration</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Identity for Graph API access (read + write)</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">FREE</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">FREE</td>
+        </tr>
+        <tr bgcolor="#E8F5E9">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128279; GitHub + Azure Federation</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">CI/CD pipeline (OIDC, no secrets)</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">FREE</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">FREE</td>
+        </tr>
+        <tr bgcolor="#E8F5E9">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128101; Entra ID Security Group</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Student group that defines who is affected</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">FREE</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">FREE</td>
+        </tr>
+        <tr bgcolor="#E8F5E9">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>&#128273; Microsoft Graph API Calls</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">Read group + write account status (no per-call cost)</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">FREE</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">FREE</td>
+        </tr>
+        <tr bgcolor="#107C10">
+            <td colspan="2" style="padding: 15px; color: white; font-weight: bold; font-size: 16px;">TOTAL MONTHLY COST</td>
+            <td style="padding: 15px; color: white; font-weight: bold; font-size: 22px; text-align: center;">0-50 kr</td>
+            <td style="padding: 15px; color: white; font-weight: bold; font-size: 18px; text-align: center;">55-90 kr</td>
+        </tr>
+    </table>
+
+    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #E8F5E9; border-left: 5px solid #107C10; margin: 20px 0;">
+        <tr>
+            <td>
+                <h4 style="margin: 0 0 10px 0; color: #107C10;">&#127881; With Non-Profit Azure Credits (~40,000 kr/year)</h4>
+                <p style="margin: 0;">The Azure Automation Account usage for this solution is well within your non-profit credits. At 0-50 kr/month, the solution would effectively <strong>run for free for years</strong>. The free tier includes 500 minutes of job runtime per month — this solution uses approximately 40-60 minutes/month.</p>
+            </td>
+        </tr>
+    </table>
+
+    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #e6f2ff; border-left: 5px solid #0078D4; margin: 20px 0;">
+        <tr>
+            <td>
+                <strong>&#128161; Cost Breakdown Explained:</strong>
+                <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+                    <li><strong>Azure Automation</strong> charges for job runtime minutes only (first 500 min/month free)</li>
+                    <li><strong>Graph API calls</strong> are free — Microsoft does not charge per API call</li>
+                    <li><strong>App Registration</strong> is included with any M365/Entra ID license</li>
+                    <li><strong>GitHub federation</strong> uses OIDC tokens — no secrets to manage or pay for</li>
+                    <li>The write operations (enable/disable accounts) have <strong>no additional cost</strong> beyond the Automation runtime</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- PORTAL EXPANSION CAPABILITY -->
+    <h2 style="color: #005A9E; border-left: 4px solid #5C2D91; padding-left: 15px; margin-top: 35px;">&#127760; Future Expansion: Management Portal</h2>
+
+    <p>As a future step, we can develop a <strong>web-based management portal</strong> that would give your staff a user-friendly interface to manage student access — no Azure Portal or PowerShell knowledge needed.</p>
+
+    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #F3E5F5; border-left: 5px solid #5C2D91; margin: 20px 0;">
+        <tr>
+            <td>
+                <strong>&#128161; Key Benefit:</strong> Today, only IT admins who know Azure Portal can manage schedules. With a portal, <strong>teachers, coordinators, and support staff</strong> could manage access through a simple web interface — each seeing only what they're allowed to.
+            </td>
+        </tr>
+    </table>
+
+    <p>A management portal could include:</p>
+
+    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #F3E5F5; border: 2px solid #5C2D91; margin: 25px 0;">
+        <tr>
+            <td>
+                <h4 style="margin: 0 0 10px 0; color: #5C2D91;">&#128736; Atea Can Develop This Portal for You</h4>
+                <p style="margin: 0;">We have the architecture designed and can build a management portal that extends the existing automation solution. The portal would run in your Azure subscription with <strong>minimal added hosting cost</strong> (effectively free with non-profit credits). If this is of interest, we can discuss scope, features, and timeline in a follow-up meeting.</p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- BEFORE AND AFTER -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 35px;">&#128260; Current Solution vs. With Portal</h2>
+
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#0078D4">
+            <th style="color: white; text-align: left; padding: 12px; width: 30%;">Aspect</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 35%;">&#128308; Current (Automation Only)</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 35%;">&#128994; With Portal (Future)</th>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; font-weight: bold;">Management</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Azure Portal / PowerShell</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">Web-based GUI</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; font-weight: bold;">Who can manage</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">IT Admin only</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">IT Admin + Teachers + Staff</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; font-weight: bold;">Schedule rules</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">1 group, 1 schedule</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">Per class, student, or group</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; font-weight: bold;">Schedule changes</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Edit Azure Automation variables</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">Click in portal</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; font-weight: bold;">Exceptions</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Manual Graph API calls</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">Button click in portal</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; font-weight: bold;">Audit trail</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Azure Automation job logs</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">Full database: who / what / when</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; font-weight: bold;">Technical skill needed</td>
+            <td style="padding: 12px; text-align: center;">Azure Portal experience</td>
+            <td style="padding: 12px; text-align: center; color: #107C10; font-weight: bold;">None — just a web browser</td>
+        </tr>
+    </table>
+
+    <!-- NEXT STEPS -->
+    <h2 style="color: #005A9E; border-left: 4px solid #107C10; padding-left: 15px; margin-top: 35px;">&#128640; Next Steps</h2>
+
+    <table cellpadding="15" cellspacing="0" style="width: 100%; background: #E8F5E9; border: 2px solid #107C10; margin: 20px 0;">
+        <tr>
+            <td>
+                <p style="margin: 0 0 15px 0;"><strong>Please review and let me know your thoughts:</strong></p>
+                <table cellpadding="5" cellspacing="0" style="width: 100%;">
+                    <tr>
+                        <td style="width: 20px; color: #107C10; font-weight: bold; vertical-align: top;">1.</td>
+                        <td><strong>Azure costs</strong> — Are you comfortable with the current running costs? Any questions about the permissions?</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #107C10; font-weight: bold; vertical-align: top;">2.</td>
+                        <td><strong>Schedule adjustments</strong> — Do you need different enable/disable times or additional schedules?</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #107C10; font-weight: bold; vertical-align: top;">3.</td>
+                        <td><strong>Portal interest</strong> — Would a management portal be valuable for your staff? If so, we can schedule a meeting to discuss scope and timeline.</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #107C10; font-weight: bold; vertical-align: top;">4.</td>
+                        <td><strong>GitHub federation</strong> — Would you like the CI/CD pipeline set up for automated deployments?</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <table cellpadding="20" cellspacing="0" style="width: 100%; background: #e6f2ff; border-left: 5px solid #0078D4; margin: 25px 0;">
+        <tr>
+            <td>
+                <h3 style="margin: 0 0 10px 0; color: #0078D4;">&#128230; Solution Repository</h3>
+                <p style="margin: 0;">The automation solution source code and documentation is available at:</p>
+                <p style="margin: 10px 0 0 0; font-size: 16px;">&#128279; <a href="https://github.com/NorwegianPear/StudentTime-Management-M365" style="color: #0078D4; font-weight: bold;">github.com/NorwegianPear/StudentTime-Management-M365</a></p>
+            </td>
+        </tr>
+    </table>
+
+    <p>I'm happy to schedule a meeting to walk through the solution, costs, or portal possibilities in more detail.</p>
+
+    <div style="margin-top: 40px; padding-top: 25px; border-top: 2px solid #e6e6e6;">
+        <p>Best regards,</p>
+        <p><strong>Uy Le Phan</strong><br>
+        Atea AS<br>
+        <a href="mailto:Uy.Le.Phan@atea.no" style="color: #0078D4;">Uy.Le.Phan@atea.no</a></p>
+    </div>
+
+    <div style="font-size: 12px; color: #605E5C; margin-top: 30px; text-align: center; padding: 20px; background: #f8f9fa;">
+        <p style="margin: 0;"><strong>&#128206; Resources:</strong>
+            <a href="https://github.com/NorwegianPear/StudentTime-Management-M365" style="color: #0078D4;">GitHub Repository</a> &bull;
+            <a href="https://nonprofit.microsoft.com" style="color: #0078D4;">Azure for Nonprofits</a>
+        </p>
+        <p style="font-size: 11px; color: #888; margin: 10px 0 0 0;">Student Time Management for M365 &bull; &copy; 2026 Atea AS</p>
+    </div>
+
+</body>
+</html>

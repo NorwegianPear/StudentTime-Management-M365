@@ -1,5 +1,15 @@
 # Configuration files with secrets
 config/config.json
+config/.credentials*
+*.enc.xml
+
+# Portal local environment
+portal/.env
+portal/.env.local
+portal/.env.*.local
+portal/node_modules/
+portal/.next/
+portal/out/
 
 # PowerShell module cache
 .psmodulepath/

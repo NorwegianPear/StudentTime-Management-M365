@@ -19,25 +19,18 @@ Import-Module Microsoft.Graph.Authentication
 Import-Module Microsoft.Graph.Users
 Import-Module Microsoft.Graph.Groups
 
-# Get encrypted variables from Azure Automation
-$TenantId = Get-AutomationVariable -Name 'TenantId'
-$ClientId = Get-AutomationVariable -Name 'ClientId'
-$ClientSecret = Get-AutomationVariable -Name 'ClientSecret'
+# Get automation variables
 $StudentGroupId = Get-AutomationVariable -Name 'StudentGroupId'
 
 # Validate required variables
-if (-not $TenantId -or -not $ClientId -or -not $ClientSecret -or -not $StudentGroupId) {
-    Write-Error "Missing required automation variables. Please ensure TenantId, ClientId, ClientSecret, and StudentGroupId are configured."
+if (-not $StudentGroupId) {
+    Write-Error "Missing required automation variable 'StudentGroupId'."
     exit 1
 }
 
 try {
-    # Convert secret to secure string and create credential
-    $SecureSecret = ConvertTo-SecureString -String $ClientSecret -AsPlainText -Force
-    $ClientSecretCredential = New-Object System.Management.Automation.PSCredential($ClientId, $SecureSecret)
-
-    # Connect to Microsoft Graph
-    Connect-MgGraph -TenantId $TenantId -ClientSecretCredential $ClientSecretCredential -NoWelcome
+    # Connect to Microsoft Graph using Managed Identity (no secrets needed)
+    Connect-MgGraph -Identity -NoWelcome
     
     Write-Output "============================================"
     Write-Output "Student Access Automation - ENABLE"
@@ -94,6 +87,33 @@ try {
     Write-Output "Total processed:          $($students.Count)"
     Write-Output "============================================"
     Write-Output "Completed at: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+
+    # ── Email Notification ────────────────────────────────────────────────
+    try {
+        . $PSScriptRoot\Send-Notification.ps1
+
+        $summaryData = [ordered]@{
+            "Accounts Enabled"   = $enabledCount
+            "Already Enabled"    = $alreadyEnabledCount
+            "Errors"             = $errorCount
+            "Total Processed"    = $students.Count
+        }
+        $statusLevel = if ($errorCount -gt 0) { "Warning" } else { "Success" }
+        $htmlBody = New-HtmlReport -Title "Student Access Enabled" -Summary $summaryData -Status $statusLevel
+
+        $subject = if ($errorCount -gt 0) {
+            "⚠️ Student Enable: $enabledCount enabled, $errorCount errors"
+        } else {
+            "✅ Student Enable: $enabledCount accounts enabled"
+        }
+
+        Send-NotificationEmail -To @() -Subject $subject -Body $htmlBody
+
+        Write-AuditRecord -Action 'enable' -Details "Enabled $enabledCount, errors $errorCount (total $($students.Count))"
+    }
+    catch {
+        Write-Warning "⚠️  Notification failed: $($_.Exception.Message)"
+    }
 }
 catch {
     Write-Error "Fatal error: $($_.Exception.Message)"

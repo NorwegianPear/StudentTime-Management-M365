@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<!--
+    OPERATIONS GUIDE - Script-Only & Azure Portal
+    Inline styles are INTENTIONAL and REQUIRED for email/standalone HTML viewing.
+    htmlhint no-inline-styles:false
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operations Guide — Student Access Management (Script &amp; Azure Portal)</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.7; color: #323130; max-width: 960px; margin: 0 auto; padding: 20px; background: #fff; }
+        h1 { color: #0078D4; border-bottom: 3px solid #0078D4; padding-bottom: 15px; }
+        h2 { color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px; }
+        h3 { color: #323130; margin-top: 25px; }
+        h4 { color: #605E5C; }
+        code, pre { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 13px; }
+        pre { padding: 15px; overflow-x: auto; border-left: 4px solid #0078D4; line-height: 1.4; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th { background: #0078D4; color: white; text-align: left; padding: 12px; }
+        td { padding: 10px 12px; border-bottom: 1px solid #e6e6e6; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        .tip { background: #E8F5E9; border-left: 4px solid #107C10; padding: 12px 15px; margin: 15px 0; }
+        .warn { background: #FFF8E1; border-left: 4px solid #FFB900; padding: 12px 15px; margin: 15px 0; }
+        .danger { background: #FDECEA; border-left: 4px solid #D13438; padding: 12px 15px; margin: 15px 0; }
+        .info { background: #f0f7ff; border-left: 4px solid #0078D4; padding: 12px 15px; margin: 15px 0; }
+        .section-nav { background: #f4f4f4; padding: 20px; margin: 20px 0; border-radius: 6px; }
+        .section-nav a { color: #0078D4; text-decoration: none; }
+        .section-nav a:hover { text-decoration: underline; }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; }
+        .badge-auto { background: #107C10; color: white; }
+        .badge-manual { background: #0078D4; color: white; }
+        .badge-schedule { background: #5C2D91; color: white; }
+    </style>
+</head>
+<body>
+
+<h1>&#128736;&#65039; Operations Guide &mdash; Student Access Management</h1>
+<p style="font-size: 16px; color: #605E5C;">For BISS (Bergan International School Stavanger) &mdash; Script-Only &amp; Azure Portal Operation</p>
+<p style="font-size: 13px; color: #888;">Last updated: February 2026 | Version: 2.0 | Author: Uy Le Phan, Atea AS</p>
+
+<!-- TABLE OF CONTENTS -->
+<div class="section-nav">
+    <strong>&#128203; Table of Contents</strong>
+    <ol>
+        <li><a href="#overview">Solution Overview &mdash; How Everything Works</a></li>
+        <li><a href="#azure-portal">Azure Portal &mdash; Navigating Your Resources</a></li>
+        <li><a href="#daily-ops">Daily Operations (Automatic)</a></li>
+        <li><a href="#schedule-management">Managing Schedules &amp; Policies</a></li>
+        <li><a href="#runbooks">Runbooks &mdash; What They Do &amp; How to Run Them</a></li>
+        <li><a href="#student-management">Student Management (Groups, Transfers, New Students)</a></li>
+        <li><a href="#suspensions">Suspensions &amp; Temporary Blocks</a></li>
+        <li><a href="#annual-tasks">Annual Tasks (Class Promotion, Year Start/End)</a></li>
+        <li><a href="#monitoring">Monitoring &amp; Alerts</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#maintenance">Maintenance Tasks</a></li>
+        <li><a href="#emergency">Emergency Procedures</a></li>
+        <li><a href="#contacts">Support &amp; Reference</a></li>
+    </ol>
+</div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="overview">1. Solution Overview &mdash; How Everything Works</h2>
+
+<h3>Architecture</h3>
+<p>The solution is fully automated using <strong>Azure Automation</strong>. No human intervention required for daily operation.</p>
+
+<table>
+    <tr><th>Component</th><th>Purpose</th><th>Location</th></tr>
+    <tr>
+        <td><strong>Azure Automation Account</strong></td>
+        <td>Hosts runbooks (scripts) and schedules</td>
+        <td>Azure Portal &rarr; Automation Accounts</td>
+    </tr>
+    <tr>
+        <td><strong>Runbooks</strong></td>
+        <td>PowerShell scripts that enable/disable students</td>
+        <td>Automation Account &rarr; Runbooks</td>
+    </tr>
+    <tr>
+        <td><strong>Schedules</strong></td>
+        <td>Timers that trigger runbooks automatically</td>
+        <td>Automation Account &rarr; Schedules</td>
+    </tr>
+    <tr>
+        <td><strong>Variables</strong></td>
+        <td>Configuration (policies, IDs, credentials)</td>
+        <td>Automation Account &rarr; Variables</td>
+    </tr>
+    <tr>
+        <td><strong>Entra ID Groups</strong></td>
+        <td>Student class groups (determines who is affected)</td>
+        <td>Entra Admin Center &rarr; Groups</td>
+    </tr>
+    <tr>
+        <td><strong>App Registration</strong></td>
+        <td>Service account the automation uses to call Microsoft Graph</td>
+        <td>Entra Admin Center &rarr; App registrations</td>
+    </tr>
+</table>
+
+<h3>How the Automation Cycle Works</h3>
+<pre>
+&#9200; Every 15 minutes, the Apply-SchedulePolicies runbook runs:
+
+  1. Reads schedule policies (from Automation Variable "SchedulePolicies")
+  2. Checks: Is today a school day? Is current time within access window?
+  3. For each class group in each policy:
+     &#8226; If WITHIN access window  &rarr; Enable student accounts &#9989;
+     &#8226; If OUTSIDE access window &rarr; Disable student accounts &#128683;
+  4. Skips suspended students (they remain disabled regardless)
+  5. Logs summary to job output
+
+&#128337; Daily at 06:00, the Process-Suspensions runbook runs:
+
+  1. Checks all suspended students
+  2. If suspension end date has passed &rarr; Re-enables account automatically
+  3. Updates the suspension list
+</pre>
+
+<h3>Runbook Inventory</h3>
+<table>
+    <tr><th>Runbook</th><th>Schedule</th><th>Purpose</th></tr>
+    <tr>
+        <td><strong>Apply-SchedulePolicies</strong></td>
+        <td><span class="badge badge-schedule">Every 15 min</span></td>
+        <td>Core automation &mdash; enables/disables students based on time + day + policy</td>
+    </tr>
+    <tr>
+        <td><strong>Process-Suspensions</strong></td>
+        <td><span class="badge badge-schedule">Daily 06:00</span></td>
+        <td>Auto-lifts expired suspensions and re-enables accounts</td>
+    </tr>
+    <tr>
+        <td><strong>Enable-StudentAccess</strong></td>
+        <td><span class="badge badge-manual">Manual / backup</span></td>
+        <td>Emergency: enable all students in the main group immediately</td>
+    </tr>
+    <tr>
+        <td><strong>Disable-StudentAccess</strong></td>
+        <td><span class="badge badge-manual">Manual / backup</span></td>
+        <td>Emergency: disable all students in the main group immediately</td>
+    </tr>
+    <tr>
+        <td><strong>Get-StudentAccessStatus</strong></td>
+        <td><span class="badge badge-manual">Manual</span></td>
+        <td>Report: shows enabled/disabled status of all students</td>
+    </tr>
+    <tr>
+        <td><strong>Import-Students</strong></td>
+        <td><span class="badge badge-manual">Manual</span></td>
+        <td>Bulk import students from CSV file</td>
+    </tr>
+</table>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="azure-portal">2. Azure Portal &mdash; Navigating Your Resources</h2>
+
+<h3>How to Find the Automation Account</h3>
+<ol>
+    <li>Go to <a href="https://portal.azure.com">https://portal.azure.com</a></li>
+    <li>Sign in with your admin account</li>
+    <li>In the search bar at the top, type <strong>&ldquo;Automation Accounts&rdquo;</strong></li>
+    <li>Click on your automation account (e.g., <code>aa-sam-prod-001</code>)</li>
+</ol>
+
+<h3>Key Sections in the Automation Account</h3>
+<table>
+    <tr><th>Section</th><th>Left Menu</th><th>What It Shows</th></tr>
+    <tr><td><strong>Runbooks</strong></td><td>Process Automation &rarr; Runbooks</td><td>All scripts (click to view, edit, or run)</td></tr>
+    <tr><td><strong>Jobs</strong></td><td>Process Automation &rarr; Jobs</td><td>History of all script executions (status, output, errors)</td></tr>
+    <tr><td><strong>Schedules</strong></td><td>Shared Resources &rarr; Schedules</td><td>All timers that trigger runbooks</td></tr>
+    <tr><td><strong>Variables</strong></td><td>Shared Resources &rarr; Variables</td><td>Configuration values (policies, IDs, etc.)</td></tr>
+    <tr><td><strong>Modules</strong></td><td>Shared Resources &rarr; Modules</td><td>Installed PowerShell modules (Microsoft.Graph)</td></tr>
+</table>
+
+<div class="info">
+    <strong>&#128161; Bookmark tip:</strong> Bookmark your Automation Account page in your browser for quick access: <code>https://portal.azure.com/#@yourtenant/resource/subscriptions/.../automationAccounts/...</code>
+</div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="daily-ops">3. Daily Operations (Automatic)</h2>
+
+<p>The solution runs <strong>fully automatically</strong>. You do not need to do anything on a daily basis. However, it&rsquo;s good practice to check the job history occasionally.</p>
+
+<h3>How to Check if Jobs are Running</h3>
+<ol>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Jobs</strong></li>
+    <li>You should see recent jobs with status <span style="color: #107C10; font-weight: bold;">Completed &#9989;</span></li>
+    <li>Click any job to see its output (how many students were enabled/disabled)</li>
+</ol>
+
+<h3>Job Status Meanings</h3>
+<table>
+    <tr><th>Status</th><th>Meaning</th><th>Action Required?</th></tr>
+    <tr><td style="color: #107C10; font-weight: bold;">&#9989; Completed</td><td>Job finished successfully</td><td>No</td></tr>
+    <tr><td style="color: #0078D4;">&#128260; Running</td><td>Job is currently executing</td><td>No (wait)</td></tr>
+    <tr><td style="color: #D13438; font-weight: bold;">&#10060; Failed</td><td>Job encountered an error</td><td><strong>Yes</strong> &mdash; check output for details</td></tr>
+    <tr><td style="color: #FFB900;">&#9208;&#65039; Suspended</td><td>Job was paused</td><td>Check why</td></tr>
+    <tr><td style="color: #605E5C;">&#9203; Queued</td><td>Waiting to start</td><td>No (wait)</td></tr>
+</table>
+
+<h3>Sample Job Output (Apply-SchedulePolicies)</h3>
+<pre>
+&#9989; Connected to Microsoft Graph (Tenant: xxxxxxxx)
+&#128203; Loaded policies from Automation Variable
+   Found 3 policy/policies
+&#9208;&#65039;  1 student(s) currently suspended (will be skipped)
+
+&#128337; Current time: 08:15 (Wednesday)
+&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;
+
+&#128204; Policy: Standard School Hours (07:55 &ndash; 16:05)
+   Days: Monday, Tuesday, Wednesday, Thursday, Friday
+   Groups: 4
+   &#9989; Within access window &mdash; enabling students
+   Group abc123 : 28 member(s)
+      &#9989; Enabled: Emma Hansen
+      &#9989; Enabled: Noah Johansen
+      ...
+
+&#128204; Policy: Extended Hours (07:55 &ndash; 18:00)
+   Special group for after-school programs...
+
+&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;
+&#128202; Summary:
+   Enabled:  345
+   Disabled: 0
+   Skipped (suspended): 1
+</pre>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="schedule-management">4. Managing Schedules &amp; Policies</h2>
+
+<h3>Understanding Schedule Policies</h3>
+<p>Schedule policies define <strong>when</strong> students in specific class groups should have access. The policies are stored as a <strong>JSON variable</strong> in the Automation Account.</p>
+
+<table>
+    <tr><th>Field</th><th>Example</th><th>Description</th></tr>
+    <tr><td><code>name</code></td><td>Standard School Hours</td><td>Friendly name for the policy</td></tr>
+    <tr><td><code>enableTime</code></td><td>07:55</td><td>Time when student accounts are enabled (24h format)</td></tr>
+    <tr><td><code>disableTime</code></td><td>16:05</td><td>Time when student accounts are disabled</td></tr>
+    <tr><td><code>daysOfWeek</code></td><td>["Monday","Tuesday",...]</td><td>Which days the policy applies</td></tr>
+    <tr><td><code>isActive</code></td><td>true / false</td><td>Whether the policy is currently active</td></tr>
+    <tr><td><code>groupIds</code></td><td>["abc123-...","def456-..."]</td><td>Entra ID group IDs this policy applies to</td></tr>
+</table>
+
+<h3>How to View Current Policies</h3>
+<ol>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Variables</strong></li>
+    <li>Find the variable named <code>SchedulePolicies</code></li>
+    <li>Click on it to see the current JSON value</li>
+</ol>
+
+<h3>How to Change Schedule Times</h3>
+<div class="info">
+    <strong>Example:</strong> Change school hours from 07:55&ndash;16:05 to 08:00&ndash;15:30
+</div>
+<ol>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Variables</strong></li>
+    <li>Click on <code>SchedulePolicies</code></li>
+    <li>Click <strong>&ldquo;Edit&rdquo;</strong></li>
+    <li>Find the policy and change <code>"enableTime":"07:55"</code> to <code>"enableTime":"08:00"</code> and <code>"disableTime":"16:05"</code> to <code>"disableTime":"15:30"</code></li>
+    <li>Click <strong>&ldquo;Save&rdquo;</strong></li>
+</ol>
+<div class="tip">
+    <strong>&#9989; Changes take effect on the next 15-minute run.</strong> No restart needed.
+</div>
+
+<h3>How to Create a New Policy</h3>
+<p>For example, an &ldquo;Extended Hours&rdquo; policy for after-school program students:</p>
+<ol>
+    <li>Go to <strong>Variables</strong> &rarr; <code>SchedulePolicies</code> &rarr; <strong>Edit</strong></li>
+    <li>Add a new entry to the JSON array:</li>
+</ol>
+<pre>{
+  "name": "After-School Program",
+  "enableTime": "07:55",
+  "disableTime": "18:00",
+  "daysOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+  "isActive": true,
+  "groupIds": ["&lt;group-id-for-afterschool-students&gt;"]
+}</pre>
+
+<h3>How to Add a Class Group to a Policy</h3>
+<ol>
+    <li>First, find the <strong>Group ID</strong>:
+        <ul>
+            <li>Go to <a href="https://entra.microsoft.com">Entra Admin Center</a> &rarr; <strong>Groups</strong></li>
+            <li>Search for the class group (e.g., &ldquo;Class 8A&rdquo;)</li>
+            <li>Click on it and copy the <strong>Object ID</strong></li>
+        </ul>
+    </li>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Variables</strong> &rarr; <code>SchedulePolicies</code></li>
+    <li>Add the group ID to the <code>groupIds</code> array of the desired policy</li>
+    <li>Save</li>
+</ol>
+
+<h3>Common Schedule Scenarios</h3>
+<table>
+    <tr><th>Scenario</th><th>How to Handle</th></tr>
+    <tr>
+        <td>Change school start time</td>
+        <td>Edit <code>enableTime</code> in the policy</td>
+    </tr>
+    <tr>
+        <td>Change school end time</td>
+        <td>Edit <code>disableTime</code> in the policy</td>
+    </tr>
+    <tr>
+        <td>Half-day Friday</td>
+        <td>Create a separate policy for Friday with <code>"daysOfWeek":["Friday"]</code> and earlier <code>disableTime</code></td>
+    </tr>
+    <tr>
+        <td>Special group needs different hours</td>
+        <td>Create a new policy with different times and assign that group&rsquo;s ID</td>
+    </tr>
+    <tr>
+        <td>Holiday / no school</td>
+        <td>Set <code>"isActive": false</code> on the policy, or remove the specific days</td>
+    </tr>
+    <tr>
+        <td>Exam period (24/7 access)</td>
+        <td>Create an exam policy with <code>"enableTime":"00:00"</code> and <code>"disableTime":"23:59"</code></td>
+    </tr>
+</table>
+
+<h3>Full Policy JSON Example</h3>
+<pre>[
+  {
+    "name": "Standard School Hours",
+    "enableTime": "07:55",
+    "disableTime": "16:05",
+    "daysOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+    "isActive": true,
+    "groupIds": [
+      "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+      "cccccccc-cccc-cccc-cccc-cccccccccccc",
+      "dddddddd-dddd-dddd-dddd-dddddddddddd"
+    ]
+  },
+  {
+    "name": "Extended Hours (After-School)",
+    "enableTime": "07:55",
+    "disableTime": "18:00",
+    "daysOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+    "isActive": true,
+    "groupIds": [
+      "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"
+    ]
+  },
+  {
+    "name": "Exam Period (24/7)",
+    "enableTime": "00:00",
+    "disableTime": "23:59",
+    "daysOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "isActive": false,
+    "groupIds": [
+      "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+      "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
+    ]
+  }
+]</pre>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="runbooks">5. Runbooks &mdash; What They Do &amp; How to Run Them</h2>
+
+<h3>How to Run a Runbook Manually</h3>
+<ol>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Runbooks</strong></li>
+    <li>Click on the runbook name</li>
+    <li>Click <strong>&ldquo;Start&rdquo;</strong></li>
+    <li>Fill in any parameters (if required)</li>
+    <li>Click <strong>&ldquo;OK&rdquo;</strong></li>
+    <li>Wait for the job to complete and view the output</li>
+</ol>
+
+<h3>Apply-SchedulePolicies</h3>
+<table>
+    <tr><td style="width: 25%; font-weight: bold;">Purpose</td><td>Main automation &mdash; enables/disables student accounts based on current time vs. schedule policy</td></tr>
+    <tr><td style="font-weight: bold;">Scheduled</td><td>Every 15 minutes (automatic)</td></tr>
+    <tr><td style="font-weight: bold;">Manual use</td><td>Run immediately after changing policies to apply changes now</td></tr>
+    <tr><td style="font-weight: bold;">Parameters</td><td><code>PolicyOverride</code> (optional) &mdash; JSON string to test a policy without saving it</td></tr>
+</table>
+
+<h3>Process-Suspensions</h3>
+<table>
+    <tr><td style="width: 25%; font-weight: bold;">Purpose</td><td>Checks all suspended students and re-enables accounts whose suspension has expired</td></tr>
+    <tr><td style="font-weight: bold;">Scheduled</td><td>Daily at 06:00</td></tr>
+    <tr><td style="font-weight: bold;">Manual use</td><td>Run after manually lifting a suspension, or to check suspension status</td></tr>
+    <tr><td style="font-weight: bold;">Parameters</td><td>None</td></tr>
+</table>
+
+<h3>Import-Students</h3>
+<table>
+    <tr><td style="width: 25%; font-weight: bold;">Purpose</td><td>Bulk create student accounts from CSV and add them to class groups</td></tr>
+    <tr><td style="font-weight: bold;">Scheduled</td><td>Manual only (on-demand)</td></tr>
+    <tr><td style="font-weight: bold;">Parameters</td><td>
+        <code>CsvBlobUrl</code> &mdash; URL to CSV in Azure Blob Storage (with SAS token)<br>
+        <code>CsvContent</code> &mdash; Inline CSV text (for small imports)<br>
+        <code>DefaultPassword</code> &mdash; Default password for new accounts (default: Welcome2026!Student)
+    </td></tr>
+    <tr><td style="font-weight: bold;">CSV Format</td><td>
+        <pre>FirstName,LastName,Class,Department
+Emma,Hansen,Class-8A,8th Grade
+Noah,Johansen,Class-9B,9th Grade</pre>
+        The &ldquo;Class&rdquo; column must match the <strong>display name</strong> of a security group in Entra ID.
+    </td></tr>
+</table>
+
+<h3>Enable-StudentAccess / Disable-StudentAccess</h3>
+<table>
+    <tr><td style="width: 25%; font-weight: bold;">Purpose</td><td>Emergency enable/disable ALL students in the main student group immediately</td></tr>
+    <tr><td style="font-weight: bold;">Scheduled</td><td>Manual only (emergency use)</td></tr>
+    <tr><td style="font-weight: bold;">When to use</td><td>Security incident, testing, or when you need to override all policies temporarily</td></tr>
+</table>
+
+<h3>Get-StudentAccessStatus</h3>
+<table>
+    <tr><td style="width: 25%; font-weight: bold;">Purpose</td><td>Generate a report showing enabled/disabled status of all students</td></tr>
+    <tr><td style="font-weight: bold;">Scheduled</td><td>Manual only</td></tr>
+    <tr><td style="font-weight: bold;">Output</td><td>List of all students with their current account status</td></tr>
+</table>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="student-management">6. Student Management (Groups, Transfers, New Students)</h2>
+
+<h3>How Students Are Organized</h3>
+<p>Students are organized into <strong>Entra ID security groups</strong>, one per class:</p>
+<table>
+    <tr><th>Group Name</th><th>Members</th><th>Schedule Policy</th></tr>
+    <tr><td>Class-8A</td><td>Students in class 8A</td><td>Standard School Hours</td></tr>
+    <tr><td>Class-8B</td><td>Students in class 8B</td><td>Standard School Hours</td></tr>
+    <tr><td>Class-9A</td><td>Students in class 9A</td><td>Standard School Hours</td></tr>
+    <tr><td>After-School-Program</td><td>Selected students</td><td>Extended Hours</td></tr>
+    <tr><td>All-Students</td><td>All students (parent group)</td><td>Used for emergency enable/disable</td></tr>
+</table>
+
+<div class="tip">
+    <strong>&#128161; Key concept:</strong> A student&rsquo;s schedule is determined by which <strong>group</strong> they are in. Moving a student to a different group automatically changes their schedule. If a student is in multiple groups, the most permissive policy wins (longest access window).
+</div>
+
+<h3>Add a New Student (Single)</h3>
+<h4>Via Entra Admin Center</h4>
+<ol>
+    <li>Go to <a href="https://entra.microsoft.com">https://entra.microsoft.com</a></li>
+    <li>Navigate to <strong>Users</strong> &rarr; <strong>All users</strong> &rarr; <strong>+ New user</strong> &rarr; <strong>Create new user</strong></li>
+    <li>Fill in:
+        <ul>
+            <li><strong>User principal name:</strong> <code>firstname.lastname@yourdomain.no</code></li>
+            <li><strong>Display name:</strong> Firstname Lastname</li>
+            <li><strong>Job title:</strong> Student</li>
+            <li><strong>Department:</strong> Class 8A (or appropriate)</li>
+        </ul>
+    </li>
+    <li>Set initial password (force change on first sign-in)</li>
+    <li>Click <strong>Create</strong></li>
+    <li>Then add the user to their class group:
+        <ul>
+            <li>Go to <strong>Groups</strong> &rarr; find the class group &rarr; <strong>Members</strong> &rarr; <strong>+ Add members</strong></li>
+            <li>Search for the student and add them</li>
+            <li>Also add them to the <strong>All-Students</strong> group</li>
+        </ul>
+    </li>
+</ol>
+
+<h3>Add Multiple Students (Bulk Import)</h3>
+<h4>Option 1: Using the Import-Students Runbook</h4>
+<ol>
+    <li>Prepare a CSV file:
+        <pre>FirstName,LastName,Class,Department
+Emma,Hansen,Class-8A,8th Grade
+Noah,Johansen,Class-8A,8th Grade
+Sofia,Nilsen,Class-9B,9th Grade</pre>
+    </li>
+    <li>Upload CSV to Azure Blob Storage or paste as inline content</li>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Runbooks</strong> &rarr; <strong>Import-Students</strong></li>
+    <li>Click <strong>&ldquo;Start&rdquo;</strong></li>
+    <li>Provide the CSV blob URL or paste CSV content</li>
+    <li>Run and review the output for temp passwords</li>
+</ol>
+
+<h4>Option 2: Via Azure Portal Bulk Upload</h4>
+<ol>
+    <li>Go to <a href="https://entra.microsoft.com">Entra Admin Center</a> &rarr; <strong>Users</strong> &rarr; <strong>Bulk operations</strong> &rarr; <strong>Bulk create</strong></li>
+    <li>Download the CSV template</li>
+    <li>Fill in student details</li>
+    <li>Upload and submit</li>
+    <li>Then manually add students to class groups</li>
+</ol>
+
+<h3>Transfer a Student to a Different Class</h3>
+<div class="info">
+    <strong>Scenario:</strong> A student moves from Class 8A to Class 8B mid-year.
+</div>
+<ol>
+    <li>Go to <a href="https://entra.microsoft.com">Entra Admin Center</a> &rarr; <strong>Groups</strong></li>
+    <li>Find <strong>Class-8A</strong> &rarr; <strong>Members</strong> &rarr; Select the student &rarr; <strong>Remove</strong></li>
+    <li>Find <strong>Class-8B</strong> &rarr; <strong>Members</strong> &rarr; <strong>+ Add members</strong> &rarr; Search and add the student</li>
+</ol>
+<div class="tip">
+    <strong>&#9989; That&rsquo;s it!</strong> The student will automatically follow Class 8B&rsquo;s schedule policy from the next 15-minute run. No other changes needed.
+</div>
+
+<h4>Transfer via PowerShell</h4>
+<pre># Connect with appropriate permissions
+Connect-MgGraph -Scopes "GroupMember.ReadWrite.All"
+
+$studentId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"  # Student's user ID
+$oldGroupId = "aaaaaaaa-..."  # Class-8A group ID
+$newGroupId = "bbbbbbbb-..."  # Class-8B group ID
+
+# Remove from old group
+Remove-MgGroupMemberByRef -GroupId $oldGroupId -DirectoryObjectId $studentId
+
+# Add to new group
+New-MgGroupMember -GroupId $newGroupId -DirectoryObjectId $studentId
+
+Write-Host "Student transferred successfully"</pre>
+
+<h3>Add Student to a Special Group (e.g., After-School Program)</h3>
+<ol>
+    <li>Go to <strong>Groups</strong> &rarr; find &ldquo;After-School-Program&rdquo; &rarr; <strong>Members</strong> &rarr; <strong>+ Add members</strong></li>
+    <li>Search for the student and add them</li>
+</ol>
+<div class="info">
+    <strong>&#128161; The student keeps their class membership.</strong> They will now be in both groups. If the After-School-Program group has a policy with longer hours (e.g., until 18:00), the student gets the most permissive hours (enabled from 07:55 to 18:00).
+</div>
+
+<h3>Remove a Student (Graduated, Withdrawn, etc.)</h3>
+<ol>
+    <li>Remove from all class groups</li>
+    <li>Remove from the All-Students group</li>
+    <li>Optionally: disable or delete the user account in Entra</li>
+</ol>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="suspensions">7. Suspensions &amp; Temporary Blocks</h2>
+
+<h3>How Suspensions Work</h3>
+<p>A <strong>suspension</strong> temporarily disables a student&rsquo;s account regardless of schedule policies. The student&rsquo;s account stays disabled even during school hours. The suspension automatically lifts on the end date.</p>
+
+<h3>Suspend a Student</h3>
+<h4>Step 1: Disable the Account</h4>
+<ol>
+    <li>Go to <a href="https://entra.microsoft.com">Entra Admin Center</a> &rarr; <strong>Users</strong></li>
+    <li>Search for the student</li>
+    <li>Click on the student &rarr; <strong>Edit properties</strong></li>
+    <li>Set <strong>&ldquo;Account enabled&rdquo;</strong> to <strong>No</strong></li>
+    <li>Click <strong>Save</strong></li>
+</ol>
+
+<h4>Step 2: Add to the Suspended Students List</h4>
+<p>This ensures the Apply-SchedulePolicies runbook does NOT re-enable them during school hours.</p>
+<ol>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Variables</strong></li>
+    <li>Click on <code>SuspendedStudents</code></li>
+    <li>Click <strong>&ldquo;Edit&rdquo;</strong></li>
+    <li>Add the student to the JSON array:</li>
+</ol>
+<pre>[
+  {
+    "studentId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "studentName": "Emma Hansen",
+    "studentUPN": "emma.hansen@biss.no",
+    "reason": "Disciplinary - 3 day suspension",
+    "startDate": "2026-02-12",
+    "endDate": "2026-02-15",
+    "isActive": true
+  }
+]</pre>
+<ol start="5">
+    <li>Click <strong>Save</strong></li>
+</ol>
+<div class="tip">
+    <strong>&#9989; The Process-Suspensions runbook</strong> will automatically re-enable this student on February 15th (the endDate). You don&rsquo;t need to remember to do it manually.
+</div>
+
+<h3>Lift a Suspension Early</h3>
+<ol>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Variables</strong> &rarr; <code>SuspendedStudents</code></li>
+    <li>Find the student and set <code>"isActive": false</code></li>
+    <li>Save</li>
+    <li>Then either:
+        <ul>
+            <li>Wait for the next Apply-SchedulePolicies run (it will re-enable them if within school hours), <strong>OR</strong></li>
+            <li>Manually enable the account in Entra Admin Center</li>
+        </ul>
+    </li>
+</ol>
+
+<h3>View All Current Suspensions</h3>
+<ol>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Variables</strong> &rarr; <code>SuspendedStudents</code></li>
+    <li>View the JSON &mdash; active suspensions have <code>"isActive": true</code></li>
+</ol>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="annual-tasks">8. Annual Tasks (Class Promotion, Year Start/End)</h2>
+
+<h3>End of School Year</h3>
+
+<h4>Step 1: Disable All Schedules for Summer</h4>
+<ol>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Variables</strong> &rarr; <code>SchedulePolicies</code></li>
+    <li>Set all policies to <code>"isActive": false</code></li>
+    <li>Save</li>
+</ol>
+<p>Or alternatively, run <strong>Disable-StudentAccess</strong> once and then disable the Apply-SchedulePolicies schedule.</p>
+
+<h4>Step 2: Clean Up Graduated Students</h4>
+<ol>
+    <li>In <a href="https://entra.microsoft.com">Entra Admin Center</a> &rarr; <strong>Groups</strong></li>
+    <li>For each graduating class group (e.g., Class-10):
+        <ul>
+            <li>Remove all members or delete the group</li>
+            <li>Disable or delete graduated user accounts</li>
+        </ul>
+    </li>
+    <li>Remove the graduated group IDs from the SchedulePolicies variable</li>
+</ol>
+
+<h3>Annual Class Promotion (All Students Move Up)</h3>
+<div class="info">
+    <strong>Scenario:</strong> At the start of the new school year, Class 8A students become Class 9A, Class 9A becomes Class 10A, etc.
+</div>
+
+<h4>Option 1: Rename Groups (Simplest)</h4>
+<p>If students stay together as a group, just rename the group:</p>
+<ol>
+    <li>Go to <strong>Groups</strong> &rarr; <strong>Class-8A</strong> &rarr; <strong>Properties</strong></li>
+    <li>Change <strong>Display name</strong> from &ldquo;Class-8A&rdquo; to &ldquo;Class-9A&rdquo;</li>
+    <li>Save</li>
+</ol>
+<div class="tip">
+    <strong>&#128161; The Group ID stays the same</strong>, so no changes needed in SchedulePolicies. Students automatically continue with the same schedule.
+</div>
+
+<h4>Option 2: Move Students Between Groups (When Classes Reshuffle)</h4>
+<p>If students are reorganized into different class combinations:</p>
+<ol>
+    <li>For each old group, move members to their new groups (see &ldquo;Transfer a Student&rdquo; above)</li>
+    <li>Update the SchedulePolicies variable if new group IDs are introduced</li>
+</ol>
+
+<h4>Via PowerShell (Bulk Promotion)</h4>
+<pre># Promote all students from Class-8A to Class-9A
+$oldGroupId = "aaaaaaaa-..."  # Class-8A
+$newGroupId = "bbbbbbbb-..."  # Class-9A
+
+$members = Get-MgGroupMember -GroupId $oldGroupId -All
+
+foreach ($member in $members) {
+    # Add to new group
+    New-MgGroupMember -GroupId $newGroupId -DirectoryObjectId $member.Id -ErrorAction SilentlyContinue
+    # Remove from old group
+    Remove-MgGroupMemberByRef -GroupId $oldGroupId -DirectoryObjectId $member.Id
+    Write-Host "Moved: $($member.Id)"
+}
+
+Write-Host "Promotion complete: $($members.Count) students moved"</pre>
+
+<h3>Start of New School Year</h3>
+<ol>
+    <li><strong>Import new students</strong> using the Import-Students runbook (see Section 6)</li>
+    <li><strong>Create new class groups</strong> if needed (Entra Admin Center &rarr; Groups &rarr; + New group)</li>
+    <li><strong>Update SchedulePolicies</strong> with any new group IDs</li>
+    <li><strong>Re-activate policies</strong>: set <code>"isActive": true</code></li>
+    <li><strong>Test</strong>: Run Get-StudentAccessStatus to verify everything is set up correctly</li>
+</ol>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="monitoring">9. Monitoring &amp; Alerts</h2>
+
+<h3>Set Up Email Alerts for Failed Jobs</h3>
+<ol>
+    <li>In the Azure Portal, go to your <strong>Automation Account</strong></li>
+    <li>Click <strong>Alerts</strong> in the left menu &rarr; <strong>+ Create</strong> &rarr; <strong>Alert rule</strong></li>
+    <li><strong>Condition:</strong>
+        <ul>
+            <li>Signal: <code>Total Jobs</code></li>
+            <li>Filter by Status = <code>Failed</code></li>
+        </ul>
+    </li>
+    <li><strong>Actions:</strong>
+        <ul>
+            <li>Create an Action Group &rarr; Add <strong>Email/SMS</strong> notification</li>
+            <li>Enter your IT team email address</li>
+        </ul>
+    </li>
+    <li><strong>Alert rule name:</strong> &ldquo;Student Access Job Failed&rdquo;</li>
+    <li>Click <strong>Create</strong></li>
+</ol>
+<div class="tip">
+    <strong>&#128231; You&rsquo;ll receive an email</strong> any time a runbook fails, so you can investigate before it affects students.
+</div>
+
+<h3>Check Azure Costs</h3>
+<ol>
+    <li>Azure Portal &rarr; <strong>Cost Management + Billing</strong></li>
+    <li>Select your subscription &rarr; <strong>Cost analysis</strong></li>
+    <li>Set filter to your resource group</li>
+    <li>Expected cost: <strong>$0&ndash;5/month</strong> (well within the $2,000 grant)</li>
+</ol>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="troubleshooting">10. Troubleshooting</h2>
+
+<h3>Common Issues &amp; Solutions</h3>
+
+<h4>&#10060; Job Fails with &ldquo;Access Denied&rdquo;</h4>
+<div class="danger">
+    <strong>Cause:</strong> The App Registration&rsquo;s client secret has expired, or permissions were revoked.
+</div>
+<p><strong>Solution:</strong></p>
+<ol>
+    <li>Go to <a href="https://entra.microsoft.com">Entra Admin Center</a> &rarr; <strong>App registrations</strong></li>
+    <li>Find the &ldquo;Student-Access-Automation&rdquo; app</li>
+    <li>Check <strong>Certificates &amp; secrets</strong> &mdash; is the secret expired?</li>
+    <li>If expired: create a new secret, then update the <code>ClientSecret</code> Automation Variable</li>
+    <li>Check <strong>API permissions</strong> &mdash; ensure admin consent is granted for all permissions</li>
+</ol>
+
+<h4>&#10060; Job Completes but &ldquo;0 members found&rdquo;</h4>
+<p><strong>Solution:</strong></p>
+<ol>
+    <li>Verify group IDs in <code>SchedulePolicies</code> are correct</li>
+    <li>Check that the groups actually have members in Entra Admin Center</li>
+    <li>Group type must be <strong>&ldquo;Security&rdquo;</strong> (not Microsoft 365 Group)</li>
+</ol>
+
+<h4>&#10060; Students Still Have Access After Disable Time</h4>
+<p><strong>Solution:</strong></p>
+<ol>
+    <li>Disabling an account may take <strong>up to 1 hour</strong> to fully propagate (token revocation)</li>
+    <li>Previously cached sessions/tokens continue until they expire</li>
+    <li>Check the Disable-StudentAccess runbook for the <code>RevokeTokens</code> setting (should be <code>true</code>)</li>
+</ol>
+
+<h4>&#10060; Suspended Student Gets Re-Enabled</h4>
+<p><strong>Solution:</strong></p>
+<ol>
+    <li>Verify the student is in the <code>SuspendedStudents</code> Automation Variable</li>
+    <li>Ensure <code>"isActive": true</code> is set</li>
+    <li>Check the student ID matches their actual Entra ID user ID</li>
+</ol>
+
+<h4>&#10060; Schedule Not Running</h4>
+<p><strong>Solution:</strong></p>
+<ol>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Schedules</strong></li>
+    <li>Verify the schedule is <strong>Enabled</strong></li>
+    <li>Verify the schedule is <strong>linked to a runbook</strong> (click the schedule, check &ldquo;Linked runbooks&rdquo;)</li>
+    <li>Verify the <strong>timezone</strong> is correct (should be your local timezone, e.g., W. Europe Standard Time)</li>
+</ol>
+
+<h3>How to View Detailed Error Logs</h3>
+<ol>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Jobs</strong></li>
+    <li>Click on the <strong>failed job</strong></li>
+    <li>Select the <strong>&ldquo;Output&rdquo;</strong> tab to see the script output</li>
+    <li>Select <strong>&ldquo;Errors&rdquo;</strong> tab to see error details</li>
+    <li>Select <strong>&ldquo;All Logs&rdquo;</strong> for complete logging</li>
+</ol>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="maintenance">11. Maintenance Tasks</h2>
+
+<h3>Weekly</h3>
+<table>
+    <tr><th>Task</th><th>How</th><th>Purpose</th></tr>
+    <tr><td>Check job history</td><td>Automation Account &rarr; Jobs</td><td>Ensure jobs complete successfully</td></tr>
+    <tr><td>Review any failed jobs</td><td>Filter by &ldquo;Failed&rdquo;</td><td>Catch issues early</td></tr>
+</table>
+
+<h3>Monthly</h3>
+<table>
+    <tr><th>Task</th><th>How</th><th>Purpose</th></tr>
+    <tr><td>Review student groups</td><td>Entra Admin Center &rarr; Groups</td><td>Ensure membership is current</td></tr>
+    <tr><td>Check Azure costs</td><td>Cost Management &rarr; Cost analysis</td><td>Verify within grant budget</td></tr>
+    <tr><td>Review suspended students</td><td>Variables &rarr; SuspendedStudents</td><td>Clean up old entries</td></tr>
+</table>
+
+<h3>Annual</h3>
+<table>
+    <tr><th>Task</th><th>How</th><th>Priority</th></tr>
+    <tr>
+        <td><strong>Rotate client secret</strong></td>
+        <td>
+            1. Entra &rarr; App registrations &rarr; Your app &rarr; Certificates &amp; secrets<br>
+            2. Create new secret (set expiry to 12 months)<br>
+            3. Copy the new secret value<br>
+            4. Update <code>ClientSecret</code> in Automation Variables<br>
+            5. Test: Run Get-StudentAccessStatus<br>
+            6. Delete the old secret
+        </td>
+        <td style="color: #D13438; font-weight: bold;">&#128680; Critical</td>
+    </tr>
+    <tr>
+        <td><strong>Class promotion</strong></td>
+        <td>See Section 8</td>
+        <td style="color: #FFB900; font-weight: bold;">&#9888; Important</td>
+    </tr>
+    <tr>
+        <td><strong>Import new students</strong></td>
+        <td>See Section 6 (Import-Students runbook)</td>
+        <td style="color: #FFB900; font-weight: bold;">&#9888; Important</td>
+    </tr>
+    <tr>
+        <td><strong>Clean up graduated students</strong></td>
+        <td>Remove from groups, disable/delete accounts</td>
+        <td>Recommended</td>
+    </tr>
+    <tr>
+        <td><strong>Review schedule policies</strong></td>
+        <td>Verify times still match school schedule</td>
+        <td>Recommended</td>
+    </tr>
+</table>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="emergency">12. Emergency Procedures</h2>
+
+<h3>&#128680; Enable ALL Students Immediately</h3>
+<p><strong>Scenario:</strong> School needs all students enabled (unplanned event, exam, etc.)</p>
+<ol>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Runbooks</strong> &rarr; <strong>Enable-StudentAccess</strong></li>
+    <li>Click <strong>&ldquo;Start&rdquo;</strong></li>
+    <li>Wait for completion</li>
+</ol>
+<div class="warn">
+    <strong>&#9888;&#65039; Remember:</strong> The Apply-SchedulePolicies runbook runs every 15 minutes and may disable students again. To keep them enabled, either:
+    <ul>
+        <li>Set all policies to <code>"isActive": false</code>, <strong>OR</strong></li>
+        <li>Temporarily set all policies&rsquo; <code>disableTime</code> to <code>"23:59"</code></li>
+    </ul>
+</div>
+
+<h3>&#128680; Disable ALL Students Immediately</h3>
+<p><strong>Scenario:</strong> Security incident, lockdown</p>
+<ol>
+    <li>Go to <strong>Runbooks</strong> &rarr; <strong>Disable-StudentAccess</strong> &rarr; <strong>Start</strong></li>
+    <li>Then set all policies to <code>"isActive": false</code> so they don&rsquo;t get re-enabled</li>
+</ol>
+
+<h3>&#128680; Stop All Automation</h3>
+<p><strong>Scenario:</strong> Need to completely halt the system</p>
+<ol>
+    <li>Go to <strong>Automation Account</strong> &rarr; <strong>Schedules</strong></li>
+    <li>Click each schedule and set <strong>Enabled</strong> = <strong>No</strong></li>
+    <li>This stops all scheduled runbook executions</li>
+</ol>
+
+<h3>&#128680; Enable/Disable a Single Student</h3>
+<p>Via Entra Admin Center:</p>
+<ol>
+    <li>Go to <strong>Users</strong> &rarr; Find the student</li>
+    <li>Click <strong>Edit properties</strong></li>
+    <li>Toggle <strong>&ldquo;Account enabled&rdquo;</strong></li>
+    <li>Save</li>
+</ol>
+<div class="warn">
+    <strong>&#9888;&#65039; If you enable a student manually outside school hours</strong>, the Apply-SchedulePolicies runbook will disable them again on the next run (within 15 min). To keep them enabled, add them to the <code>SuspendedStudents</code> variable with a far-future <code>endDate</code> (this exempts them from automation) &mdash; but set the account to <strong>enabled</strong> in Entra instead of disabled.
+</div>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<h2 id="contacts">13. Support &amp; Reference</h2>
+
+<h3>Important URLs</h3>
+<table>
+    <tr><th>Resource</th><th>URL</th></tr>
+    <tr><td>Azure Portal</td><td><a href="https://portal.azure.com">https://portal.azure.com</a></td></tr>
+    <tr><td>Entra Admin Center</td><td><a href="https://entra.microsoft.com">https://entra.microsoft.com</a></td></tr>
+    <tr><td>Microsoft 365 Admin Center</td><td><a href="https://admin.microsoft.com">https://admin.microsoft.com</a></td></tr>
+    <tr><td>Nonprofit Hub</td><td><a href="https://nonprofit.microsoft.com">https://nonprofit.microsoft.com</a></td></tr>
+    <tr><td>GitHub Repository</td><td><a href="https://github.com/NorwegianPear/StudentTime-Management-M365">github.com/NorwegianPear/StudentTime-Management-M365</a></td></tr>
+</table>
+
+<h3>Important IDs (Fill in After Deployment)</h3>
+<table>
+    <tr><th>Item</th><th>Value</th></tr>
+    <tr><td>Tenant ID</td><td><code>________________________________</code></td></tr>
+    <tr><td>Subscription ID</td><td><code>________________________________</code></td></tr>
+    <tr><td>Resource Group</td><td><code>________________________________</code></td></tr>
+    <tr><td>Automation Account Name</td><td><code>________________________________</code></td></tr>
+    <tr><td>App Registration Client ID</td><td><code>________________________________</code></td></tr>
+    <tr><td>Main Student Group ID</td><td><code>________________________________</code></td></tr>
+</table>
+
+<h3>Automation Variable Reference</h3>
+<table>
+    <tr><th>Variable Name</th><th>Type</th><th>Description</th></tr>
+    <tr><td><code>TenantId</code></td><td>String</td><td>Your Entra ID tenant ID</td></tr>
+    <tr><td><code>ClientId</code></td><td>String</td><td>App Registration client/application ID</td></tr>
+    <tr><td><code>ClientSecret</code></td><td>Encrypted</td><td>App Registration client secret (rotate annually)</td></tr>
+    <tr><td><code>StudentGroupId</code></td><td>String</td><td>Main &ldquo;All-Students&rdquo; group ID</td></tr>
+    <tr><td><code>TenantDomain</code></td><td>String</td><td>Your domain (e.g., biss.no)</td></tr>
+    <tr><td><code>SchedulePolicies</code></td><td>JSON String</td><td>Array of schedule policies (see Section 4)</td></tr>
+    <tr><td><code>SuspendedStudents</code></td><td>JSON String</td><td>Array of currently suspended students (see Section 7)</td></tr>
+    <tr><td><code>RevokeTokens</code></td><td>Boolean</td><td>Whether to revoke sessions on disable (default: true)</td></tr>
+</table>
+
+<h3>Support Contacts</h3>
+<table>
+    <tr><th>Issue</th><th>Contact</th></tr>
+    <tr><td>Solution setup &amp; configuration</td><td>Uy Le Phan, Atea AS (<a href="mailto:uy.le.phan@atea.no">uy.le.phan@atea.no</a>)</td></tr>
+    <tr><td>Azure billing &amp; subscription</td><td>Microsoft Support via Azure Portal</td></tr>
+    <tr><td>Entra ID / user management</td><td>BISS IT Administrator</td></tr>
+    <tr><td>Nonprofit grant questions</td><td><a href="https://aka.ms/ngosupportform">Microsoft Nonprofit Support</a></td></tr>
+</table>
+
+<hr style="margin-top: 40px;">
+<p style="color: #888; font-size: 12px;">Document generated by Atea AS for BISS. Last updated: February 2026.</p>
+
+</body>
+</html>

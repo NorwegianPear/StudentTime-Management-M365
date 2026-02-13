@@ -19,25 +19,18 @@ Import-Module Microsoft.Graph.Authentication
 Import-Module Microsoft.Graph.Users
 Import-Module Microsoft.Graph.Groups
 
-# Get encrypted variables from Azure Automation
-$TenantId = Get-AutomationVariable -Name 'TenantId'
-$ClientId = Get-AutomationVariable -Name 'ClientId'
-$ClientSecret = Get-AutomationVariable -Name 'ClientSecret'
+# Get automation variables
 $StudentGroupId = Get-AutomationVariable -Name 'StudentGroupId'
 
 # Validate required variables
-if (-not $TenantId -or -not $ClientId -or -not $ClientSecret -or -not $StudentGroupId) {
-    Write-Error "Missing required automation variables. Please ensure TenantId, ClientId, ClientSecret, and StudentGroupId are configured."
+if (-not $StudentGroupId) {
+    Write-Error "Missing required automation variable 'StudentGroupId'."
     exit 1
 }
 
 try {
-    # Convert secret to secure string and create credential
-    $SecureSecret = ConvertTo-SecureString -String $ClientSecret -AsPlainText -Force
-    $ClientSecretCredential = New-Object System.Management.Automation.PSCredential($ClientId, $SecureSecret)
-
-    # Connect to Microsoft Graph
-    Connect-MgGraph -TenantId $TenantId -ClientSecretCredential $ClientSecretCredential -NoWelcome
+    # Connect to Microsoft Graph using Managed Identity (no secrets needed)
+    Connect-MgGraph -Identity -NoWelcome
     
     Write-Output "============================================"
     Write-Output "Student Access Status Report"

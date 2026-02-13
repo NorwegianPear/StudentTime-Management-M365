@@ -10,13 +10,6 @@ param automationAccountName string = 'StudentAccessAutomation'
 @description('Azure AD Tenant ID')
 param tenantId string
 
-@description('Graph API Client ID (from App Registration)')
-param graphClientId string
-
-@description('Graph API Client Secret')
-@secure()
-param graphClientSecret string
-
 @description('Student Security Group Object ID')
 param studentGroupId string
 
@@ -31,6 +24,9 @@ param timeZone string = 'W. Europe Standard Time'
 
 @description('Whether to revoke tokens when disabling accounts')
 param revokeTokens bool = true
+
+@description('Base time for schedule calculation (defaults to now)')
+param baseTime string = utcNow()
 
 // Automation Account
 resource automationAccount 'Microsoft.Automation/automationAccounts@2023-11-01' = {
@@ -60,16 +56,6 @@ resource varTenantId 'Microsoft.Automation/automationAccounts/variables@2023-11-
   }
 }
 
-resource varClientId 'Microsoft.Automation/automationAccounts/variables@2023-11-01' = {
-  parent: automationAccount
-  name: 'ClientId'
-  properties: {
-    value: '"${graphClientId}"'
-    isEncrypted: false
-    description: 'Graph API Client ID'
-  }
-}
-
 resource varStudentGroupId 'Microsoft.Automation/automationAccounts/variables@2023-11-01' = {
   parent: automationAccount
   name: 'StudentGroupId'
@@ -87,17 +73,6 @@ resource varRevokeTokens 'Microsoft.Automation/automationAccounts/variables@2023
     value: '"${string(revokeTokens)}"'
     isEncrypted: false
     description: 'Whether to revoke tokens when disabling'
-  }
-}
-
-// Variable (encrypted)
-resource varClientSecret 'Microsoft.Automation/automationAccounts/variables@2023-11-01' = {
-  parent: automationAccount
-  name: 'ClientSecret'
-  properties: {
-    value: '"${graphClientSecret}"'
-    isEncrypted: true
-    description: 'Graph API Client Secret (encrypted)'
   }
 }
 
@@ -185,7 +160,7 @@ resource scheduleEnable 'Microsoft.Automation/automationAccounts/schedules@2023-
     frequency: 'Week'
     interval: 1
     timeZone: timeZone
-    startTime: dateTimeAdd(utcNow(), 'P1D', 'yyyy-MM-ddT${padLeft(string(enableHour), 2, '0')}:${padLeft(string(enableMinute), 2, '0')}:00Z')
+    startTime: dateTimeAdd(baseTime, 'P1D', 'yyyy-MM-ddT${padLeft(string(enableHour), 2, '0')}:${padLeft(string(enableMinute), 2, '0')}:00Z')
     advancedSchedule: {
       weekDays: [
         'Monday'
@@ -206,7 +181,7 @@ resource scheduleDisable 'Microsoft.Automation/automationAccounts/schedules@2023
     frequency: 'Week'
     interval: 1
     timeZone: timeZone
-    startTime: dateTimeAdd(utcNow(), 'P1D', 'yyyy-MM-ddT${padLeft(string(disableHour), 2, '0')}:${padLeft(string(disableMinute), 2, '0')}:00Z')
+    startTime: dateTimeAdd(baseTime, 'P1D', 'yyyy-MM-ddT${padLeft(string(disableHour), 2, '0')}:${padLeft(string(disableMinute), 2, '0')}:00Z')
     advancedSchedule: {
       weekDays: [
         'Monday'

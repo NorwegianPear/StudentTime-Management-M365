@@ -1,0 +1,511 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.39.26.7824",
+      "templateHash": "1791250270509433872"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for all resources"
+      }
+    },
+    "deploymentTarget": {
+      "type": "string",
+      "defaultValue": "StaticWebApp",
+      "allowedValues": [
+        "StaticWebApp",
+        "AppService"
+      ],
+      "metadata": {
+        "description": "Deployment target: StaticWebApp (recommended) or AppService"
+      }
+    },
+    "appName": {
+      "type": "string",
+      "defaultValue": "app-atea-sam-portal",
+      "metadata": {
+        "description": "Name of the portal app"
+      }
+    },
+    "swaSku": {
+      "type": "string",
+      "defaultValue": "Free",
+      "allowedValues": [
+        "Free",
+        "Standard"
+      ],
+      "metadata": {
+        "description": "Static Web App SKU (Free or Standard)"
+      }
+    },
+    "repositoryUrl": {
+      "type": "string",
+      "defaultValue": "https://github.com/NorwegianPear/StudentTime-Management-M365",
+      "metadata": {
+        "description": "GitHub repository URL"
+      }
+    },
+    "repositoryBranch": {
+      "type": "string",
+      "defaultValue": "main",
+      "metadata": {
+        "description": "GitHub branch"
+      }
+    },
+    "repositoryToken": {
+      "type": "securestring",
+      "defaultValue": "",
+      "metadata": {
+        "description": "GitHub token (optional)"
+      }
+    },
+    "appServiceSku": {
+      "type": "string",
+      "defaultValue": "B1",
+      "allowedValues": [
+        "F1",
+        "B1",
+        "B2",
+        "S1"
+      ],
+      "metadata": {
+        "description": "App Service Plan SKU"
+      }
+    },
+    "azureAdClientId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Entra ID Client ID"
+      }
+    },
+    "azureAdClientSecret": {
+      "type": "securestring",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Entra ID Client Secret"
+      }
+    },
+    "azureAdTenantId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Entra ID Tenant ID"
+      }
+    },
+    "nextAuthSecret": {
+      "type": "securestring",
+      "defaultValue": "",
+      "metadata": {
+        "description": "NextAuth secret"
+      }
+    },
+    "studentGroupId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Student Group ID"
+      }
+    }
+  },
+  "resources": [
+    {
+      "condition": "[equals(parameters('deploymentTarget'), 'StaticWebApp')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "deploy-portal-swa",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "staticWebAppName": {
+            "value": "[parameters('appName')]"
+          },
+          "sku": {
+            "value": "[parameters('swaSku')]"
+          },
+          "repositoryUrl": {
+            "value": "[parameters('repositoryUrl')]"
+          },
+          "repositoryBranch": {
+            "value": "[parameters('repositoryBranch')]"
+          },
+          "repositoryToken": {
+            "value": "[parameters('repositoryToken')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.39.26.7824",
+              "templateHash": "1140910126480858709"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Location for all resources"
+              }
+            },
+            "staticWebAppName": {
+              "type": "string",
+              "defaultValue": "app-atea-sam-portal",
+              "metadata": {
+                "description": "Name of the Static Web App"
+              }
+            },
+            "sku": {
+              "type": "string",
+              "defaultValue": "Free",
+              "allowedValues": [
+                "Free",
+                "Standard"
+              ],
+              "metadata": {
+                "description": "SKU for the Static Web App"
+              }
+            },
+            "repositoryUrl": {
+              "type": "string",
+              "defaultValue": "https://github.com/NorwegianPear/StudentTime-Management-M365",
+              "metadata": {
+                "description": "GitHub repository URL"
+              }
+            },
+            "repositoryBranch": {
+              "type": "string",
+              "defaultValue": "main",
+              "metadata": {
+                "description": "GitHub branch to deploy from"
+              }
+            },
+            "repositoryToken": {
+              "type": "securestring",
+              "defaultValue": "",
+              "metadata": {
+                "description": "GitHub token for deployment (optional - can be set later)"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Web/staticSites",
+              "apiVersion": "2023-12-01",
+              "name": "[parameters('staticWebAppName')]",
+              "location": "[parameters('location')]",
+              "sku": {
+                "name": "[parameters('sku')]",
+                "tier": "[parameters('sku')]"
+              },
+              "properties": {
+                "repositoryUrl": "[if(not(equals(parameters('repositoryToken'), '')), parameters('repositoryUrl'), null())]",
+                "branch": "[if(not(equals(parameters('repositoryToken'), '')), parameters('repositoryBranch'), null())]",
+                "repositoryToken": "[if(not(equals(parameters('repositoryToken'), '')), parameters('repositoryToken'), null())]",
+                "buildProperties": {
+                  "appLocation": "/portal",
+                  "apiLocation": "",
+                  "outputLocation": ".next",
+                  "appBuildCommand": "npm run build"
+                },
+                "stagingEnvironmentPolicy": "Enabled",
+                "allowConfigFileUpdates": true
+              }
+            }
+          ],
+          "outputs": {
+            "staticWebAppName": {
+              "type": "string",
+              "value": "[parameters('staticWebAppName')]"
+            },
+            "staticWebAppUrl": {
+              "type": "string",
+              "value": "[format('https://{0}', reference(resourceId('Microsoft.Web/staticSites', parameters('staticWebAppName')), '2023-12-01').defaultHostname)]"
+            },
+            "staticWebAppId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Web/staticSites', parameters('staticWebAppName'))]"
+            },
+            "defaultHostname": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Web/staticSites', parameters('staticWebAppName')), '2023-12-01').defaultHostname]"
+            }
+          }
+        }
+      }
+    },
+    {
+      "condition": "[equals(parameters('deploymentTarget'), 'AppService')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "deploy-portal-appservice",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "appServiceName": {
+            "value": "[parameters('appName')]"
+          },
+          "appServicePlanName": {
+            "value": "[format('asp-{0}', parameters('appName'))]"
+          },
+          "sku": {
+            "value": "[parameters('appServiceSku')]"
+          },
+          "azureAdClientId": {
+            "value": "[parameters('azureAdClientId')]"
+          },
+          "azureAdClientSecret": {
+            "value": "[parameters('azureAdClientSecret')]"
+          },
+          "azureAdTenantId": {
+            "value": "[parameters('azureAdTenantId')]"
+          },
+          "nextAuthSecret": {
+            "value": "[parameters('nextAuthSecret')]"
+          },
+          "studentGroupId": {
+            "value": "[parameters('studentGroupId')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.39.26.7824",
+              "templateHash": "5645182327767968841"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Location for all resources"
+              }
+            },
+            "appServiceName": {
+              "type": "string",
+              "defaultValue": "app-atea-sam-portal",
+              "metadata": {
+                "description": "Name of the App Service"
+              }
+            },
+            "appServicePlanName": {
+              "type": "string",
+              "defaultValue": "asp-atea-sam-portal",
+              "metadata": {
+                "description": "Name of the App Service Plan"
+              }
+            },
+            "sku": {
+              "type": "string",
+              "defaultValue": "B1",
+              "allowedValues": [
+                "F1",
+                "B1",
+                "B2",
+                "S1"
+              ],
+              "metadata": {
+                "description": "App Service Plan SKU"
+              }
+            },
+            "nodeVersion": {
+              "type": "string",
+              "defaultValue": "20-lts",
+              "metadata": {
+                "description": "Node.js version"
+              }
+            },
+            "azureAdClientId": {
+              "type": "string",
+              "metadata": {
+                "description": "Entra ID Client ID for the portal"
+              }
+            },
+            "azureAdClientSecret": {
+              "type": "securestring",
+              "metadata": {
+                "description": "Entra ID Client Secret for the portal"
+              }
+            },
+            "azureAdTenantId": {
+              "type": "string",
+              "metadata": {
+                "description": "Entra ID Tenant ID"
+              }
+            },
+            "nextAuthSecret": {
+              "type": "securestring",
+              "metadata": {
+                "description": "NextAuth secret for session encryption"
+              }
+            },
+            "studentGroupId": {
+              "type": "string",
+              "metadata": {
+                "description": "Student Security Group ID"
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Web/serverfarms",
+              "apiVersion": "2023-12-01",
+              "name": "[parameters('appServicePlanName')]",
+              "location": "[parameters('location')]",
+              "kind": "linux",
+              "sku": {
+                "name": "[parameters('sku')]"
+              },
+              "properties": {
+                "reserved": true
+              }
+            },
+            {
+              "type": "Microsoft.Web/sites",
+              "apiVersion": "2023-12-01",
+              "name": "[parameters('appServiceName')]",
+              "location": "[parameters('location')]",
+              "kind": "app,linux",
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
+                "httpsOnly": true,
+                "siteConfig": {
+                  "linuxFxVersion": "[format('NODE|{0}', parameters('nodeVersion'))]",
+                  "appCommandLine": "npm run start",
+                  "alwaysOn": "[not(equals(parameters('sku'), 'F1'))]",
+                  "ftpsState": "Disabled",
+                  "minTlsVersion": "1.2",
+                  "http20Enabled": true,
+                  "appSettings": [
+                    {
+                      "name": "AZURE_AD_CLIENT_ID",
+                      "value": "[parameters('azureAdClientId')]"
+                    },
+                    {
+                      "name": "AZURE_AD_CLIENT_SECRET",
+                      "value": "[parameters('azureAdClientSecret')]"
+                    },
+                    {
+                      "name": "AZURE_AD_TENANT_ID",
+                      "value": "[parameters('azureAdTenantId')]"
+                    },
+                    {
+                      "name": "NEXTAUTH_URL",
+                      "value": "[format('https://{0}.azurewebsites.net', parameters('appServiceName'))]"
+                    },
+                    {
+                      "name": "NEXTAUTH_SECRET",
+                      "value": "[parameters('nextAuthSecret')]"
+                    },
+                    {
+                      "name": "STUDENT_GROUP_ID",
+                      "value": "[parameters('studentGroupId')]"
+                    },
+                    {
+                      "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                      "value": "~20"
+                    }
+                  ]
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+              ]
+            },
+            {
+              "condition": "[not(equals(parameters('sku'), 'F1'))]",
+              "type": "Microsoft.Web/sites/slots",
+              "apiVersion": "2023-12-01",
+              "name": "[format('{0}/{1}', parameters('appServiceName'), 'staging')]",
+              "location": "[parameters('location')]",
+              "kind": "app,linux",
+              "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
+                "httpsOnly": true,
+                "siteConfig": {
+                  "linuxFxVersion": "[format('NODE|{0}', parameters('nodeVersion'))]",
+                  "appCommandLine": "npm run start",
+                  "ftpsState": "Disabled",
+                  "minTlsVersion": "1.2"
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('appServiceName'))]",
+                "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "appServiceName": {
+              "type": "string",
+              "value": "[parameters('appServiceName')]"
+            },
+            "appServiceUrl": {
+              "type": "string",
+              "value": "[format('https://{0}', reference(resourceId('Microsoft.Web/sites', parameters('appServiceName')), '2023-12-01').defaultHostName)]"
+            },
+            "appServicePlanName": {
+              "type": "string",
+              "value": "[parameters('appServicePlanName')]"
+            },
+            "principalId": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Web/sites', parameters('appServiceName')), '2023-12-01', 'full').identity.principalId]"
+            },
+            "defaultHostName": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Web/sites', parameters('appServiceName')), '2023-12-01').defaultHostName]"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "deploymentTarget": {
+      "type": "string",
+      "value": "[parameters('deploymentTarget')]"
+    },
+    "portalUrl": {
+      "type": "string",
+      "value": "[if(equals(parameters('deploymentTarget'), 'StaticWebApp'), reference(resourceId('Microsoft.Resources/deployments', 'deploy-portal-swa'), '2025-04-01').outputs.staticWebAppUrl.value, reference(resourceId('Microsoft.Resources/deployments', 'deploy-portal-appservice'), '2025-04-01').outputs.appServiceUrl.value)]"
+    },
+    "portalName": {
+      "type": "string",
+      "value": "[parameters('appName')]"
+    },
+    "hostName": {
+      "type": "string",
+      "value": "[if(equals(parameters('deploymentTarget'), 'StaticWebApp'), reference(resourceId('Microsoft.Resources/deployments', 'deploy-portal-swa'), '2025-04-01').outputs.defaultHostname.value, reference(resourceId('Microsoft.Resources/deployments', 'deploy-portal-appservice'), '2025-04-01').outputs.defaultHostName.value)]"
+    }
+  }
+}
