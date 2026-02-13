@@ -22,6 +22,12 @@ interface StudentFiltersProps {
   filteredCount: number;
 }
 
+const selectStyle: React.CSSProperties = {
+  backgroundColor: "var(--surface)",
+  color: "var(--text-primary)",
+  borderColor: "var(--surface-border)",
+};
+
 export function StudentFilters({
   groups,
   policies,
@@ -44,7 +50,7 @@ export function StudentFilters({
     selectedGroup || selectedPolicy || selectedStatus !== "all" || searchQuery || showOverridesOnly;
 
   return (
-    <div className="mb-4 space-y-3">
+    <div className="mb-5 space-y-3">
       {/* Search bar */}
       <div className="flex items-center gap-3">
         <div className="flex-1 relative">
@@ -53,28 +59,31 @@ export function StudentFilters({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder={t("students.searchPlaceholder")}
-            className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-shadow"
+            style={{ backgroundColor: "var(--surface)", color: "var(--text-primary)", border: "1px solid var(--surface-border)" }}
           />
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔍</span>
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 theme-text-muted text-sm">🔍</span>
         </div>
         {hasFilters && (
-          <span className="text-xs text-gray-500">
-            {filteredCount} of {totalCount}
+          <span className="text-xs theme-text-muted whitespace-nowrap">
+            {filteredCount} / {totalCount}
           </span>
         )}
       </div>
 
       {/* Filter row */}
-      <div className="flex flex-wrap items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
-        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+      <div className="flex flex-wrap items-center gap-2.5 p-3.5 rounded-xl"
+        style={{ backgroundColor: "var(--surface-secondary)", border: "1px solid var(--surface-border)" }}>
+        <span className="text-[11px] font-semibold theme-text-muted uppercase tracking-wider">
           {t("common.filter")}:
         </span>
 
-        {/* Status filter */}
+        {/* Status */}
         <select
           value={selectedStatus}
           onChange={(e) => onStatusChange(e.target.value)}
-          className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-1.5 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+          style={selectStyle}
         >
           <option value="all">{t("students.allStatuses")}</option>
           <option value="enabled">{t("students.enabledStatus")}</option>
@@ -82,11 +91,12 @@ export function StudentFilters({
           <option value="suspended">{t("students.suspendedStatus", { count: suspendedCount })}</option>
         </select>
 
-        {/* Group/Class filter */}
+        {/* Group/Class */}
         <select
           value={selectedGroup}
           onChange={(e) => onGroupChange(e.target.value)}
-          className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-1.5 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+          style={selectStyle}
         >
           <option value="">{t("students.allClasses")}</option>
           {groups.map((g) => (
@@ -97,11 +107,12 @@ export function StudentFilters({
           ))}
         </select>
 
-        {/* Policy filter */}
+        {/* Policy */}
         <select
           value={selectedPolicy}
           onChange={(e) => onPolicyChange(e.target.value)}
-          className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-1.5 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+          style={selectStyle}
         >
           <option value="">{t("students.allPolicies")}</option>
           {policies.map((p) => (
@@ -112,14 +123,15 @@ export function StudentFilters({
         </select>
 
         {/* Special groups toggle */}
-        <label className="flex items-center gap-2 px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-white cursor-pointer hover:bg-gray-50">
+        <label className="flex items-center gap-2 px-3 py-1.5 text-sm rounded-lg cursor-pointer transition-colors"
+          style={{ backgroundColor: "var(--surface)", color: "var(--text-primary)", border: "1px solid var(--surface-border)" }}>
           <input
             type="checkbox"
             checked={showOverridesOnly}
             onChange={(e) => onOverridesOnlyChange(e.target.checked)}
             className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
           />
-          <span className="text-gray-700">{t("students.specialOnly")}</span>
+          <span className="text-sm">⭐ {t("students.specialOnly")}</span>
         </label>
 
         {/* Clear all */}
@@ -132,9 +144,10 @@ export function StudentFilters({
               onSearchChange("");
               onOverridesOnlyChange(false);
             }}
-            className="px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
+            className="px-3 py-1.5 text-xs font-medium rounded-lg transition-colors"
+            style={{ backgroundColor: "var(--surface)", color: "var(--text-secondary)", border: "1px solid var(--surface-border)" }}
           >
-            {t("students.clearFilters")}
+            ✕ {t("students.clearFilters")}
           </button>
         )}
       </div>

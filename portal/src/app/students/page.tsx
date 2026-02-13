@@ -319,27 +319,45 @@ export default function StudentsPage() {
         title={t("students.title")}
         subtitle={`${t("students.subtitle", { total: students.length, enabled: enabledCount, disabled: disabledCount })}${suspendedCount > 0 ? t("students.subtitleSuspended", { count: suspendedCount }) : ""}`}
         actions={
-          <div className="flex flex-wrap gap-2">
-            <button onClick={() => setShowNewStudent(true)} className="px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">➕ {t("students.newStudent")}</button>
-            <button onClick={() => setBulkAction("enable")} className="px-3 py-2 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700 transition-colors shadow-sm">{t("dashboard.enableAll")}</button>
-            <button onClick={() => setBulkAction("disable")} className="px-3 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors shadow-sm">{t("dashboard.disableAll")}</button>
-            <button onClick={() => setShowPromote(true)} className="px-3 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors shadow-sm">🎓 {t("students.promoteClasses")}</button>
-            <button onClick={() => { fetchStudents(); fetchGroups(); fetchPolicies(); }} className="px-3 py-2 text-sm font-medium rounded-lg transition-colors shadow-sm" style={{ backgroundColor: "var(--surface-secondary)", color: "var(--text-primary)" }}>🔄 {t("common.refresh")}</button>
-          </div>
+          <>
+            <button onClick={() => setShowNewStudent(true)}
+              className="px-3.5 py-2 text-sm font-medium rounded-lg transition-colors shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+              ➕ {t("students.newStudent")}
+            </button>
+            <button onClick={() => setBulkAction("enable")}
+              className="px-3.5 py-2 text-sm font-medium rounded-lg transition-colors shadow-sm text-white bg-emerald-600 hover:bg-emerald-700">
+              {t("dashboard.enableAll")}
+            </button>
+            <button onClick={() => setBulkAction("disable")}
+              className="px-3.5 py-2 text-sm font-medium rounded-lg transition-colors shadow-sm text-white bg-red-600 hover:bg-red-700">
+              {t("dashboard.disableAll")}
+            </button>
+            <button onClick={() => setShowPromote(true)}
+              className="px-3.5 py-2 text-sm font-medium rounded-lg transition-colors shadow-sm text-white bg-purple-600 hover:bg-purple-700">
+              🎓 {t("students.promoteClasses")}
+            </button>
+            <button onClick={() => { fetchStudents(); fetchGroups(); fetchPolicies(); }}
+              className="px-3.5 py-2 text-sm font-medium rounded-lg transition-colors shadow-sm"
+              style={{ backgroundColor: "var(--surface-secondary)", color: "var(--text-primary)", border: "1px solid var(--surface-border)" }}>
+              🔄 {t("common.refresh")}
+            </button>
+          </>
         }
       />
 
       {/* Alerts */}
       {error && (
-        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-          {error}
-          <button onClick={() => setError(null)} className="ml-2 underline">{t("common.dismiss")}</button>
+        <div className="mb-4 p-4 rounded-xl text-sm flex items-center justify-between"
+          style={{ backgroundColor: "var(--badge-red-bg)", color: "var(--badge-red-text)", border: "1px solid var(--badge-red-border)" }}>
+          <span>{error}</span>
+          <button onClick={() => setError(null)} className="ml-3 underline text-xs opacity-80 hover:opacity-100">{t("common.dismiss")}</button>
         </div>
       )}
       {success && (
-        <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
-          {success}
-          <button onClick={() => setSuccess(null)} className="ml-2 underline">{t("common.dismiss")}</button>
+        <div className="mb-4 p-4 rounded-xl text-sm flex items-center justify-between"
+          style={{ backgroundColor: "var(--badge-green-bg)", color: "var(--badge-green-text)", border: "1px solid var(--badge-green-border)" }}>
+          <span>{success}</span>
+          <button onClick={() => setSuccess(null)} className="ml-3 underline text-xs opacity-80 hover:opacity-100">{t("common.dismiss")}</button>
         </div>
       )}
 
