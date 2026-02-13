@@ -1,9 +1,14 @@
 # Deploy SAM Portal to Azure App Service
-# Only triggered manually — use this when App Service is preferred over SWA
+# Auto-deploys on push to master when portal files change, or manually via workflow_dispatch
 
 name: Deploy Portal (App Service)
 
 on:
+  push:
+    branches: [master]
+    paths:
+      - 'portal/**'
+      - '.github/workflows/deploy-portal-appservice.yml'
   workflow_dispatch:
     inputs:
       environment:
@@ -68,7 +73,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment:
-      name: ${{ inputs.environment }}
+      name: ${{ inputs.environment || 'production' }}
       url: https://${{ env.APP_SERVICE_NAME }}.azurewebsites.net
     steps:
       - name: Download deployment package
@@ -87,7 +92,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.APP_SERVICE_NAME }}
-          slot-name: ${{ inputs.environment == 'staging' && 'staging' || 'production' }}
+          slot-name: ${{ (inputs.environment || 'production') == 'staging' && 'staging' || 'production' }}
           package: portal-deploy.zip
           startup-command: 'npm run start'
 
