@@ -98,6 +98,10 @@ resource appService 'Microsoft.Web/sites@2023-12-01' = {
           value: groupNamePrefix
         }
         {
+          name: 'USE_MANAGED_IDENTITY'
+          value: 'true'
+        }
+        {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'
           value: '~20'
         }
@@ -128,5 +132,6 @@ resource stagingSlot 'Microsoft.Web/sites/slots@2023-12-01' = if (sku != 'F1') {
 output appServiceName string = appService.name
 output appServiceUrl string = 'https://${appService.properties.defaultHostName}'
 output appServicePlanName string = appServicePlan.name
+output managedIdentityPrincipalId string = appService.identity.principalId
 output principalId string = appService.identity.principalId
 output defaultHostName string = appService.properties.defaultHostName

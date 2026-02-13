@@ -1,46 +1,60 @@
 // Microsoft Graph client configuration
+// Uses Managed Identity on Azure App Service, falls back to client credentials locally
 import { Client } from "@microsoft/microsoft-graph-client";
+import {
+  DefaultAzureCredential,
+  ClientSecretCredential,
+  ManagedIdentityCredential,
+} from "@azure/identity";
+
+const GRAPH_SCOPE = "https://graph.microsoft.com/.default";
 
 /**
- * Creates an authenticated Microsoft Graph client using client credentials flow.
- * Used for server-side API routes that need app-level permissions.
+ * Gets an Azure token credential that works in both environments:
+ * - Azure App Service: System Assigned Managed Identity (no secrets needed)
+ * - Local dev: Client credentials (client ID + secret from env vars)
+ *
+ * Priority order:
+ * 1. If USE_MANAGED_IDENTITY=true → ManagedIdentityCredential only
+ * 2. If AZURE_AD_CLIENT_SECRET is set → ClientSecretCredential (local dev)
+ * 3. Otherwise → DefaultAzureCredential (auto-detects MI, az cli, etc.)
  */
-export async function getGraphClient(): Promise<Client> {
-  const tokenResponse = await getAccessToken();
+function getCredential() {
+  const useMI = process.env.USE_MANAGED_IDENTITY === "true";
 
-  return Client.init({
-    authProvider: (done) => {
-      done(null, tokenResponse);
-    },
-  });
+  if (useMI) {
+    // Explicitly use Managed Identity — fastest on App Service, no fallback chain
+    return new ManagedIdentityCredential();
+  }
+
+  const clientId = process.env.AZURE_AD_CLIENT_ID;
+  const clientSecret = process.env.AZURE_AD_CLIENT_SECRET;
+  const tenantId = process.env.AZURE_AD_TENANT_ID;
+
+  if (clientId && clientSecret && tenantId) {
+    // Local development: use client credentials
+    return new ClientSecretCredential(tenantId, clientId, clientSecret);
+  }
+
+  // Fallback: DefaultAzureCredential tries MI → az cli → env vars → etc.
+  return new DefaultAzureCredential();
 }
 
 /**
- * Gets an access token using client credentials flow (app-only).
+ * Creates an authenticated Microsoft Graph client.
+ * Automatically uses Managed Identity on Azure, client credentials locally.
  */
-async function getAccessToken(): Promise<string> {
-  const tenantId = process.env.AZURE_AD_TENANT_ID!;
-  const clientId = process.env.AZURE_AD_CLIENT_ID!;
-  const clientSecret = process.env.AZURE_AD_CLIENT_SECRET!;
+export async function getGraphClient(): Promise<Client> {
+  const credential = getCredential();
+  const tokenResponse = await credential.getToken(GRAPH_SCOPE);
 
-  const tokenEndpoint = `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`;
-
-  const response = await fetch(tokenEndpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      client_id: clientId,
-      client_secret: clientSecret,
-      scope: "https://graph.microsoft.com/.default",
-      grant_type: "client_credentials",
-    }),
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Failed to get access token: ${error}`);
+  if (!tokenResponse?.token) {
+    throw new Error("Failed to acquire Graph API access token");
   }
 
-  const data = await response.json();
-  return data.access_token;
+  return Client.init({
+    authProvider: (done) => {
+      done(null, tokenResponse.token);
+    },
+  });
 }

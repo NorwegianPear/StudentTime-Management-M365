@@ -93,6 +93,17 @@ jobs:
           package: portal-deploy.zip
           startup-command: 'node server.js'
 
+      - name: Configure App Settings
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az webapp config appsettings set \
+              --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+              --name ${{ env.APP_SERVICE_NAME }} \
+              --settings \
+                USE_MANAGED_IDENTITY=true \
+                GROUP_NAME_PREFIX="${{ secrets.GROUP_NAME_PREFIX || 'Demo-' }}"
+
       - name: Swap staging to production
         if: inputs.environment == 'staging'
         run: |
