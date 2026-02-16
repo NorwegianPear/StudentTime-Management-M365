@@ -1,8 +1,9 @@
-// API: GET /api/policies — List all policies
+// API: GET /api/policies — List all policies (auto-cleans stale non-managed groups)
 // API: POST /api/policies — Create a new policy
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { getPolicies, createPolicy } from "@/lib/policy-store";
+import { getPolicies, savePolicies, createPolicy } from "@/lib/policy-store";
+import { getGraphClient } from "@/lib/graph-client";
 import { logPolicyAction } from "@/lib/audit-store";
 import type { ApiResponse, SchedulePolicy, CreatePolicyRequest } from "@/types";
 
@@ -14,6 +15,44 @@ export async function GET() {
 
   try {
     const policies = await getPolicies();
+
+    // Auto-cleanup: strip stale group IDs that no longer match managed groups
+    const prefix = process.env.GROUP_NAME_PREFIX;
+    if (prefix) {
+      let dirty = false;
+      try {
+        const client = await getGraphClient();
+        const graphFilter = `securityEnabled eq true and startsWith(displayName,'${prefix}')`;
+        const groupsResult = await client
+          .api("/groups")
+          .header("ConsistencyLevel", "eventual")
+          .filter(graphFilter)
+          .select("id,displayName")
+          .top(200)
+          .get();
+        const managedIds = new Set<string>(
+          (groupsResult.value || []).map((g: { id: string }) => g.id)
+        );
+
+        for (const policy of policies) {
+          const cleanIds = policy.assignedGroupIds.filter((id) => managedIds.has(id));
+          if (cleanIds.length !== policy.assignedGroupIds.length) {
+            const managedNameMap = new Map<string, string>(
+              (groupsResult.value || []).map((g: { id: string; displayName: string }) => [g.id, g.displayName])
+            );
+            policy.assignedGroupIds = cleanIds;
+            policy.assignedGroupNames = cleanIds.map((id) => managedNameMap.get(id) || id);
+            dirty = true;
+          }
+        }
+        if (dirty) {
+          await savePolicies(policies);
+        }
+      } catch {
+        // If Graph is unreachable, return policies as-is
+      }
+    }
+
     const response: ApiResponse<SchedulePolicy[]> = { success: true, data: policies };
     return NextResponse.json(response);
   } catch (error) {
