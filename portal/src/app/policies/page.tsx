@@ -255,9 +255,15 @@ export default function PoliciesPage() {
     );
   }
 
+  // Build a lookup of managed group IDs (from /api/groups, already prefix-filtered)
+  const managedGroupIds = new Set(groups.map((g) => g.id));
+  const managedGroupNameMap = new Map(groups.map((g) => [g.id, g.displayName]));
+
   // Summary stats
   const activePolicies = policies.filter((p) => p.isActive);
-  const totalGroups = new Set(policies.flatMap((p) => p.assignedGroupIds)).size;
+  const totalGroups = new Set(
+    policies.flatMap((p) => p.assignedGroupIds.filter((id) => managedGroupIds.has(id)))
+  ).size;
 
   return (
     <div>
@@ -451,10 +457,15 @@ export default function PoliciesPage() {
           const enablePct = timePct(policy.enableTime);
           const disablePct = timePct(policy.disableTime);
           const widthPct = disablePct - enablePct;
-          const groupCount = policy.assignedGroupNames.length;
+
+          // Only show groups that are in the managed set (prefix-filtered)
+          const policyManagedGroupNames = policy.assignedGroupIds
+            .filter((id) => managedGroupIds.has(id))
+            .map((id) => managedGroupNameMap.get(id) || id);
+          const groupCount = policyManagedGroupNames.length;
           const VISIBLE_GROUPS = 3;
           const isExpanded = expandedGroups.has(policy.id);
-          const shownGroups = isExpanded ? policy.assignedGroupNames : policy.assignedGroupNames.slice(0, VISIBLE_GROUPS);
+          const shownGroups = isExpanded ? policyManagedGroupNames : policyManagedGroupNames.slice(0, VISIBLE_GROUPS);
           const hiddenCount = groupCount - VISIBLE_GROUPS;
 
           return (

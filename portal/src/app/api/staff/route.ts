@@ -41,37 +41,76 @@ export async function GET(request: NextRequest) {
     const role = searchParams.get("role"); // Teacher, IT-Staff, etc.
     const status = searchParams.get("status"); // enabled, disabled
 
-    // Get all users that are NOT students (exclude student group members)
-    // We'll fetch all users and filter client-side, or use filter if possible
-    let endpoint = "/users";
-    const filters: string[] = ["userType eq 'Member'"];
-    
-    if (search) {
-      filters.push(`(startswith(displayName,'${search}') or startswith(userPrincipalName,'${search}'))`);
-    }
-    if (status === "enabled") filters.push("accountEnabled eq true");
-    if (status === "disabled") filters.push("accountEnabled eq false");
-    if (role) {
-      filters.push(`jobTitle eq '${role}'`);
-    }
-
-    const filterStr = filters.length > 0 ? filters.join(" and ") : undefined;
-
-    let query = client
-      .api(endpoint)
-      .select("id,displayName,userPrincipalName,mail,accountEnabled,jobTitle,department,officeLocation,mobilePhone,assignedLicenses,createdDateTime")
-      .top(200)
-      .header("ConsistencyLevel", "eventual")
-      .count(true);
-
-    if (filterStr) {
-      query = query.filter(filterStr);
-    }
-
-    const result = await query.get();
-
-    // Exclude student group members if STUDENT_GROUP_ID is configured
+    const prefix = process.env.GROUP_NAME_PREFIX;
     const studentGroupId = process.env.STUDENT_GROUP_ID;
+    const userFields =
+      "id,displayName,userPrincipalName,mail,accountEnabled,jobTitle,department,officeLocation,mobilePhone,assignedLicenses,createdDateTime";
+
+    // ── Collect users from managed groups only ──────────────────────
+    // If GROUP_NAME_PREFIX is set, only show users who are members or
+    // owners of groups matching the prefix. This excludes unrelated
+    // tenant accounts (device accounts, shared mailboxes, etc.).
+
+    let graphFilter = "securityEnabled eq true";
+    if (prefix) {
+      graphFilter += ` and startsWith(displayName,'${prefix}')`;
+    }
+
+    const groupsResult = await client
+      .api("/groups")
+      .header("ConsistencyLevel", "eventual")
+      .filter(graphFilter)
+      .select("id,displayName")
+      .top(200)
+      .get();
+
+    const managedGroups: { id: string; displayName: string }[] =
+      groupsResult.value || [];
+
+    // Collect unique users from members + owners of each managed group
+    const userMap = new Map<string, Record<string, unknown>>();
+
+    for (const group of managedGroups) {
+      // Members
+      try {
+        const members = await client
+          .api(`/groups/${group.id}/members`)
+          .select(userFields)
+          .top(999)
+          .get();
+        for (const m of members.value || []) {
+          if (
+            m["@odata.type"] === "#microsoft.graph.user" &&
+            !userMap.has(m.id)
+          ) {
+            userMap.set(m.id, m);
+          }
+        }
+      } catch {
+        /* skip unreadable groups */
+      }
+
+      // Owners (teachers / admins who manage the group)
+      try {
+        const owners = await client
+          .api(`/groups/${group.id}/owners`)
+          .select(userFields)
+          .top(200)
+          .get();
+        for (const o of owners.value || []) {
+          if (
+            o["@odata.type"] === "#microsoft.graph.user" &&
+            !userMap.has(o.id)
+          ) {
+            userMap.set(o.id, o);
+          }
+        }
+      } catch {
+        /* skip */
+      }
+    }
+
+    // ── Exclude students ────────────────────────────────────────────
     let studentIds = new Set<string>();
     if (studentGroupId) {
       try {
@@ -80,15 +119,32 @@ export async function GET(request: NextRequest) {
           .select("id")
           .top(999)
           .get();
-        studentIds = new Set((students.value || []).map((s: { id: string }) => s.id));
+        studentIds = new Set(
+          (students.value || []).map((s: { id: string }) => s.id)
+        );
       } catch {
         // Group may not exist — proceed without excluding
       }
     }
 
-    const staffUsers: StaffUser[] = (result.value || [])
-      .filter((u: { id: string }) => !studentIds.has(u.id))
-      .map((u: Record<string, unknown>) => ({
+    // ── Filter & map ────────────────────────────────────────────────
+    const staffUsers: StaffUser[] = Array.from(userMap.values())
+      .filter((u) => {
+        if (studentIds.has(u.id as string)) return false;
+        if (search) {
+          const q = search.toLowerCase();
+          if (
+            !(u.displayName as string || "").toLowerCase().includes(q) &&
+            !(u.userPrincipalName as string || "").toLowerCase().includes(q)
+          )
+            return false;
+        }
+        if (status === "enabled" && u.accountEnabled !== true) return false;
+        if (status === "disabled" && u.accountEnabled !== false) return false;
+        if (role && u.jobTitle !== role) return false;
+        return true;
+      })
+      .map((u) => ({
         id: u.id as string,
         displayName: u.displayName as string,
         userPrincipalName: u.userPrincipalName as string,
@@ -98,7 +154,12 @@ export async function GET(request: NextRequest) {
         department: u.department as string | undefined,
         officeLocation: u.officeLocation as string | undefined,
         mobilePhone: u.mobilePhone as string | undefined,
-        assignedLicenses: ((u.assignedLicenses as Array<{ skuId: string; disabledPlans: string[] }>) || []).map((l) => ({
+        assignedLicenses: (
+          (u.assignedLicenses as Array<{
+            skuId: string;
+            disabledPlans: string[];
+          }>) || []
+        ).map((l) => ({
           skuId: l.skuId,
           displayName: LICENSE_NAMES[l.skuId] || l.skuId,
           disabledPlans: l.disabledPlans,
