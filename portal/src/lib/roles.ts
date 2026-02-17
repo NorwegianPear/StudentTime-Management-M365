@@ -34,6 +34,11 @@ function getRoleMappings(): RoleMapping[] {
 
   // Default configuration — customize as needed
   return [
+    // School tenant users are admin by default via TENANT_DOMAIN check.
+    // These explicit entries ensure access even if TENANT_DOMAIN isn't set:
+    { email: "lene.kadaa@ateara.onmicrosoft.com", role: "admin" },
+    { email: "veronica.hogemark@ateara.onmicrosoft.com", role: "admin" },
+    { email: "uy.le.thai.phan@ateara.onmicrosoft.com", role: "admin" },
     // All atea.no users get read-only access by default
     { domain: "atea.no", role: "viewer" },
     // Specific atea.no users promoted to admin
@@ -42,6 +47,7 @@ function getRoleMappings(): RoleMapping[] {
     { email: "anders.dramstad@atea.no", role: "admin" },
     { email: "paul.johnny.klock@atea.no", role: "admin" },
     { email: "uy.le.thai.phan@atea.no", role: "admin" },
+    { email: "lene.kadaa@atea.no", role: "admin" },
   ];
 }
 

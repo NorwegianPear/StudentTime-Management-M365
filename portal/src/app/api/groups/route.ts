@@ -73,34 +73,45 @@ export async function GET() {
     }
 
     // Get member counts for each group
+    // Use /members with $count=true and $top=0 to get count without fetching all members
     const groupsWithCounts: GroupInfo[] = await Promise.all(
       relevantGroups.map(async (g) => {
         const gid = g.id as string;
         const policy = groupPolicyMap.get(gid);
         const isSpecial = specialGroupIds.has(gid);
+        let memberCount = 0;
         try {
+          // Fetch members with $select=id&$top=0 and $count to get count header
           const members = await client
-            .api(`/groups/${gid}/members/$count`)
+            .api(`/groups/${gid}/members`)
             .header("ConsistencyLevel", "eventual")
+            .count(true)
+            .select("id")
+            .top(0)
             .get();
-          return {
-            id: gid,
-            displayName: g.displayName as string,
-            description: (g.description as string | undefined) || (isSpecial ? "Special/override group" : undefined),
-            memberCount: typeof members === "number" ? members : 0,
-            policyId: policy?.id,
-            policyName: policy?.name,
-          };
+          // The @odata.count property contains the total count
+          memberCount = members?.["@odata.count"] ?? 0;
         } catch {
-          return {
-            id: gid,
-            displayName: g.displayName as string,
-            description: (g.description as string | undefined) || undefined,
-            memberCount: 0,
-            policyId: policy?.id,
-            policyName: policy?.name,
-          };
+          // Fallback: fetch members with select=id and count them
+          try {
+            const members = await client
+              .api(`/groups/${gid}/members`)
+              .select("id")
+              .top(999)
+              .get();
+            memberCount = members?.value?.length ?? 0;
+          } catch {
+            memberCount = 0;
+          }
         }
+        return {
+          id: gid,
+          displayName: g.displayName as string,
+          description: (g.description as string | undefined) || (isSpecial ? "Special/override group" : undefined),
+          memberCount,
+          policyId: policy?.id,
+          policyName: policy?.name,
+        };
       })
     );
 
