@@ -77,7 +77,7 @@ Write-Host "Student group has $($members.Count) members"
 
 Once deployed, the system runs **completely unattended**:
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                  AUTOMATED DAILY SCHEDULE                │
 ├─────────────────────────────────────────────────────────┤
@@ -169,6 +169,7 @@ Write-Host "✅ Student created and added to groups"
 ### Option B: Bulk Import (CSV via Runbook)
 
 **Prepare CSV:**
+
 ```csv
 FirstName,LastName,Class,Department
 Emma,Hansen,Demo-Students-8A,Class 8A
@@ -178,6 +179,7 @@ Liam,Larsen,Demo-Students-10A,Class 10A
 ```
 
 **Run import:**
+
 ```powershell
 # Upload CSV to blob storage and run
 Start-AzAutomationRunbook `

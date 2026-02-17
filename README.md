@@ -12,7 +12,7 @@ This solution allows schools to **restrict student login times** to school hours
 ### Schedule
 
 | Day | Hours | Status |
-|-----|-------|--------|
+| ----- | ------- | -------- |
 | **Monday - Friday** | 07:55 AM - 04:05 PM | 🟢 Students ENABLED |
 | **Monday - Friday** | 04:05 PM - 07:55 AM | 🔴 Students DISABLED |
 | **Saturday - Sunday** | All day | 🔴 Students DISABLED |
@@ -20,7 +20,7 @@ This solution allows schools to **restrict student login times** to school hours
 ### Who Is Affected?
 
 | User Type | Affected? |
-|-----------|-----------|
+| ----------- | ----------- |
 | **Students** | ✅ YES - Only members of the specified security group |
 | **Teachers** | ❌ NO - Not in the student group |
 | **Admins** | ❌ NO - Not in the student group |
@@ -40,6 +40,7 @@ This repository provides a complete, production-ready workaround.
 ## ⚠️ Important: User Experience Notice
 
 **Microsoft warns that this workaround provides a poor user experience.** Students will:
+
 - Be **immediately logged out** when accounts are disabled
 - Potentially **lose unsaved work**
 - Need to **re-authenticate** each morning
@@ -50,12 +51,12 @@ Please communicate this clearly to students and staff before implementation.
 
 ## � Cost & Requirements
 
-### No Extra Licenses Needed!
+### No Extra Licenses Needed
 
 This solution works with your **existing M365 Education licenses**. No additional per-user licenses required.
 
 | Component | Cost (Non-Profit) | Cost (Regular) | Required? |
-|-----------|-------------------|----------------|-----------|
+| ----------- | ------------------- | ---------------- | ----------- |
 | Azure Subscription | **FREE** ($3,500/yr credits) | Pay-as-you-go | ✅ Yes |
 | Azure Automation | **€0-3/month** | €5-8/month | ✅ Yes |
 | M365 Education | Already have | Already have | ✅ Yes |
@@ -72,7 +73,7 @@ This solution works with your **existing M365 Education licenses**. No additiona
 ## 📋 Prerequisites
 
 | Requirement | Details |
-|-------------|---------|
+| ------------- | --------- |
 | Microsoft 365 | Education subscription (A1, A3, or A5) ✅ |
 | Azure Subscription | [Free for nonprofits](https://nonprofit.microsoft.com) or Pay-as-you-go |
 | Permissions | Global Administrator or Application Administrator |
@@ -83,7 +84,7 @@ This solution works with your **existing M365 Education licenses**. No additiona
 ## 📚 Documentation
 
 | Document | Description | Format |
-|----------|-------------|--------|
+| ---------- | ------------- | -------- |
 | [Required Roles & Permissions](docs/REQUIRED-ROLES.md) | All roles needed for deployment | Markdown |
 | [Required Roles (HTML)](docs/required-roles.html) | Detailed guide with GUI instructions | HTML |
 | [Operations Guide](docs/OPERATIONS-GUIDE.md) | Day-to-day operations and maintenance | Markdown |
@@ -98,10 +99,12 @@ This solution works with your **existing M365 Education licenses**. No additiona
 
 ![Solution Architecture](docs/architecture-diagram.svg)
 
+<!-- markdownlint-disable MD033 -->
 <details>
 <summary>📋 Text-based architecture (for accessibility)</summary>
+<!-- markdownlint-enable MD033 -->
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                     Azure Automation                            │
 ├─────────────────────────────────────────────────────────────────┤
@@ -133,7 +136,7 @@ This solution works with your **existing M365 Education licenses**. No additiona
 
 ## 📁 Project Structure
 
-```
+```text
 StudentTime-Management-M365/
 ├── .github/
 │   ├── workflows/
@@ -181,6 +184,7 @@ The solution **only affects members of the security group** you specify. Teacher
 ```
 
 This will:
+
 1. Create a test security group: `StudentAccess-TestGroup`
 2. Optionally create test student accounts
 3. Output the **Group ID** to use during deployment
@@ -188,7 +192,7 @@ This will:
 ### Test → Production Workflow
 
 | Phase | Group | Duration |
-|-------|-------|----------|
+| ------- | ------- | ---------- |
 | **Testing** | `StudentAccess-TestGroup` (2-3 accounts) | 3-5 days |
 | **Pilot** | Small student group (20-50 accounts) | 1-2 weeks |
 | **Production** | All students security group | Ongoing |
@@ -212,7 +216,7 @@ cd StudentTime-Management-M365
 
 The menu provides a guided setup experience:
 
-```
+```text
 ╔═══════════════════════════════════════════════════════════════╗
 ║   STUDENT TIME MANAGEMENT FOR MICROSOFT 365                   ║
 ╚═══════════════════════════════════════════════════════════════╝
@@ -247,6 +251,7 @@ The menu provides a guided setup experience:
 ```
 
 This creates an Entra ID app with required permissions and outputs:
+
 - **TenantId**
 - **ClientId**
 - **ClientSecret** (save immediately!)
@@ -271,12 +276,14 @@ Set-AllCredentials
 
 #### Step 4: Deploy to Azure
 
-**Option A: Direct Deployment (No GitHub Required)**
+#### Option A: Direct Deployment (No GitHub Required)
+
 ```powershell
 .\scripts\Deploy-ToAzureDirect.ps1 -UseSecureCredentials
 ```
 
-**Option B: Using Config File**
+#### Option B: Using Config File
+
 ```powershell
 # Copy and edit the config template
 Copy-Item .\config\config.template.json .\config\config.json
@@ -285,7 +292,8 @@ Copy-Item .\config\config.template.json .\config\config.json
 .\scripts\Deploy-StudentAccessAutomation.ps1 -ConfigPath .\config\config.json
 ```
 
-**Option C: Using Bicep (IaC)**
+#### Option C: Using Bicep (IaC)
+
 ```powershell
 az deployment group create \
   --resource-group rg-student-access-automation \
@@ -293,7 +301,8 @@ az deployment group create \
   --parameters tenantId=<your-tenant-id> ...
 ```
 
-**Option D: GitHub Actions (CI/CD)**
+#### Option D: GitHub Actions (CI/CD)
+
 1. Push repo to GitHub
 2. Run `.\scripts\New-GitHubFederation.ps1 -GitHubRepo "owner/repo"`
 3. Add secrets to GitHub repository
@@ -304,7 +313,7 @@ az deployment group create \
 ## ⚙️ Deployment Options Comparison
 
 | Method | GitHub Required | Best For |
-|--------|-----------------|----------|
+| -------- | ----------------- | ---------- |
 | **Interactive Menu** | ❌ No | First-time users, manual control |
 | **Direct PowerShell** | ❌ No | Quick deployment, scripting |
 | **Bicep Template** | ❌ No | Infrastructure as Code |
@@ -315,7 +324,9 @@ az deployment group create \
 ## 🔐 Credential Storage Options
 
 ### Option 1: Secure Local Storage (Recommended)
+
 Credentials stored in **Windows Credential Manager**:
+
 - ✅ Encrypted at rest
 - ✅ Tied to Windows user account
 - ✅ Never in plain text
@@ -327,7 +338,9 @@ Set-AllCredentials  # Interactive prompt
 ```
 
 ### Option 2: Config File
+
 Store in `config/config.json` (add to `.gitignore`):
+
 ```json
 {
     "TenantId": "your-tenant-id",
@@ -338,7 +351,9 @@ Store in `config/config.json` (add to `.gitignore`):
 ```
 
 ### Option 3: GitHub Secrets (for CI/CD)
+
 Required secrets:
+
 - `AZURE_CLIENT_ID`
 - `AZURE_TENANT_ID`
 - `AZURE_SUBSCRIPTION_ID`
@@ -353,7 +368,7 @@ Required secrets:
 ### Schedule Settings
 
 | Setting | Default | Description |
-|---------|---------|-------------|
+| --------- | --------- | ------------- |
 | `EnableTime` | `07:55` | Time to enable accounts (5 min before school) |
 | `DisableTime` | `16:05` | Time to disable accounts (5 min after school) |
 | `TimeZone` | `W. Europe Standard Time` | Schedule time zone |
@@ -363,7 +378,7 @@ Required secrets:
 ### API Permissions Required
 
 | Permission | Type | Purpose |
-|------------|------|---------|
+| ------------ | ------ | --------- |
 | `User.ReadWrite.All` | Application | Enable/disable accounts |
 | `Group.Read.All` | Application | Read group membership |
 | `Directory.Read.All` | Application | Read directory data |
@@ -373,6 +388,7 @@ Required secrets:
 ## 🧪 Testing
 
 ### Test Without Making Changes (WhatIf Mode)
+
 ```powershell
 .\scripts\Test-StudentAccess.ps1 -Action Status -ConfigPath .\config\config.json
 .\scripts\Test-StudentAccess.ps1 -Action Enable -ConfigPath .\config\config.json -WhatIf
@@ -380,6 +396,7 @@ Required secrets:
 ```
 
 ### Test with Real Changes
+
 ```powershell
 # Enable all students (run manually to test)
 .\scripts\Test-StudentAccess.ps1 -Action Enable -ConfigPath .\config\config.json
@@ -393,11 +410,13 @@ Required secrets:
 ## 📈 Monitoring & Logs
 
 ### Azure Portal
+
 1. Go to **Automation Account** → **Jobs**
 2. View execution history and output
 3. Set up alerts for failed jobs
 
 ### PowerShell
+
 ```powershell
 # Get recent job status
 Get-AzAutomationJob -ResourceGroupName "rg-student-access-automation" `
@@ -410,7 +429,7 @@ Get-AzAutomationJob -ResourceGroupName "rg-student-access-automation" `
 ## 💰 Cost Estimate
 
 | Resource | Monthly Cost |
-|----------|-------------|
+| ---------- | ------------- |
 | Azure Automation | ~€2-5 (500 min free) |
 | Log Storage | < €1 |
 | **Total** | **~€3-6/month** |
@@ -420,7 +439,7 @@ Get-AzAutomationJob -ResourceGroupName "rg-student-access-automation" `
 ## 🔄 Alternative Solutions Comparison
 
 | Solution | Cloud-Only | UX | Cost | Complexity |
-|----------|------------|-----|------|------------|
+| ---------- | ------------ | ----- | ------ | ------------ |
 | **This Solution (Azure Automation)** | ✅ Yes | ⚠️ Poor | €3-6/mo | Medium |
 | Hybrid AD + PTA | ✅ Yes* | ✅ Good | Infrastructure | High |
 | Intune Device Control | ✅ Yes | ✅ Good | Free** | Medium |
@@ -434,7 +453,7 @@ Get-AzAutomationJob -ResourceGroupName "rg-student-access-automation" `
 ## ❓ Troubleshooting
 
 | Issue | Solution |
-|-------|----------|
+| ------- | ---------- |
 | Module import fails | Wait 5-10 minutes; modules import in background |
 | Permission denied | Verify admin consent was granted |
 | No students found | Check StudentGroupId is correct Object ID |

@@ -24,7 +24,7 @@
 The Student Time Management solution restricts student Microsoft 365 login times using Azure Automation and Microsoft Graph API. It supports two operational modes:
 
 | Mode | Description | Best For |
-|------|-------------|----------|
+| ------ | ----------- | -------- |
 | **Portal** | Web-based management UI (Next.js) | Day-to-day admin operations |
 | **Script-Only** | PowerShell scripts + Azure Automation | Schools without portal deployment |
 
@@ -191,7 +191,7 @@ graph TD
 ### Portal Components
 
 | Component | Path | Purpose |
-|-----------|------|---------|
+| ----------- | ------ | --------- |
 | Dashboard | `/` | Overview stats, student counts |
 | Students | `/students` | List, filter, toggle, create students |
 | Groups | `/groups` | View class group memberships |
@@ -204,7 +204,7 @@ graph TD
 ### API Routes
 
 | Method | Endpoint | Action |
-|--------|----------|--------|
+| -------- | ---------- | -------- |
 | GET | `/api/dashboard` | Dashboard statistics |
 | GET | `/api/students` | List students (with filters) |
 | PATCH | `/api/students` | Bulk enable/disable |
@@ -226,7 +226,7 @@ graph TD
 ### Runbooks
 
 | Runbook | Schedule | Purpose |
-|---------|----------|---------|
+| --------- | ---------- | --------- |
 | `Enable-StudentAccess.ps1` | 07:55 Mon-Fri | Enable all student accounts |
 | `Disable-StudentAccess.ps1` | 16:05 Mon-Fri | Disable accounts + revoke tokens |
 | `Apply-SchedulePolicies.ps1` | Every 15 min | Apply per-group schedule policies |
@@ -246,7 +246,7 @@ graph TD
 Every significant action is recorded in the audit trail:
 
 | Category | Actions Logged | Source |
-|----------|---------------|--------|
+| ---------- | --------------- | -------- |
 | **Account Changes** | enable, disable, manual_toggle | Portal + Runbooks |
 | **Student Lifecycle** | student_created, student_removed, student_transferred | Portal + Runbooks |
 | **Suspensions** | student_suspended, student_unsuspended | Portal |
@@ -273,6 +273,7 @@ Every significant action is recorded in the audit trail:
 **Portal:** Navigate to `/audit` — filter by action type, date range, user, or group.
 
 **API:**
+
 ```bash
 # Get all entries (last 100)
 GET /api/audit
@@ -299,7 +300,7 @@ GET /api/audit?summary=true&days=7
 Email notifications require the following Automation Variables:
 
 | Variable | Value | Description |
-|----------|-------|-------------|
+| ---------- | ------- | ------------- |
 | `NotificationSender` | `noreply@school.no` | UPN of the sending mailbox |
 | `NotificationRecipients` | `admin@school.no,it@school.no` | Comma-separated recipients |
 
@@ -310,7 +311,7 @@ Add `Mail.Send` (Application) to your App Registration and grant admin consent.
 ### Events That Trigger Emails
 
 | Event | Email Sent? | Priority |
-|-------|-------------|----------|
+| ------- | ------------- | ---------- |
 | Enable/Disable cycle | Only if errors occur | Normal |
 | Student import | Always (with report) | High |
 | Class promotions | Always (with report) | High |
@@ -321,6 +322,7 @@ Add `Mail.Send` (Application) to your App Registration and grant admin consent.
 ### Email Report Format
 
 Notifications use a professional HTML template with:
+
 - Color-coded header (green=success, yellow=warning, red=error)
 - Summary statistics table
 - Detailed results table with status badges
@@ -382,7 +384,7 @@ Notifications use a professional HTML template with:
 
 The system runs unattended with these scheduled runbooks:
 
-```
+```text
 Monday-Friday:
 ├── 07:00  → Send-MonitoringReport (daily summary email)
 ├── 07:55  → Enable-StudentAccess (enable all students)
@@ -434,6 +436,7 @@ Set-AzAutomationVariable `
 ### Importing New Students (Script-Only)
 
 **Step 1:** Prepare CSV file:
+
 ```csv
 FirstName,LastName,Class,Department
 Emma,Hansen,Demo-Students-8A,Class 8A
@@ -442,6 +445,7 @@ Olivia,Berg,Demo-Students-8A,Class 8A
 ```
 
 **Step 2:** Upload to blob storage or set as Automation Variable:
+
 ```powershell
 # Option A: Via blob URL
 Start-AzAutomationRunbook `
@@ -593,7 +597,7 @@ Start-AzAutomationRunbook -ResourceGroupName "rg-student-access" `
 Shared functions used by all runbooks:
 
 | Function | Purpose |
-|----------|---------|
+| ---------- | --------- |
 | `Send-NotificationEmail` | Send HTML email via Graph API |
 | `New-HtmlReport` | Generate formatted HTML report body |
 | `Write-AuditRecord` | Write to AuditLog Automation Variable |
@@ -601,20 +605,20 @@ Shared functions used by all runbooks:
 **Required Automation Variables:**
 
 | Variable | Required | Description |
-|----------|----------|-------------|
+| ---------- | ---------- | ------------- |
 | `NotificationSender` | Yes | UPN of sending mailbox |
 | `NotificationRecipients` | Yes | Comma-separated email addresses |
 
 ### Send-MonitoringReport.ps1
 
 | Parameter | Default | Description |
-|-----------|---------|-------------|
+| ----------- | --------- | ------------- |
 | `ReportType` | `daily` | `daily` (brief), `weekly` (detailed), `full` (everything) |
 
 **What's included in each report type:**
 
 | Section | Daily | Weekly | Full |
-|---------|-------|--------|------|
+| --------- | ------- | -------- | ------ |
 | Student account status | ✅ | ✅ | ✅ |
 | Active policies | ✅ | ✅ | ✅ |
 | Active suspensions | ✅ | ✅ | ✅ |
@@ -667,7 +671,7 @@ Register-AzAutomationScheduledRunbook `
 ### Monitoring Checklist
 
 | Frequency | Task | How |
-|-----------|------|-----|
+| ----------- | ------ | ----- |
 | **Daily** | Review monitoring email | Automated via `Send-MonitoringReport` |
 | **Daily** | Check for failed jobs | Azure Portal → Automation → Jobs |
 | **Weekly** | Review audit log | Portal `/audit` or weekly email report |
@@ -693,7 +697,7 @@ Set up alerts for critical failures:
 
 ### Scenario 1: New Student Joins Mid-Year
 
-```
+```text
 1. Admin creates student (Portal or Import-Students runbook)
 2. Student auto-added to class group + main student group
 3. Next schedule cycle: student gets class schedule
@@ -704,7 +708,7 @@ Set up alerts for critical failures:
 
 ### Scenario 2: Student Transfers Classes
 
-```
+```text
 1. Admin initiates transfer (Portal or PendingGroupChanges variable)
 2. Student removed from old class group → added to new class group
 3. New class schedule takes effect on next Apply-SchedulePolicies run
@@ -714,7 +718,7 @@ Set up alerts for critical failures:
 
 ### Scenario 3: Student Joins Special Group (Override Schedule)
 
-```
+```text
 1. Admin creates special group with override policy (Portal or manual)
 2. Admin adds student to the special Entra ID security group
 3. Next Apply-SchedulePolicies run:
@@ -726,7 +730,7 @@ Set up alerts for critical failures:
 
 ### Scenario 4: Year-End Class Promotions
 
-```
+```text
 1. Admin sets PromotionMappings: 8A→9A, 8B→9B, 10A→Graduated
 2. Admin runs Promote-Students runbook (with -WhatIf first)
 3. All students moved to next grade's group
@@ -738,7 +742,7 @@ Set up alerts for critical failures:
 
 ### Scenario 5: Student Suspended
 
-```
+```text
 1. Admin suspends student with reason and end date (Portal or variable)
 2. Student immediately disabled
 3. Scheduled Enable runbooks SKIP this student (reads suspension list)
@@ -751,7 +755,7 @@ Set up alerts for critical failures:
 ## Required Automation Variables (Complete List)
 
 | Variable | Type | Required | Description |
-|----------|------|----------|-------------|
+| ---------- | ------ | ---------- | ------------- |
 | `StudentGroupId` | String | ✅ | Main student security group Object ID |
 | `TenantDomain` | String | ✅ | e.g., `school.onmicrosoft.com` |
 | `RevokeTokens` | Boolean | ❌ | Revoke sessions on disable (default: true) |
@@ -769,7 +773,7 @@ Set up alerts for critical failures:
 ## Required API Permissions
 
 | Permission | Type | Required For |
-|------------|------|-------------|
+| ------------ | ------ | ------------- |
 | `User.ReadWrite.All` | Application | Enable/disable accounts |
 | `Group.Read.All` | Application | Read group memberships |
 | `Group.ReadWrite.All` | Application | Manage group memberships |
