@@ -344,8 +344,9 @@
   <g transform="translate(580, 790)">
     <rect x="0" y="0" width="280" height="90" rx="6" fill="#E6F7FF" stroke="#0078D4" filter="url(#shadow)"/>
     <text x="140" y="22" text-anchor="middle" font-family="Segoe UI, Arial" font-size="12" font-weight="600" fill="#0078D4">💰 Estimated Cost</text>
-    <text x="140" y="50" text-anchor="middle" font-family="Segoe UI, Arial" font-size="24" font-weight="bold" fill="#107C10">€3 - €6 / month</text>
-    <text x="140" y="72" text-anchor="middle" font-family="Segoe UI, Arial" font-size="10" fill="#605E5C">Azure Automation + Log Analytics</text>
+    <text x="140" y="46" text-anchor="middle" font-family="Segoe UI, Arial" font-size="18" font-weight="bold" fill="#107C10">0 NOK / month</text>
+    <text x="140" y="66" text-anchor="middle" font-family="Segoe UI, Arial" font-size="9" fill="#605E5C">Script-only (free tier) · Portal: 720 NOK/month</text>
+    <text x="140" y="80" text-anchor="middle" font-family="Segoe UI, Arial" font-size="9" fill="#605E5C">Azure Automation + Log Analytics</text>
   </g>
 
   <!-- Deployment Info -->

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<!--
+    EMAIL TEMPLATE - Inline styles are INTENTIONAL and REQUIRED
+    Email clients (Outlook, Gmail, etc.) do not support external CSS files.
+    htmlhint no-inline-styles:false
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Pricing — Pay-As-You-Go vs Annual Commitment — BISS Stavanger</title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.7; color: #323130; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #ffffff;">
+
+    <!-- ===== HEADER ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 10px;">
+        <tr>
+            <td bgcolor="#0078D4" style="padding: 30px 30px 20px 30px;">
+                <div style="color: #BDD9F5; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">Atea AS — Microsoft Solutions Partner</div>
+                <div style="color: white; font-size: 26px; font-weight: bold; line-height: 1.3;">&#128178; Azure Pricing Comparison<br>Pay-As-You-Go vs Annual vs 3-Year</div>
+                <div style="color: #BDD9F5; font-size: 14px; margin-top: 10px;">Student Login Time Management — BISS Stavanger · Norway East region · March 2026</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Summary Boxes -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0; border-collapse: separate; border-spacing: 8px;">
+        <tr>
+            <td bgcolor="#107C10" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Script-Only (PAYG)</div>
+                <div style="font-size: 26px; font-weight: bold; margin: 6px 0;">25–55 kr</div>
+                <div style="font-size: 11px;">per month — stays same</div>
+            </td>
+            <td bgcolor="#0078D4" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Portal PAYG</div>
+                <div style="font-size: 26px; font-weight: bold; margin: 6px 0;">~750–780 kr</div>
+                <div style="font-size: 11px;">per month, no commitment</div>
+            </td>
+            <td bgcolor="#5C2D91" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Portal 1-Year</div>
+                <div style="font-size: 26px; font-weight: bold; margin: 6px 0;">~495–520 kr</div>
+                <div style="font-size: 11px;">per month — save ~3,300 kr/yr</div>
+            </td>
+            <td bgcolor="#CA5010" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Portal 3-Year</div>
+                <div style="font-size: 26px; font-weight: bold; margin: 6px 0;">~360–385 kr</div>
+                <div style="font-size: 11px;">per month — save ~4,680 kr/yr</div>
+            </td>
+        </tr>
+    </table>
+
+    <p>Hi Adnan,</p>
+
+    <p>You asked about paying annually vs monthly for Azure — here is a clear breakdown of all commitment options and exactly what BISS would pay under each. The key cost driver is the <strong>App Service B1</strong> (the webserver that runs the management portal). Azure Automation itself is essentially free regardless of commitment model.</p>
+
+    <!-- ===== IMPORTANT NOTE: AUTOMATION ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 0 0 20px 0;">
+        <tr>
+            <td bgcolor="#E6F2E3" style="padding: 12px 18px; border-left: 4px solid #107C10; font-size: 13px;">
+                &#128161; <strong>Script-Only option has no reservation decisions to make.</strong> Azure Automation and Log Analytics are consumption-based services — there are no reserved instances or annual commitments available for these at BISS's usage scale. Cost remains ~25–55 NOK/month on Pay-As-You-Go regardless. <strong>If BISS chooses Script-Only, skip directly to the recommendation at the bottom.</strong>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 1: WHAT IS THE KEY COST ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 30px;">&#9729;&#65039; The Only Cost Subject to Commitment Discounts: App Service B1</h2>
+
+    <p style="font-size: 14px;">The portal is hosted on an <strong>Azure App Service Plan B1</strong> in Norway East. This is the one resource where Microsoft offers significant discounts for annual or 3-year commitments via <strong>Reserved Instances</strong>.</p>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+        <tr bgcolor="#F3F2F1">
+            <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;"><strong>App Service B1 spec:</strong> 1 vCore, 1.75 GB RAM, Windows. Norway East region.</td>
+        </tr>
+        <tr>
+            <td style="padding: 9px 12px; font-size: 13px; color: #605E5C;"><strong>Azure Automation + Log Analytics:</strong> Billed on consumption — no reservation model applies at this scale. ~25–55 NOK/month regardless of commitment choice.</td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 2: COMPARISON TABLE ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128202; Full Comparison — All Billing Options (App Service B1, Norway East)</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <thead>
+            <tr bgcolor="#0078D4">
+                <th style="text-align: left; padding: 11px 12px; color: white; font-size: 13px; border-right: 1px solid #005A9E;">Billing Option</th>
+                <th style="text-align: right; padding: 11px 12px; color: white; font-size: 13px; border-right: 1px solid #005A9E;">Monthly Cost (NOK)</th>
+                <th style="text-align: right; padding: 11px 12px; color: white; font-size: 13px; border-right: 1px solid #005A9E;">Annual Cost (NOK)</th>
+                <th style="text-align: right; padding: 11px 12px; color: white; font-size: 13px; border-right: 1px solid #005A9E;">Saving vs PAYG</th>
+                <th style="text-align: left; padding: 11px 12px; color: white; font-size: 13px;">Key Conditions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- PAYG -->
+            <tr>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">Pay-As-You-Go</td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold;">~720 NOK</td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right;">~8,640 NOK</td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; color: #605E5C;">—</td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">No commitment · Cancel anytime · No upfront cost · Pay monthly based on actual hours used</td>
+            </tr>
+            <!-- 1yr no upfront -->
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">1-Year Reserved<br><span style="font-weight: normal; font-size: 12px; color: #605E5C;">No upfront — monthly payments</span></td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #5C2D91;">~468 NOK</td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; color: #5C2D91; font-weight: bold;">~5,616 NOK</td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #107C10;">Save ~3,024 NOK/yr<br><span style="font-size: 11px; color: #107C10;">(~35% off)</span></td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">12-month commitment · No upfront payment · Monthly billing at reserved rate · Non-refundable (exchange only)</td>
+            </tr>
+            <!-- 1yr all upfront -->
+            <tr>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">1-Year Reserved<br><span style="font-weight: normal; font-size: 12px; color: #605E5C;">All upfront — pay once</span></td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #5C2D91;">~444 NOK<br><span style="font-size: 11px; font-weight: normal; color: #605E5C;">(equiv.)</span></td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; color: #5C2D91; font-weight: bold;">~5,328 NOK<br><span style="font-size: 12px; color: #605E5C;">(paid upfront)</span></td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #107C10;">Save ~3,312 NOK/yr<br><span style="font-size: 11px; color: #107C10;">(~38% off)</span></td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">12-month commitment · Single upfront payment of ~5,328 NOK · Slightly better rate than no-upfront · Non-refundable</td>
+            </tr>
+            <!-- 3yr no upfront -->
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">3-Year Reserved<br><span style="font-weight: normal; font-size: 12px; color: #605E5C;">No upfront — monthly payments</span></td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #CA5010;">~396 NOK</td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; color: #CA5010; font-weight: bold;">~4,752 NOK</td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #107C10;">Save ~3,888 NOK/yr<br><span style="font-size: 11px; color: #107C10;">(~45% off)</span></td>
+                <td style="padding: 11px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">36-month commitment · No upfront · Monthly billing · Hardest to exit — non-refundable, exchange requests handled case by case</td>
+            </tr>
+            <!-- 3yr all upfront -->
+            <tr>
+                <td style="padding: 11px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; font-weight: bold;">3-Year Reserved<br><span style="font-weight: normal; font-size: 12px; color: #605E5C;">All upfront — pay once</span></td>
+                <td style="padding: 11px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; text-align: right; font-weight: bold; color: #CA5010;">~360 NOK<br><span style="font-size: 11px; font-weight: normal; color: #605E5C;">(equiv.)</span></td>
+                <td style="padding: 11px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; text-align: right; color: #CA5010; font-weight: bold;">~4,320 NOK<br><span style="font-size: 12px; color: #605E5C;">(paid upfront × 3 yrs)</span></td>
+                <td style="padding: 11px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; text-align: right; font-weight: bold; color: #107C10;">Save ~4,320 NOK/yr<br><span style="font-size: 11px; color: #107C10;">(~50% off)</span></td>
+                <td style="padding: 11px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #605E5C;">36-month commitment · Single upfront payment of ~12,960 NOK total · Maximum possible discount · Fully non-refundable</td>
+            </tr>
+            <!-- TOTAL with automation -->
+            <tr bgcolor="#EFF6FC">
+                <td colspan="5" style="padding: 10px 12px; font-size: 12px; color: #605E5C; font-style: italic; border-bottom: 1px solid #c8e4f8;">
+                    &#128204; <strong>Add ~25–55 NOK/month for Azure Automation + Log Analytics</strong> on top of the App Service figures above (unchanged regardless of commitment option).
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 5px 0 25px 0;">
+        <tr>
+            <td bgcolor="#FFF4CE" style="padding: 10px 16px; border-left: 4px solid #FFB900; font-size: 12px; color: #323130;">
+                &#9888;&#65039; <strong>Pricing basis:</strong> Microsoft Azure Reserved Instance discounts for App Service B1, Norway East (Windows). Figures are approximate — actual NOK list prices are set by Microsoft and may vary slightly. Confirm final pricing via the <a href="https://azure.microsoft.com/en-us/pricing/calculator/" style="color: #0078D4;">Azure Pricing Calculator</a> before committing. Exchange rate reference: 1 USD ≈ 10.70 NOK.
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 3: TOTAL COST TABLE ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128203; Total Annual Cost — Both Deployment Options</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <thead>
+            <tr bgcolor="#323130">
+                <th style="text-align: left; padding: 11px 12px; color: white; font-size: 13px; border-right: 1px solid #555;">Billing Option</th>
+                <th style="text-align: right; padding: 11px 12px; color: white; font-size: 13px; border-right: 1px solid #555;">Option A<br><span style="font-weight: normal; font-size: 11px;">Script-Only /yr</span></th>
+                <th style="text-align: right; padding: 11px 12px; color: white; font-size: 13px; border-right: 1px solid #555;">Option B<br><span style="font-weight: normal; font-size: 11px;">With Portal /yr</span></th>
+                <th style="text-align: right; padding: 11px 12px; color: white; font-size: 13px;">Upfront payment</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">Pay-As-You-Go</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #107C10;">~300–660 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold;">~9,000–9,300 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; color: #107C10; font-weight: bold;">0 NOK</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">1-Year Reserved (monthly billing)</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; color: #605E5C;">N/A — same as PAYG</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #5C2D91;">~5,916–5,976 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; color: #107C10; font-weight: bold;">0 NOK</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">1-Year Reserved (all upfront)</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; color: #605E5C;">N/A — same as PAYG</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #5C2D91;">~5,628–5,688 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold;">~5,328 NOK once</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">3-Year Reserved (monthly billing)</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; color: #605E5C;">N/A — same as PAYG</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #CA5010;">~5,052–5,112 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; color: #107C10; font-weight: bold;">0 NOK</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; font-weight: bold;">3-Year Reserved (all upfront)</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; text-align: right; color: #605E5C;">N/A — same as PAYG</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; text-align: right; font-weight: bold; color: #CA5010;">~4,620–4,680 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; text-align: right; font-weight: bold;">~12,960 NOK once<br><span style="font-size: 11px; color: #605E5C;">(covers 3 years)</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ===== SECTION 4: WHAT AZURE ACTUALLY SUPPORTS ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#127970; Azure Billing Models — What Microsoft Actually Offers</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <thead>
+            <tr bgcolor="#0078D4">
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Model</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">How It Works</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Discount</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Best For</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Credit Rollover?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">Pay-As-You-Go</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Monthly invoice, pay for exact hours used</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">None (list price)</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">New customers, unpredictable workloads</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #D13438; font-weight: bold;">&#10060; No credits</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">Reserved Instances<br><span style="font-size: 11px; font-weight: normal; color: #605E5C;">1-year or 3-year</span></td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Commit to a specific resource (e.g. B1 App Service) for 1 or 3 years. Pay monthly or all upfront.</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #107C10; font-weight: bold;">35–50% off list</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Stable, always-on workloads like the portal</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #D13438; font-weight: bold;">&#10060; Unused hours forfeited each hour</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">Azure Savings Plan<br><span style="font-size: 11px; font-weight: normal; color: #605E5C;">1-year or 3-year</span></td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Commit to spend a fixed hourly amount (e.g. $X/hour) across compute services — not tied to a specific resource</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #107C10; font-weight: bold;">~15–17% off list</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Mixed workloads, need flexibility to change resource types</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #D13438; font-weight: bold;">&#10060; Unused hourly spend is lost</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">Enterprise Agreement (EA)<br><span style="font-size: 11px; font-weight: normal; color: #605E5C;">Annual monetary commitment</span></td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Large organizations commit to a minimum annual Azure spend (typically 100,000+ NOK/year). Get discounted rates + prepaid credits.</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #107C10; font-weight: bold;">Negotiated — typically 10–40%</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Large organizations with high Azure spend</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #107C10; font-weight: bold;">&#9989; Unused prepaid balance rolls over up to 12 months</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; font-weight: bold;">Azure Free Account<br><span style="font-size: 11px; font-weight: normal; color: #605E5C;">New accounts only</span></td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px;">$200 USD credit valid for 30 days + free services for 12 months for new Azure sign-ups only</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #107C10; font-weight: bold;">$200 starter credit</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #605E5C;">First-time setup and testing</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #D13438; font-weight: bold;">&#10060; Expires after 30 days</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ===== SECTION 5: RECOMMENDATION ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#127775; Recommendation for BISS</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: separate; border-spacing: 8px; margin: 10px 0;">
+        <!-- Script-only -->
+        <tr>
+            <td bgcolor="#E6F2E3" style="padding: 16px 18px; border: 2px solid #107C10; vertical-align: top; font-size: 13px;">
+                <strong style="color: #107C10; font-size: 14px;">&#128196; If BISS chooses Script-Only (no portal)</strong><br><br>
+                <strong>→ Pay-As-You-Go. No decision needed.</strong><br>
+                Azure Automation and Log Analytics have no reserved instance options at this scale. Monthly cost is ~25–55 NOK regardless. No commitment, no risk.
+            </td>
+        </tr>
+        <!-- Portal PAYG -->
+        <tr>
+            <td bgcolor="#EFF6FC" style="padding: 16px 18px; border: 2px solid #0078D4; vertical-align: top; font-size: 13px;">
+                <strong style="color: #0078D4; font-size: 14px;">&#127760; If BISS adds the portal — first 12 months</strong><br><br>
+                <strong>→ Start on Pay-As-You-Go.</strong><br>
+                For a new deployment, Pay-As-You-Go gives you full flexibility. If something needs to change (region, tier, solution direction) there is no financial penalty. The extra cost vs 1-year reserved is ~252 NOK/month — a small premium for full flexibility during the initial period.
+            </td>
+        </tr>
+        <!-- Portal 1yr after -->
+        <tr>
+            <td bgcolor="#F5F0FA" style="padding: 16px 18px; border: 2px solid #5C2D91; vertical-align: top; font-size: 13px;">
+                <strong style="color: #5C2D91; font-size: 14px;">&#127760; If BISS adds the portal — after first year of stable use</strong><br><br>
+                <strong>→ 1-Year Reserved, monthly billing (no upfront).</strong><br>
+                Once the solution is proven and stable, switching to a 1-year reserved (monthly billing, no upfront) saves ~3,024 NOK/year (~35% off) with zero upfront cash risk. If the school's situation changes, the reservation can be exchanged for a different Azure resource. This is the best balance of savings and flexibility.
+            </td>
+        </tr>
+        <!-- Portal 3yr -->
+        <tr>
+            <td bgcolor="#FFF4CE" style="padding: 16px 18px; border: 2px solid #FFB900; vertical-align: top; font-size: 13px;">
+                <strong style="color: #8A5900; font-size: 14px;">&#9888;&#65039; 3-Year Reserved — only if BISS is very confident long-term</strong><br><br>
+                The 3-year option saves an additional ~864–1,728 NOK/year over the 1-year option, but locks BISS in for 36 months with very limited exit options. Given that BISS's Azure spend for this solution is relatively low (~9,000 NOK/year with portal), the financial upside of going 3-year vs 1-year is modest (~72–144 NOK/month extra saving) while the commitment risk is significant. <strong>Not recommended for a first Azure deployment.</strong>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== BREAK-EVEN NOTE ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0;">
+        <tr>
+            <td bgcolor="#EFF6FC" style="padding: 14px 18px; border-left: 4px solid #0078D4; font-size: 13px;">
+                <strong>&#128200; Break-even note for 1-year all-upfront vs monthly:</strong><br>
+                Paying the 1-year reserved all upfront (~5,328 NOK) saves ~288 NOK vs the monthly committed billing (~5,616 NOK/year) — that's ~24 NOK/month savings for paying in one lump sum. For most schools, the cash-flow benefit of monthly billing outweighs this small difference. <strong>1-year reserved monthly billing is the practical sweet spot.</strong>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== CLOSING ===== -->
+    <p style="margin-top: 30px;">Happy to walk through the Azure Pricing Calculator together to confirm the exact NOK figures for Norway East before you make any commitment decision. Just let me know which option BISS is leaning towards and I can prepare the full cost breakdown.</p>
+
+    <p>Best regards,</p>
+
+    <!-- Signature -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
+        <tr>
+            <td style="border-top: 2px solid #0078D4; padding-top: 16px;">
+                <div style="font-weight: bold; font-size: 15px; color: #005A9E;">Uy Le Thai Phan</div>
+                <div style="font-size: 13px; color: #605E5C;">Microsoft Solutions Consultant — Atea AS</div>
+                <div style="font-size: 13px;">&#128231; <a href="mailto:uy.le.thai.phan@atea.no" style="color: #0078D4;">uy.le.thai.phan@atea.no</a></div>
+                <div style="font-size: 11px; color: #A19F9D; margin-top: 8px;">Pricing based on Microsoft Azure Pay-As-You-Go and Reserved Instance rates, Norway East region, March 2026. Figures are estimates — confirm via azure.microsoft.com/pricing/calculator before committing.</div>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

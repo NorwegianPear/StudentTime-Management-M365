@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azure Pricing — Student Login Time Management — BISS</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; color: #1a1a2e; }
+    .container { max-width: 820px; margin: 0 auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden; }
+    .header { background: linear-gradient(135deg, #0f4c81 0%, #1565c0 100%); color: #fff; padding: 36px 40px 28px; }
+    .header h1 { margin: 0 0 8px; font-size: 22px; font-weight: 700; }
+    .header p { margin: 0; font-size: 13px; opacity: 0.85; }
+    .badge { display: inline-block; background: rgba(255,255,255,0.2); border-radius: 20px; padding: 3px 12px; font-size: 11px; margin-top: 10px; }
+    .body { padding: 32px 40px; }
+    h2 { font-size: 16px; font-weight: 700; color: #0f4c81; margin: 28px 0 12px; border-bottom: 2px solid #e8f0fe; padding-bottom: 6px; }
+    p, li { font-size: 13px; line-height: 1.65; color: #333; }
+    ul { padding-left: 20px; margin: 8px 0; }
+    li { margin-bottom: 4px; }
+    code { font-family: monospace; font-size: 12px; background: #f0f4ff; padding: 1px 5px; border-radius: 3px; }
+    .info-box { background: #e8f4fd; border-left: 4px solid #1565c0; border-radius: 4px; padding: 12px 16px; margin: 16px 0; font-size: 13px; }
+    .success-box { background: #e8f5e9; border-left: 4px solid #2e7d32; border-radius: 4px; padding: 12px 16px; margin: 16px 0; font-size: 13px; line-height: 1.8; }
+    .warn-box { background: #fff8e1; border-left: 4px solid #f57f17; border-radius: 4px; padding: 12px 16px; margin: 16px 0; font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+    th { background: #0f4c81; color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; }
+    th.center { text-align: center; }
+    td { padding: 9px 14px; border-bottom: 1px solid #e8eaf0; vertical-align: top; }
+    tr:nth-child(even) td { background: #f8faff; }
+    td.center { text-align: center; }
+    td.green { color: #1b5e20; font-weight: 700; }
+    td.blue { color: #0f4c81; font-weight: 700; }
+    td.gray { color: #888; font-style: italic; }
+    .free-tag { display: inline-block; background: #e8f5e9; color: #1b5e20; border-radius: 12px; padding: 2px 10px; font-size: 11px; font-weight: 700; border: 1px solid #a5d6a7; }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+    .option-card { border: 2px solid #e0e0e0; border-radius: 8px; padding: 20px; }
+    .option-card.recommended { border-color: #0f4c81; position: relative; }
+    .option-card.recommended::before { content: '✓ Recommended'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #0f4c81; color: white; padding: 2px 14px; border-radius: 12px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .option-card h3 { margin: 0 0 10px; font-size: 15px; color: #0f4c81; }
+    .option-card .price { font-size: 26px; font-weight: 800; color: #0f4c81; }
+    .option-card .price-sub { font-size: 11px; color: #888; }
+    .option-card ul { padding-left: 16px; margin: 12px 0 0; }
+    .option-card ul li { font-size: 12px; margin-bottom: 3px; }
+    .source-note { font-size: 11px; color: #888; text-align: right; margin-top: -8px; margin-bottom: 16px; }
+    .footer { background: #f8faff; border-top: 1px solid #e0e0e0; padding: 20px 40px; font-size: 11px; color: #888; }
+    .signature { margin-top: 24px; padding-top: 16px; border-top: 1px solid #e0e0e0; }
+    .signature strong { display: block; font-size: 13px; color: #1a1a2e; }
+    .signature span { font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>Azure Cost Breakdown &amp; Solution Comparison</h1>
+    <p>Student Login Time Management — The British International School (BISS Stavanger)</p>
+    <span class="badge">📊 Verified from Azure Retail Prices API · Norway East · 14 March 2026</span>
+  </div>
+
+  <div class="body">
+    <p>Hi Adnan,</p>
+    <p>Below is an accurate, API-verified cost breakdown for the Student Login Time Management solution,
+    with a full side-by-side comparison so the school can choose the right option.
+    All Azure prices were fetched directly from the <strong>Azure Retail Prices API</strong>
+    (region: Norway East, date: 14 March 2026).</p>
+
+    <div class="info-box">
+      <strong>💡 Great news:</strong> Because BISS already has biss.no, PGS.biss.no, and student.biss.no verified as
+      custom domains, and already has a Microsoft 365 subscription with Entra ID —
+      <strong>the only potential new Azure cost is the web portal (Option B).</strong>
+      The automation scripts themselves run within Azure's permanent free tier.
+    </div>
+
+    <!-- ─── AT A GLANCE ──────────────────────────────────────────────── -->
+    <h2>At a Glance</h2>
+    <div class="compare-grid">
+      <div class="option-card">
+        <h3>🔧 Option A — Script Only</h3>
+        <div class="price">0 NOK<span class="price-sub"> /month</span></div>
+        <div class="price-sub">Runs entirely within Azure free tier</div>
+        <ul>
+          <li>✅ Automatic schedule (enable/disable)</li>
+          <li>✅ Multiple groups &amp; custom policies</li>
+          <li>✅ Suspension management</li>
+          <li>✅ Email monitoring reports</li>
+          <li>✅ Year-end bulk promotion</li>
+          <li>⚪ Admin via Azure Portal or PowerShell</li>
+          <li>⚪ No browser-based management UI</li>
+        </ul>
+      </div>
+      <div class="option-card recommended">
+        <h3>🌐 Option B — Script + Portal</h3>
+        <div class="price">~141 NOK<span class="price-sub"> /month</span></div>
+        <div class="price-sub">App Service B1 Linux · verified retail price</div>
+        <ul>
+          <li>✅ Everything in Option A</li>
+          <li>✅ Web portal — manage from any browser</li>
+          <li>✅ Live schedule dashboard (active now?)</li>
+          <li>✅ Role-based access: Admin / Teacher / Read-only</li>
+          <li>✅ Audit log &amp; pending changes view</li>
+          <li>✅ Multi-language (EN, NO, DE, SV, ES, PT, DA)</li>
+          <li>✅ Custom URL (e.g. portal.biss.no)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ─── OPTION A DETAIL ───────────────────────────────────────────── -->
+    <h2>Option A — Script Only: Detailed Cost</h2>
+    <p>Azure Automation includes a <em>permanent free tier</em> of 500 job-minutes/month.
+    The solution runs 2 jobs/day (enable + disable) × ~22 school days/month × ~1 min each
+    = <strong>~44 min/month</strong> — far below the free tier limit.</p>
+    <table>
+      <thead>
+        <tr><th>Resource</th><th>Tier / Plan</th><th class="center">Monthly</th><th class="center">Annual</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Azure Automation Account</td><td>Free tier (first 500 min/month free)</td><td class="center green">FREE</td><td class="center green">FREE</td></tr>
+        <tr><td>Runbook execution (~44 min/month)</td><td>Within free tier · no overage</td><td class="center green">FREE</td><td class="center green">FREE</td></tr>
+        <tr><td>Azure Storage Account (config)</td><td>LRS Blob · &lt;0.1 GB</td><td class="center green">&lt;1 NOK</td><td class="center green">~5 NOK</td></tr>
+        <tr><td>Resource Group</td><td>No charge</td><td class="center green">FREE</td><td class="center green">FREE</td></tr>
+        <tr><td>Microsoft Entra ID / Graph API</td><td>Included with existing M365</td><td class="center green">FREE</td><td class="center green">FREE</td></tr>
+        <tr style="background:#e8f5e9;font-weight:700;"><td colspan="2"><strong>TOTAL — Option A</strong></td><td class="center green">~0 NOK</td><td class="center green">~5 NOK</td></tr>
+      </tbody>
+    </table>
+    <p class="source-note">Source: Azure Retail Prices API · Automation free tier confirmed · March 2026</p>
+
+    <!-- ─── OPTION B DETAIL ───────────────────────────────────────────── -->
+    <h2>Option B — Script + Portal: Detailed Cost</h2>
+    <p>The portal runs on <strong>Azure App Service Plan B1 Linux</strong> — 1 vCore, 1.75 GB RAM.
+    <strong>Linux is strongly recommended over Windows</strong>: identical functionality at 4× lower cost.</p>
+    <table>
+      <thead>
+        <tr><th>Resource</th><th>SKU / Plan</th><th class="center">API Rate</th><th class="center">Monthly (NOK)</th><th class="center">Annual (NOK)</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>App Service Plan B1 Linux ✅</strong></td>
+          <td>Basic B1 Linux · Norway East</td>
+          <td class="center">$0.0177/hr</td>
+          <td class="center blue"><strong>~141 NOK</strong></td>
+          <td class="center blue"><strong>~1,692 NOK</strong></td>
+        </tr>
+        <tr>
+          <td><em>App Service Plan B1 Windows ❌ (not recommended)</em></td>
+          <td>Basic B1 Windows · Norway East</td>
+          <td class="center gray">$0.0771/hr</td>
+          <td class="center gray">~614 NOK</td>
+          <td class="center gray">~7,368 NOK</td>
+        </tr>
+        <tr><td>Web App (portal itself)</td><td>Included in Plan above</td><td class="center">—</td><td class="center green">FREE</td><td class="center green">FREE</td></tr>
+        <tr><td>Azure Automation Account</td><td>Free tier (same as Option A)</td><td class="center">—</td><td class="center green">FREE</td><td class="center green">FREE</td></tr>
+        <tr><td>SSL Certificate (portal domain)</td><td>App Service Managed Cert (free)</td><td class="center">—</td><td class="center green">FREE</td><td class="center green">FREE</td></tr>
+        <tr><td>Azure Storage Account</td><td>LRS · &lt;0.1 GB</td><td class="center">—</td><td class="center green">&lt;1 NOK</td><td class="center green">~5 NOK</td></tr>
+        <tr><td>Managed Identity (portal auth)</td><td>No charge</td><td class="center">—</td><td class="center green">FREE</td><td class="center green">FREE</td></tr>
+        <tr><td>Microsoft Entra ID / Graph API</td><td>Included with M365</td><td class="center">—</td><td class="center green">FREE</td><td class="center green">FREE</td></tr>
+        <tr style="background:#e3f2fd;font-weight:700;"><td colspan="2"><strong>TOTAL — Option B (Linux B1) ✅</strong></td><td class="center">—</td><td class="center blue">~141 NOK/month</td><td class="center blue">~1,697 NOK/year</td></tr>
+      </tbody>
+    </table>
+    <p class="source-note">Source: Azure Retail Prices API · productName="Azure App Service Basic Plan - Linux" · skuName="B1" · armRegionName=norwayeast · retailPrice $0.0177/hr · meterId a78a4785 · March 2026</p>
+
+    <!-- ─── FULL COMPARISON ──────────────────────────────────────────── -->
+    <h2>Full Feature &amp; Cost Comparison</h2>
+    <table>
+      <thead>
+        <tr><th>Feature / Cost</th><th class="center">Option A — Script Only</th><th class="center">Option B — Script + Portal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Monthly cost</strong></td><td class="center green">~0 NOK <span class="free-tag">FREE</span></td><td class="center blue"><strong>~141 NOK</strong></td></tr>
+        <tr><td><strong>Annual cost</strong></td><td class="center green">~5 NOK</td><td class="center blue"><strong>~1,697 NOK</strong></td></tr>
+        <tr><td><strong>Via Atea CSP (~15% off)</strong></td><td class="center green">FREE</td><td class="center blue">~120 NOK/mnd · ~1,440 NOK/år</td></tr>
+        <tr><td>Automatic login time scheduling</td><td class="center">✅</td><td class="center">✅</td></tr>
+        <tr><td>Multiple schedule policies</td><td class="center">✅</td><td class="center">✅</td></tr>
+        <tr><td>Special groups (extended hours)</td><td class="center">✅</td><td class="center">✅</td></tr>
+        <tr><td>Student suspension management</td><td class="center">✅</td><td class="center">✅</td></tr>
+        <tr><td>Email monitoring reports</td><td class="center">✅</td><td class="center">✅</td></tr>
+        <tr><td>Year-end bulk class promotion</td><td class="center">✅ (script)</td><td class="center">✅ (portal)</td></tr>
+        <tr><td>CSV student import</td><td class="center">✅ (script)</td><td class="center">✅ (portal)</td></tr>
+        <tr><td>Admin interface</td><td class="center gray">Azure Portal + PowerShell</td><td class="center blue">Browser-based portal</td></tr>
+        <tr><td>Teacher / staff self-service</td><td class="center gray">No (IT only)</td><td class="center blue">✅ (read-only or editor role)</td></tr>
+        <tr><td>Live schedule overview</td><td class="center gray">No</td><td class="center blue">✅ Real-time dashboard</td></tr>
+        <tr><td>Audit log</td><td class="center gray">Automation job history only</td><td class="center blue">✅ Full trail in portal</td></tr>
+        <tr><td>Multi-language UI</td><td class="center gray">English only</td><td class="center blue">EN, NO, DE, SV, ES, PT, DA</td></tr>
+        <tr><td>Custom portal URL (e.g. portal.biss.no)</td><td class="center gray">No</td><td class="center blue">✅ Free SSL managed cert</td></tr>
+        <tr><td>Setup time</td><td class="center gray">~30 min (1 script)</td><td class="center gray">~60 min (2 scripts + deploy)</td></tr>
+        <tr><td>Daily use technical requirement</td><td class="center gray">IT comfort with PowerShell</td><td class="center blue">Any browser — no IT needed</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ─── BILLING PERIOD TABLE ─────────────────────────────────────── -->
+    <h2>Budget Figures by Billing Period — Option B (Linux B1)</h2>
+    <table>
+      <thead>
+        <tr><th>Period</th><th class="center">Retail (NOK)</th><th class="center">Via Atea CSP ~15% (NOK)</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Monthly</td><td class="center blue">~141</td><td class="center">~120</td><td>PAYG — stop any time</td></tr>
+        <tr><td>Quarterly</td><td class="center blue">~423</td><td class="center">~360</td><td>3 × monthly</td></tr>
+        <tr><td>Half-year</td><td class="center blue">~847</td><td class="center">~720</td><td>6 × monthly</td></tr>
+        <tr><td>Annual</td><td class="center blue">~1,692</td><td class="center">~1,440</td><td>B1 = PAYG only (no reserved option)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warn-box">
+      <strong>ℹ️ Note:</strong> Azure App Service <em>Basic</em> (B1) tier does not have Reserved Instance pricing.
+      It is always billed monthly on a Pay-As-You-Go basis. If BISS later needs more performance, upgrading to
+      <strong>Standard S1</strong> ($0.0971/hr = ~87 NOK/month) enables 1-year reserved pricing (~30% discount).
+    </div>
+
+    <!-- ─── RESOURCES DEPLOYED ────────────────────────────────────────── -->
+    <h2>Azure Resources Deployed During Setup</h2>
+    <table>
+      <thead>
+        <tr><th>Resource</th><th class="center">Option A</th><th class="center">Option B</th><th>Cost</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Resource Group</td><td class="center">✅</td><td class="center">✅</td><td class="green">FREE</td></tr>
+        <tr><td>App Registration (Entra ID)</td><td class="center">✅</td><td class="center">✅</td><td class="green">FREE</td></tr>
+        <tr><td>Azure Automation Account</td><td class="center">✅</td><td class="center">✅</td><td class="green">FREE (within free tier)</td></tr>
+        <tr><td>Automation Variables (encrypted)</td><td class="center">✅</td><td class="center">✅</td><td class="green">FREE</td></tr>
+        <tr><td>Automation Schedules (Mon–Fri)</td><td class="center">✅</td><td class="center">✅</td><td class="green">FREE</td></tr>
+        <tr><td>8 PowerShell Runbooks</td><td class="center">✅</td><td class="center">✅</td><td class="green">FREE</td></tr>
+        <tr><td>App Service Plan B1 Linux</td><td class="center gray">—</td><td class="center">✅</td><td class="blue"><strong>~141 NOK/month</strong></td></tr>
+        <tr><td>App Service (Web App)</td><td class="center gray">—</td><td class="center">✅</td><td class="green">Included in Plan</td></tr>
+        <tr><td>Managed Identity</td><td class="center gray">—</td><td class="center">✅</td><td class="green">FREE</td></tr>
+        <tr><td>Storage Account (LRS)</td><td class="center">✅</td><td class="center">✅</td><td class="green">&lt;1 NOK/month</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ─── BISS EXISTING ─────────────────────────────────────────────── -->
+    <h2>What Is Already in Place at BISS (No Additional Cost)</h2>
+    <div class="success-box">
+      ✅ <strong>biss.no</strong> — Verified primary custom domain in Entra ID<br>
+      ✅ <strong>PGS.biss.no</strong> — Verified secondary domain<br>
+      ✅ <strong>student.biss.no</strong> — Verified student domain<br>
+      ✅ <strong>Microsoft 365 subscription</strong> — Entra ID + Graph API access active<br>
+      ✅ <strong>Azure subscription 1</strong> — Already active in Norway East region<br>
+      ✅ <strong>Atea@biss.no</strong> — Global Administrator + Azure Contributor roles now configured<br>
+      ✅ <strong>No domain registration costs</strong> — Domains already verified
+    </div>
+
+    <!-- ─── RECOMMENDATION ────────────────────────────────────────────── -->
+    <h2>My Recommendation</h2>
+    <p><strong>Option B (Script + Portal, Linux B1)</strong> for ~141 NOK/month:</p>
+    <ul>
+      <li>Cost is less than a streaming subscription — 4.70 NOK/day</li>
+      <li>Teachers can manage access policies from any browser, without IT involvement</li>
+      <li>The live dashboard immediately answers "are students logged in right now?"</li>
+      <li>Audit trail for compliance and parent queries</li>
+      <li>The portal can be deployed to <strong>portal.biss.no</strong> or <strong>portal.student.biss.no</strong> using your existing verified domain — no extra domain cost</li>
+    </ul>
+    <p>If budget is a concern, <strong>Option A is completely free</strong> and delivers full automation.
+    The portal can be added at any time without reconfiguring the automation.</p>
+
+    <!-- ─── METHODOLOGY ─────────────────────────────────────────────── -->
+    <h2>Price Verification Methodology</h2>
+    <ul>
+      <li><strong>API endpoint:</strong> <code>https://prices.azure.com/api/retail/prices</code></li>
+      <li><strong>Region filter:</strong> <code>armRegionName eq 'norwayeast'</code></li>
+      <li><strong>B1 Linux:</strong> productName="Azure App Service Basic Plan - Linux" · skuName="B1" · <code>$0.0177/hr</code> · meterId a78a4785</li>
+      <li><strong>B1 Windows:</strong> productName="Azure App Service Basic Plan" · skuName="B1" · <code>$0.0771/hr</code> · meterId f24285ab</li>
+      <li><strong>Monthly hours:</strong> 730 (24 hr × 365 days ÷ 12)</li>
+      <li><strong>Exchange rate:</strong> 1 USD = 10.9 NOK (mid-market estimate, March 2026)</li>
+      <li><strong>CSP estimate:</strong> ~15% below retail — exact figure depends on Atea agreement</li>
+      <li>All prices are <em>excl. Norwegian VAT (MVA 25%)</em></li>
+    </ul>
+
+    <p>Please let me know if you have any questions, or if you'd like to proceed with deploying the solution!</p>
+
+    <div class="signature">
+      <strong>Uy Le Thai Phan</strong>
+      <span>Senior Consultant · Cloud &amp; Modern Workplace · Atea AS · uy.le.thai.phan@atea.no</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    Prices sourced from Azure Retail Prices API · Norway East · 14 March 2026 · Excl. VAT ·
+    CSP discount estimate only — verify with Atea account manager ·
+    BISS: thebritishintschool.onmicrosoft.com · biss.no
+  </div>
+</div>
+</body>
+</html>

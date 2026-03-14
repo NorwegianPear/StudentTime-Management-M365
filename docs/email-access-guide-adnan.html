@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<!--
+    EMAIL TEMPLATE - Inline styles are INTENTIONAL and REQUIRED
+    Email clients (Outlook, Gmail, etc.) do not support external CSS files.
+    htmlhint no-inline-styles:false
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Setup Guide — Student Time Management — BISS Stavanger</title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.7; color: #323130; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #ffffff;">
+
+    <!-- ===== HEADER ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 10px;">
+        <tr>
+            <td bgcolor="#0078D4" style="padding: 30px 30px 20px 30px;">
+                <div style="color: #BDD9F5; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">Atea AS — Microsoft Solutions Partner</div>
+                <div style="color: white; font-size: 26px; font-weight: bold; line-height: 1.3;">&#128273; Access &amp; Setup Guide<br>Student Login Time Management — BISS Stavanger</div>
+                <div style="color: #BDD9F5; font-size: 14px; margin-top: 10px;">How to grant Atea consultant access to your Azure tenant and Microsoft 365 so we can deploy and configure the Student Time Management solution — including custom domain setup and required roles.</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Summary Boxes -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0; border-collapse: separate; border-spacing: 8px;">
+        <tr>
+            <td bgcolor="#0078D4" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Access methods</div>
+                <div style="font-size: 26px; font-weight: bold; margin: 6px 0;">2 options</div>
+                <div style="font-size: 11px;">Guest invite or create user</div>
+            </td>
+            <td bgcolor="#107C10" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Roles needed</div>
+                <div style="font-size: 26px; font-weight: bold; margin: 6px 0;">2 roles</div>
+                <div style="font-size: 11px;">Global Admin + Azure Contributor</div>
+            </td>
+            <td bgcolor="#5C2D91" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Custom domain</div>
+                <div style="font-size: 26px; font-weight: bold; margin: 6px 0;">biss.no</div>
+                <div style="font-size: 11px;">Optional but recommended</div>
+            </td>
+            <td bgcolor="#CA5010" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Scripts provided</div>
+                <div style="font-size: 26px; font-weight: bold; margin: 6px 0;">3 scripts</div>
+                <div style="font-size: 11px;">For BISS to keep &amp; operate</div>
+            </td>
+        </tr>
+    </table>
+
+    <p>Hi Adnan,</p>
+
+    <p>Thank you for choosing the <strong>Student Login Time Management solution</strong> for BISS. Before I can deploy and configure everything in your Microsoft 365 and Azure environment, I need you to grant me access as described in this guide.</p>
+
+    <p>This guide covers:</p>
+    <ol>
+        <li><a href="#section-domain" style="color: #0078D4;">How to add <strong>biss.no</strong> as a custom domain in your Entra ID tenant</a></li>
+        <li><a href="#section-access" style="color: #0078D4;">How to grant my Atea account access to your tenant (two options)</a></li>
+        <li><a href="#section-roles" style="color: #0078D4;">Exactly which roles to assign — for both M365 and Azure</a></li>
+        <li><a href="#section-scripts" style="color: #0078D4;">Scripts and files I will run — so you know exactly what runs in your environment</a></li>
+    </ol>
+
+    <p>My consultant email at Atea is: <strong>uy.le.thai.phan@atea.no</strong></p>
+
+    <!-- ===== SECTION 1: CUSTOM DOMAIN ===== -->
+    <h2 id="section-domain" style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#127760; Part 1 — Add biss.no as Custom Domain in Entra ID</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%;">
+        <tr>
+            <td bgcolor="#FFF4CE" style="padding: 12px 18px; border-left: 4px solid #FFB900; font-size: 13px; margin-bottom: 10px;">
+                &#9888;&#65039; <strong>This step is optional</strong> — your M365 tenant works without it. However, adding <code>biss.no</code> as a verified domain lets you use <code>@biss.no</code> email addresses and UPNs instead of <code>@bissstavanger.onmicrosoft.com</code>. <strong>If you already use @biss.no addresses in M365, this is already done — skip to Part 2.</strong>
+            </td>
+        </tr>
+    </table>
+
+    <h3 style="color: #323130; margin-top: 20px;">Steps to Add biss.no Custom Domain</h3>
+
+    <!-- Step 1 -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 8px 0;">
+        <tr>
+            <td bgcolor="#0078D4" style="width: 48px; color: white; font-size: 22px; font-weight: bold; text-align: center; padding: 16px 0; vertical-align: top;">1</td>
+            <td bgcolor="#EFF6FC" style="padding: 14px 18px; vertical-align: top; font-size: 13px;">
+                <strong>Go to Microsoft Entra admin center</strong><br>
+                Open <a href="https://entra.microsoft.com" style="color: #0078D4;">https://entra.microsoft.com</a> and sign in with your Global Administrator account.<br>
+                Navigate to: <strong>Settings → Domain names → Add custom domain</strong>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Step 2 -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 8px 0;">
+        <tr>
+            <td bgcolor="#0078D4" style="width: 48px; color: white; font-size: 22px; font-weight: bold; text-align: center; padding: 16px 0; vertical-align: top;">2</td>
+            <td bgcolor="#EFF6FC" style="padding: 14px 18px; vertical-align: top; font-size: 13px;">
+                <strong>Enter the domain name</strong><br>
+                Type <code>biss.no</code> and click <strong>Add domain</strong>. Microsoft will give you a TXT record to add to your DNS.
+            </td>
+        </tr>
+    </table>
+
+    <!-- Step 3 -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 8px 0;">
+        <tr>
+            <td bgcolor="#0078D4" style="width: 48px; color: white; font-size: 22px; font-weight: bold; text-align: center; padding: 16px 0; vertical-align: top;">3</td>
+            <td bgcolor="#EFF6FC" style="padding: 14px 18px; vertical-align: top; font-size: 13px;">
+                <strong>Add DNS TXT record</strong><br>
+                Log in to your DNS provider (whoever manages <code>biss.no</code>). Add the TXT record Microsoft gives you. It looks like:<br>
+                <code style="display: block; background: #1E1E1E; color: #D4D4D4; padding: 10px 14px; margin: 8px 0; border-radius: 4px; font-size: 12px;">
+                    Type: TXT &nbsp;&nbsp; Host: @ (or biss.no) &nbsp;&nbsp; Value: MS=msXXXXXXXX
+                </code>
+                DNS propagation can take <strong>15–60 minutes</strong>.
+            </td>
+        </tr>
+    </table>
+
+    <!-- Step 4 -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 8px 0;">
+        <tr>
+            <td bgcolor="#107C10" style="width: 48px; color: white; font-size: 22px; font-weight: bold; text-align: center; padding: 16px 0; vertical-align: top;">4</td>
+            <td bgcolor="#E6F2E3" style="padding: 14px 18px; vertical-align: top; font-size: 13px;">
+                <strong>Verify the domain</strong><br>
+                Back in Entra admin center, click <strong>Verify</strong>. Once verified, the domain shows as <strong>"Verified"</strong> with a green checkmark. You can optionally set it as the primary domain.
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 2: GRANTING ACCESS ===== -->
+    <h2 id="section-access" style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128275; Part 2 — Grant Atea Access to Your Tenant</h2>
+
+    <p style="font-size: 14px;">There are <strong>two ways</strong> to give me access. Choose the one that works best for you:</p>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: separate; border-spacing: 8px; margin: 10px 0;">
+        <tr>
+            <td bgcolor="#E6F2E3" style="width: 48%; padding: 18px; border: 2px solid #107C10; vertical-align: top;">
+                <div style="font-size: 13px; font-weight: bold; color: #107C10; margin-bottom: 8px;">&#11088; Option A — Recommended<br>Invite as External Guest User</div>
+                <ul style="font-size: 13px; margin: 0; padding-left: 18px; color: #323130; line-height: 1.8;">
+                    <li>I log in with my <strong>existing Atea account</strong> (uy.le.thai.phan@atea.no)</li>
+                    <li>No new password required</li>
+                    <li>Easier to remove after the project</li>
+                    <li>Audit logs show my real Atea identity</li>
+                    <li>Requires: <strong>B2B External Identities</strong> (free, included in Entra ID)</li>
+                </ul>
+            </td>
+            <td bgcolor="#EFF6FC" style="width: 48%; padding: 18px; border: 2px solid #0078D4; vertical-align: top;">
+                <div style="font-size: 13px; font-weight: bold; color: #0078D4; margin-bottom: 8px;">&#128100; Option B — Alternative<br>Create a Dedicated User in Your Tenant</div>
+                <ul style="font-size: 13px; margin: 0; padding-left: 18px; color: #323130; line-height: 1.8;">
+                    <li>Create a new user, e.g. <code>atea.consultant@biss.no</code></li>
+                    <li>Share credentials securely with me</li>
+                    <li>More control over the account lifecycle</li>
+                    <li>Uses an M365 license (or can be unlicensed admin)</li>
+                    <li>Remember to disable/delete after project completes</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Option A Steps -->
+    <h3 style="color: #107C10; margin-top: 25px;">Option A — Invite uy.le.thai.phan@atea.no as Guest</h3>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 6px 0;">
+        <tr>
+            <td bgcolor="#107C10" style="width: 48px; color: white; font-size: 18px; font-weight: bold; text-align: center; padding: 14px 0; vertical-align: top;">1</td>
+            <td bgcolor="#E6F2E3" style="padding: 12px 16px; vertical-align: top; font-size: 13px;">
+                Go to <a href="https://entra.microsoft.com" style="color: #0078D4;">entra.microsoft.com</a> → <strong>Users → All users → New user → Invite external user</strong>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 6px 0;">
+        <tr>
+            <td bgcolor="#107C10" style="width: 48px; color: white; font-size: 18px; font-weight: bold; text-align: center; padding: 14px 0; vertical-align: top;">2</td>
+            <td bgcolor="#E6F2E3" style="padding: 12px 16px; vertical-align: top; font-size: 13px;">
+                Enter: <strong>Email:</strong> <code>uy.le.thai.phan@atea.no</code><br>
+                <strong>Display name:</strong> Uy Le Thai Phan (Atea Consultant)<br>
+                Optional message: "Atea consultant for Student Time Management setup"<br>
+                Click <strong>Invite</strong>.
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 6px 0;">
+        <tr>
+            <td bgcolor="#107C10" style="width: 48px; color: white; font-size: 18px; font-weight: bold; text-align: center; padding: 14px 0; vertical-align: top;">3</td>
+            <td bgcolor="#E6F2E3" style="padding: 12px 16px; vertical-align: top; font-size: 13px;">
+                I will receive an invitation email to my Atea inbox and accept it.<br>
+                <strong>Then proceed to Part 3 to assign the required roles to this guest account.</strong>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Option B Steps -->
+    <h3 style="color: #0078D4; margin-top: 25px;">Option B — Create a Dedicated Consultant Account</h3>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 6px 0;">
+        <tr>
+            <td bgcolor="#0078D4" style="width: 48px; color: white; font-size: 18px; font-weight: bold; text-align: center; padding: 14px 0; vertical-align: top;">1</td>
+            <td bgcolor="#EFF6FC" style="padding: 12px 16px; vertical-align: top; font-size: 13px;">
+                Go to <a href="https://entra.microsoft.com" style="color: #0078D4;">entra.microsoft.com</a> → <strong>Users → All users → New user → Create new user</strong>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 6px 0;">
+        <tr>
+            <td bgcolor="#0078D4" style="width: 48px; color: white; font-size: 18px; font-weight: bold; text-align: center; padding: 14px 0; vertical-align: top;">2</td>
+            <td bgcolor="#EFF6FC" style="padding: 12px 16px; vertical-align: top; font-size: 13px;">
+                Enter:<br>
+                <strong>User principal name:</strong> <code>atea.consultant@biss.no</code> (or @bissstavanger.onmicrosoft.com)<br>
+                <strong>Display name:</strong> Atea Consultant<br>
+                <strong>Password:</strong> Set a temporary strong password — share with me via a secure channel (e.g. encrypted email or phone call).<br>
+                Leave <strong>"Require password change at next login"</strong> unchecked.
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 6px 0;">
+        <tr>
+            <td bgcolor="#0078D4" style="width: 48px; color: white; font-size: 18px; font-weight: bold; text-align: center; padding: 14px 0; vertical-align: top;">3</td>
+            <td bgcolor="#EFF6FC" style="padding: 12px 16px; vertical-align: top; font-size: 13px;">
+                <strong>Do NOT assign an M365 license</strong> to this account (not required for admin tasks).<br>
+                <strong>Then proceed to Part 3 to assign the required roles.</strong>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 3: ROLES ===== -->
+    <h2 id="section-roles" style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128274; Part 3 — Assign Required Roles</h2>
+
+    <p style="font-size: 14px;">Once you have invited/created my account (Part 2), assign these roles. These are the <strong>minimum permissions</strong> required to deploy the full solution.</p>
+
+    <!-- 3A: Entra ID Roles -->
+    <h3 style="color: #323130; margin-top: 20px;">3A — Microsoft Entra ID Roles (for M365 &amp; App Registration setup)</h3>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+        <thead>
+            <tr bgcolor="#0078D4">
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Entra ID Role</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Why Needed</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Required For</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold; color: #D13438;">&#128308; Global Administrator</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Create App Registration + grant admin consent for Graph API permissions</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Script setup + Portal setup</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;"><em>Alternative if GA not possible:</em><br><strong>Application Administrator</strong> + <strong>Privileged Role Administrator</strong></td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Application Admin creates app reg; Privileged Role Admin grants consent</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Script setup only</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="font-size: 13px; background: #FFF4CE; border-left: 4px solid #FFB900; padding: 10px 14px; margin: 6px 0;">&#9888;&#65039; <strong>Global Administrator</strong> is by far the simplest option. If your security policy requires a more restricted route, the "Application Administrator + Privileged Role Administrator" combination covers the script setup — but Global Admin is still needed to fully configure the portal's Managed Identity.</p>
+
+    <h4 style="color: #005A9E; margin-top: 18px;">How to assign an Entra ID role:</h4>
+    <ol style="font-size: 13px; line-height: 1.9; margin: 0; padding-left: 20px;">
+        <li>Go to <a href="https://entra.microsoft.com" style="color: #0078D4;">entra.microsoft.com</a> → <strong>Roles and administrators</strong></li>
+        <li>Search for <strong>Global Administrator</strong> → click it</li>
+        <li>Click <strong>Add assignments</strong></li>
+        <li>Search for my account (guest or newly created user) → Select it → Click <strong>Add</strong></li>
+    </ol>
+
+    <!-- 3B: Azure RBAC Roles -->
+    <h3 style="color: #323130; margin-top: 25px;">3B — Azure Subscription Roles (for deploying Azure Automation + Portal)</h3>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%;">
+        <tr>
+            <td bgcolor="#FFF4CE" style="padding: 10px 16px; border-left: 4px solid #FFB900; font-size: 13px; margin-bottom: 10px;">
+                &#9888;&#65039; <strong>This requires an Azure subscription.</strong> If BISS does not yet have one, create a free Pay-As-You-Go subscription at <a href="https://azure.microsoft.com/free" style="color: #0078D4;">azure.microsoft.com/free</a> (includes $200 free credit). The automation solution itself costs approximately <strong>0 NOK/month</strong> within the free tier limits.
+            </td>
+        </tr>
+    </table>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+        <thead>
+            <tr bgcolor="#0078D4">
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Azure Role</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Scope</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Why Needed</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Required For</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold; color: #107C10;">&#128994; Contributor</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Subscription or Resource Group</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Create and configure all Azure resources (Automation Account, App Service, etc.)</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Script + Portal setup</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold; color: #107C10;">&#128994; User Access Administrator</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Resource Group</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Assign Managed Identity permissions to the App Service (portal only)</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Portal setup only</td>
+            </tr>
+            <tr>
+                <td colspan="4" style="padding: 8px 12px; font-size: 12px; color: #605E5C; font-style: italic; border-bottom: 1px solid #E1DFDD;">
+                    &#128276; Tip: Assigning <strong>Owner</strong> at the Resource Group level covers both roles above and is the simplest approach.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4 style="color: #005A9E; margin-top: 18px;">How to assign an Azure role:</h4>
+    <ol style="font-size: 13px; line-height: 1.9; margin: 0; padding-left: 20px;">
+        <li>Go to <a href="https://portal.azure.com" style="color: #0078D4;">portal.azure.com</a></li>
+        <li>Navigate to your <strong>Subscription</strong> (or to the specific Resource Group if you prefer a narrower scope)</li>
+        <li>Click <strong>Access control (IAM)</strong> → <strong>Add → Add role assignment</strong></li>
+        <li>Role: <strong>Contributor</strong> → Next</li>
+        <li>Members: Search for my account → Select → <strong>Review + assign</strong></li>
+        <li>Repeat for <strong>User Access Administrator</strong> if deploying the portal</li>
+    </ol>
+
+    <!-- ===== COMBINED CHECKLIST ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#9989; Quick Checklist — What BISS Needs to Do</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+        <thead>
+            <tr bgcolor="#323130">
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">#</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Action</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Where</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Needed for</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center;">&#9744;</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">(Optional) Add <code>biss.no</code> as verified domain in Entra ID</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #0078D4;">entra.microsoft.com → Domain names</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Custom domain setup</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center;">&#9744;</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Invite <code>uy.le.thai.phan@atea.no</code> as guest user <em>OR</em> create <code>atea.consultant@biss.no</code></td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #0078D4;">entra.microsoft.com → Users</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Access for Atea</td>
+            </tr>
+            <tr>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center;">&#9744;</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Assign <strong>Global Administrator</strong> role to my Atea account in Entra ID</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #0078D4;">entra.microsoft.com → Roles and administrators</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">M365 + Script setup</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center;">&#9744;</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Create an Azure subscription (if not already done) and assign me <strong>Contributor</strong> + <strong>User Access Administrator</strong></td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #0078D4;">portal.azure.com → Subscription → IAM</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Azure deployment</td>
+            </tr>
+            <tr>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center;">&#9744;</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Send me the <strong>Tenant ID</strong> (found in Entra → Overview → Tenant ID)</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #0078D4;">entra.microsoft.com → Overview</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Script configuration</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center;">&#9744;</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Confirm the name or Object ID of the <strong>student security group</strong> in Entra ID (or let me create one)</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #0078D4;">entra.microsoft.com → Groups</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Automation configuration</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ===== SECTION 4: SCRIPTS ===== -->
+    <h2 id="section-scripts" style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128196; Part 4 — Scripts I Will Run in Your Environment</h2>
+
+    <p style="font-size: 14px;">For full transparency, here are the scripts I will run and what each one does. I will also hand these over to you after setup so BISS can operate the solution independently.</p>
+
+    <!-- Setup scripts -->
+    <h3 style="color: #323130; margin-top: 20px;">Setup Scripts (run once during deployment — by Atea)</h3>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+        <thead>
+            <tr bgcolor="#0078D4">
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Script File</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">What It Does</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Requires</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 12px; font-family: monospace; color: #0078D4;">New-AppRegistration.ps1</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Creates the Entra ID App Registration with Microsoft Graph API permissions (<code>User.ReadWrite.All</code>, <code>Group.Read.All</code>, <code>User.RevokeSessions.All</code>) and generates a client secret</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Global Administrator in Entra ID</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 12px; font-family: monospace; color: #0078D4;">Deploy-StudentAccessAutomation.ps1</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Creates the Azure Resource Group, Automation Account, uploads runbooks (<code>Enable-StudentAccess.ps1</code> &amp; <code>Disable-StudentAccess.ps1</code>), sets encrypted variables, and creates the daily schedules</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Azure Contributor on subscription/resource group</td>
+            </tr>
+            <tr>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 12px; font-family: monospace; color: #0078D4;">Deploy-Portal.ps1</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;"><em>(Optional — portal only)</em> Deploys the web management portal to Azure App Service. Provisions infrastructure and uploads the Next.js portal build</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Azure Contributor + User Access Administrator</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 12px; font-family: monospace; color: #0078D4;">Grant-ManagedIdentityPermissions.ps1</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;"><em>(Optional — portal only)</em> Grants Microsoft Graph permissions to the App Service's Managed Identity so the portal can call the Graph API without a client secret</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Global Administrator in Entra ID</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Runbooks left with customer -->
+    <h3 style="color: #323130; margin-top: 20px;">Runbooks — Left in Your Azure Automation Account (daily operations)</h3>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+        <thead>
+            <tr bgcolor="#107C10">
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Runbook File</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">When It Runs</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">What It Does</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 12px; font-family: monospace; color: #107C10;">Enable-StudentAccess.ps1</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold; color: #107C10;">Mon–Fri at 07:55</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Sets <code>accountEnabled = true</code> for all students in the security group. Students can log in to M365.</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 12px; font-family: monospace; color: #D13438;">Disable-StudentAccess.ps1</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold; color: #D13438;">Mon–Fri at 16:05</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Sets <code>accountEnabled = false</code> + revokes all active tokens. Students are immediately logged out and cannot log back in until 07:55 next school day.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Scripts for customer to keep -->
+    <h3 style="color: #323130; margin-top: 20px;">Scripts Handed Over to BISS After Setup</h3>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+        <thead>
+            <tr bgcolor="#5C2D91">
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Script File</th>
+                <th style="text-align: left; padding: 10px 12px; color: white; font-size: 13px;">Purpose (for BISS IT to use)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 12px; font-family: monospace; color: #5C2D91;">Enable-StudentAccess.ps1</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Manually re-enable access for a student or all students (e.g. for Saturday exam)</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 12px; font-family: monospace; color: #5C2D91;">Disable-StudentAccess.ps1</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Manually disable access for a student or all students (e.g. emergency lockdown)</td>
+            </tr>
+            <tr>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 12px; font-family: monospace; color: #5C2D91;">Get-StudentAccessStatus.ps1</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">View current enabled/disabled status of all students in the group</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 12px; font-family: monospace; color: #5C2D91;">Process-Suspensions.ps1</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Handle individual student suspensions (keep a specific student disabled even during school hours)</td>
+            </tr>
+            <tr>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 12px; font-family: monospace; color: #5C2D91;">Apply-SchedulePolicies.ps1</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Apply custom schedule overrides (e.g. extended hours for exam periods, school holidays)</td>
+            </tr>
+            <tr bgcolor="#F3F2F1">
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 12px; font-family: monospace; color: #5C2D91;">config.json (template)</td>
+                <td style="padding: 9px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Configuration file — stores Tenant ID, Group ID, schedule times. Never contains secrets (those stay in Azure Automation encrypted variables).</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ===== SECURITY NOTE ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 30px 0 10px 0;">
+        <tr>
+            <td bgcolor="#E6F2E3" style="padding: 16px 20px; border-left: 4px solid #107C10; font-size: 13px;">
+                <strong style="color: #107C10;">&#128736;&#65039; After Setup is Complete</strong><br><br>
+                Once the solution is live and tested, I recommend:
+                <ul style="margin: 8px 0; padding-left: 18px; line-height: 1.9;">
+                    <li><strong>Remove Global Administrator</strong> from my account — regular Entra ID operations no longer require it</li>
+                    <li><strong>Reduce Azure role</strong> to Reader on the Automation Account (so BISS IT can monitor jobs)</li>
+                    <li><strong>Disable or delete</strong> the temporary consultant account (if Option B was chosen)</li>
+                    <li><strong>Rotate the Client Secret</strong> once per year (reminder can be set in Entra ID)</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== CLOSING ===== -->
+    <p style="margin-top: 30px;">Please let me know once you have completed the access steps — or reply to this email with any questions and I will assist you through it. We can also schedule a short screen-share session to walk through the steps together if that would be easier.</p>
+
+    <p>Looking forward to getting the solution live for BISS!</p>
+
+    <p>Best regards,</p>
+
+    <!-- Signature -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
+        <tr>
+            <td style="border-top: 2px solid #0078D4; padding-top: 16px;">
+                <div style="font-weight: bold; font-size: 15px; color: #005A9E;">Uy Le Thai Phan</div>
+                <div style="font-size: 13px; color: #605E5C;">Microsoft Solutions Consultant — Atea AS</div>
+                <div style="font-size: 13px;">&#128231; <a href="mailto:uy.le.thai.phan@atea.no" style="color: #0078D4;">uy.le.thai.phan@atea.no</a></div>
+                <div style="font-size: 11px; color: #A19F9D; margin-top: 8px;">This email contains technical guidance for the BISS Stavanger Student Time Management project.</div>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

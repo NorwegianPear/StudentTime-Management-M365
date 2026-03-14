@@ -31,7 +31,7 @@ This solution restricts student Microsoft 365 login times to school hours (07:55
 | **Solution** | Azure Automation scheduled runbooks |
 | **Schedule** | Mon-Fri: 07:55 AM - 04:05 PM |
 | **Weekends** | 🔴 **Disabled all day Saturday & Sunday** |
-| **Monthly Cost** | €0-6/month (Non-profit: typically FREE) |
+| **Monthly Cost** | Script-only: **0 NOK/month** · With portal: **720 NOK/month** |
 | **Setup Time** | 2-4 hours (+ Azure subscription setup if needed) |
 | **Affected Users** | Only members of student security group |
 | **Not Affected** | Teachers, admins, staff (not in student group) |
@@ -43,17 +43,19 @@ This solution restricts student Microsoft 365 login times to school hours (07:55
 
 ### 💰 Total Cost Overview
 
-| Component | Regular Price | Non-Profit Price | Required? |
-|-----------|---------------|------------------|-----------|
-| **Azure Subscription** | Pay-as-you-go | **FREE** ($3,500/year credits) | ✅ Yes |
-| **Azure Automation** | ~€5-8/month | **€0-3/month** | ✅ Yes |
-| **Log Analytics (Basic)** | ~€2-3/month | **€0-1/month** | ✅ Yes |
-| **M365 Education Licenses** | Already have | Already have | ✅ Already included |
-| **Extra Entra ID Licenses** | - | - | ❌ **Not needed** |
-| **Intune/Device Management** | - | - | ❌ **Not needed** |
-| **GitHub Enterprise** | ~€19/user/month | ~€3.67/user/month | ⚪ Optional (IaC) |
-| | | | |
-| **TOTAL (Non-Profit)** | | **€0-4/month** | |
+| Component | Price (NOK) | Notes |
+|-----------|-------------|-------|
+| **Azure Subscription** | 0 NOK | Pay-as-you-go — no base fee, pay only for resources used |
+| **Azure Automation** | **0 NOK/month** | 500 min/month included free. Typical usage: 200–530 min/month |
+| **Log Analytics (Basic)** | **0 NOK/month** | 5 GB/day included free. This solution uses < 1 MB/day |
+| **App Service B1** (portal only) | **720 NOK/month** | Norway East list price. Only needed for web portal (Option 2) |
+| **M365 Education Licenses** | 0 NOK | Already included in existing M365 A agreement |
+| **Extra Entra ID Licenses** | 0 NOK | ❌ Not needed |
+| **Intune/Device Management** | 0 NOK | ❌ Not needed |
+| **GitHub** | 0 NOK | Free plan is sufficient for this solution |
+| | | |
+| **TOTAL — Script-Only** | **0 NOK/month** | All usage within free tiers |
+| **TOTAL — With Portal** | **720 NOK/month** | App Service B1 only |
 
 ### 📋 Azure Subscription Setup (Required)
 
@@ -80,7 +82,7 @@ Since you don't have an Azure subscription, here's how to get one:
 | 1 | Go to [portal.azure.com](https://portal.azure.com) | - |
 | 2 | Sign in with your M365 admin account | - |
 | 3 | Create new subscription (credit card required) | 10 min |
-| 4 | Estimated monthly cost: **€7-11/month** | - |
+| 4 | Monthly cost: **0 NOK** (script-only) or **720 NOK** (with portal, App Service B1) | - |
 
 #### Option C: Azure for Education (If Eligible)
 
@@ -112,17 +114,17 @@ GitHub Enterprise is **only needed** if you want to use Infrastructure as Code (
 
 | Deployment Method | GitHub Required? | Cost |
 |-------------------|------------------|------|
-| **PowerShell Direct** | ❌ No | €0 |
-| **Bicep (Manual)** | ❌ No | €0 |
+| **PowerShell Direct** | ❌ No | 0 NOK |
+| **Bicep (Manual)** | ❌ No | 0 NOK |
 | **GitHub Actions (IaC)** | ✅ Yes | See below |
 
 **GitHub Pricing for Nonprofits:**
 
 | Plan | Regular Price | Nonprofit Price | Features |
 |------|---------------|-----------------|----------|
-| **GitHub Free** | €0 | €0 | Public repos, limited Actions |
-| **GitHub Team** | €3.67/user/month | **€0** (often free for nonprofits) | Private repos, 3,000 Actions min/month |
-| **GitHub Enterprise** | €19.25/user/month | ~€3.67/user/month | Advanced security, SAML SSO |
+| **GitHub Free** | 0 NOK | 0 NOK | Public repos, limited Actions |
+| **GitHub Team** | ~42 NOK/user/month | **0 NOK** (often free for nonprofits) | Private repos, 3,000 Actions min/month |
+| **GitHub Enterprise** | ~221 NOK/user/month | ~42 NOK/user/month | Advanced security, SAML SSO |
 
 **Recommendation:** Start with **GitHub Free** or apply for **GitHub for Nonprofits** at [socialimpact.github.com](https://socialimpact.github.com/tech-for-social-good/nonprofits/)
 
@@ -697,7 +699,7 @@ graph TB
 │ Solution               │ Cloud   │ UX      │ Cost     │ Complex-  │ Recommended │
 │                        │ Only    │ Quality │ /Month   │ ity       │             │
 ├────────────────────────┼─────────┼─────────┼──────────┼───────────┼─────────────┤
-│ ★ Azure Automation     │   ✅    │   ⚠️    │  €3-6    │  Medium   │     ⭐      │
+│ ★ Azure Automation     │   ✅    │   ⚠️    │ 0–720 NOK│  Medium   │     ⭐      │
 ├────────────────────────┼─────────┼─────────┼──────────┼───────────┼─────────────┤
 │ Hybrid AD + PTA        │   ❌    │   ✅    │  €€€     │  High     │     ❌      │
 ├────────────────────────┼─────────┼─────────┼──────────┼───────────┼─────────────┤
@@ -705,7 +707,7 @@ graph TB
 ├────────────────────────┼─────────┼─────────┼──────────┼───────────┼─────────────┤
 │ Conditional Access     │   ✅    │   ✅    │  Free    │  Low      │   N/A**     │
 ├────────────────────────┼─────────┼─────────┼──────────┼───────────┼─────────────┤
-│ Third-party            │   ✅    │   ✅    │ €3-8/user│  Low      │  If budget  │
+│ Third-party            │   ✅    │   ✅    │~34–92 NOK│  Low      │  If budget  │
 │ (GoGuardian, etc.)     │         │         │  /year   │           │  allows     │
 └────────────────────────┴─────────┴─────────┴──────────┴───────────┴─────────────┘
 

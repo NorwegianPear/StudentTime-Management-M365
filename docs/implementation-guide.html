@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login Time Management — Implementation Guide</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.7; color: #323130; max-width: 960px; margin: 0 auto; padding: 30px 24px; background: #ffffff; }
+        h1 { color: #005A9E; border-bottom: 3px solid #0078D4; padding-bottom: 12px; margin-top: 0; }
+        h2 { color: #005A9E; border-left: 4px solid #0078D4; padding-left: 14px; margin-top: 48px; }
+        h3 { color: #0078D4; margin-top: 30px; margin-bottom: 6px; }
+        h4 { color: #323130; margin-bottom: 4px; }
+        a { color: #0078D4; }
+        a:hover { color: #005A9E; }
+        code { background: #f3f2f1; padding: 2px 6px; border-radius: 3px; font-size: 13px; font-family: 'Cascadia Code', Consolas, monospace; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 18px 20px; border-radius: 6px; overflow-x: auto; font-size: 13px; font-family: 'Cascadia Code', Consolas, monospace; line-height: 1.6; }
+        pre .comment { color: #6a9955; }
+        pre .key { color: #9cdcfe; }
+        pre .val { color: #ce9178; }
+        .step-box { display: flex; margin: 10px 0; border: 1px solid #d0d0d0; border-radius: 4px; overflow: hidden; }
+        .step-num { background: #0078D4; color: white; font-size: 22px; font-weight: bold; min-width: 56px; display: flex; align-items: flex-start; justify-content: center; padding: 18px 0 0 0; }
+        .step-body { padding: 18px 20px; flex: 1; }
+        .step-body strong { display: block; font-size: 15px; margin-bottom: 6px; }
+        .info-box { background: #eff6ff; border-left: 4px solid #0078D4; padding: 14px 18px; margin: 14px 0; font-size: 14px; border-radius: 0 4px 4px 0; }
+        .warn-box { background: #fff4ce; border-left: 4px solid #ffb900; padding: 14px 18px; margin: 14px 0; font-size: 14px; border-radius: 0 4px 4px 0; }
+        .ok-box { background: #dff6dd; border-left: 4px solid #107C10; padding: 14px 18px; margin: 14px 0; font-size: 14px; border-radius: 0 4px 4px 0; }
+        .err-box { background: #fde7e9; border-left: 4px solid #d13438; padding: 14px 18px; margin: 14px 0; font-size: 14px; border-radius: 0 4px 4px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+        th { background: #0078D4; color: white; padding: 10px 13px; text-align: left; font-weight: 600; }
+        td { padding: 10px 13px; border-bottom: 1px solid #e6e6e6; vertical-align: top; }
+        tr:nth-child(even) td { background: #f8f9fa; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; }
+        .badge-green { background: #dff6dd; color: #107C10; }
+        .badge-blue { background: #eff6ff; color: #0078D4; }
+        .badge-orange { background: #fff4ce; color: #8a5900; }
+        .badge-red { background: #fde7e9; color: #d13438; }
+        .toc a { text-decoration: none; color: #0078D4; display: block; padding: 3px 0; font-size: 14px; }
+        .toc a:hover { text-decoration: underline; }
+        .toc-section { font-weight: 600; color: #005A9E; margin-top: 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+        ol li { margin-bottom: 8px; }
+        ul li { margin-bottom: 6px; }
+        .header-bar { background: #0078D4; color: white; padding: 28px 30px 22px 30px; margin: -30px -24px 30px -24px; }
+        .header-bar h1 { color: white; border-bottom: 1px solid rgba(255,255,255,0.3); margin-bottom: 10px; font-size: 26px; }
+        .header-bar p { margin: 0; opacity: 0.88; font-size: 14px; }
+        .pill-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0; }
+        .pill { padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+        @media print { .header-bar { margin: 0 0 30px 0; } pre { font-size: 11px; } }
+    </style>
+</head>
+<body>
+
+<div class="header-bar">
+    <h1>&#127891; Student Login Time Management for Microsoft 365<br>Implementation &amp; Ordering Guide</h1>
+    <p>Prepared by <strong>Atea AS — Microsoft Solutions Partner</strong> &nbsp;|&nbsp; Version 1.0 &nbsp;|&nbsp; March 2026 &nbsp;|&nbsp; Confidential</p>
+</div>
+
+<!-- ===== TABLE OF CONTENTS ===== -->
+<div style="background: #f8f9fa; border: 1px solid #e6e6e6; padding: 20px 24px; border-radius: 4px; margin-bottom: 36px;">
+    <strong style="font-size: 15px; color: #323130;">Contents</strong>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0 30px; margin-top: 12px;" class="toc">
+        <div>
+            <div class="toc-section">Solution</div>
+            <a href="#solution">1. What This Solution Does</a>
+            <a href="#architecture">2. Architecture Overview</a>
+            <a href="#prerequisites">3. Prerequisites</a>
+            <div class="toc-section" style="margin-top: 12px;">Setup Steps</div>
+            <a href="#step-github">4. Create GitHub Organisation Account</a>
+            <a href="#step-education">5. Apply for GitHub for Education</a>
+            <a href="#step-entra">6. Register App in Microsoft Entra ID</a>
+            <a href="#step-oidc">7. Configure OIDC Federation</a>
+        </div>
+        <div>
+            <div class="toc-section">Setup Steps (cont.)</div>
+            <a href="#step-repo">8. Set Up the GitHub Repository</a>
+            <a href="#step-azure">9. Deploy Azure Resources</a>
+            <a href="#step-portal">10. Deploy the Management Portal (Option 2)</a>
+            <a href="#step-test">11. Test and Validate</a>
+            <div class="toc-section" style="margin-top: 12px;">Ordering</div>
+            <a href="#nonprofit">12. Nonprofit &amp; Education Pricing</a>
+            <a href="#order">13. How to Order from Atea</a>
+            <a href="#contacts">14. Contacts &amp; References</a>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SECTION 1: SOLUTION DESCRIPTION ===== -->
+<h2 id="solution">1. What This Solution Does</h2>
+
+<p>Microsoft 365 does not include a native feature to restrict when students can log in. This solution fills that gap by using <strong>Azure Automation</strong> to automatically enable and disable student accounts in <strong>Microsoft Entra ID</strong> (formerly Azure Active Directory) according to a configurable time schedule.</p>
+
+<p>For example, you can configure student accounts to be active only <strong>Monday–Friday, 07:30–16:30</strong>, and blocked at all other times — evenings, nights, weekends, and school holidays. When a student's account is disabled, they are immediately signed out of all Microsoft 365 services (Teams, OneDrive, Office apps), and cannot sign back in until the account is re-enabled.</p>
+
+<h3>Two Deployment Options</h3>
+<table>
+    <thead><tr><th style="width:20%">Option</th><th>Description</th><th style="width:22%">Best for</th></tr></thead>
+    <tbody>
+        <tr>
+            <td><strong>Option 1 — Script Only</strong></td>
+            <td>PowerShell runbooks in Azure Automation run on a schedule. Managed entirely via the Azure Portal or PowerShell. No browser interface for non-IT staff.</td>
+            <td>Schools with dedicated IT staff comfortable using Azure Portal</td>
+        </tr>
+        <tr>
+            <td><strong>Option 2 — Portal + Script</strong></td>
+            <td>Includes a Next.js web portal (hosted on Azure App Service) that allows teachers and school administrators to manage schedules, suspend students, and view audit logs from any browser — no technical skills required.</td>
+            <td>Schools wanting self-service for non-IT staff (recommended)</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="ok-box">
+    <strong>&#10003; No additional Microsoft 365 licenses are required.</strong> The solution works with any existing Microsoft 365 Education, Business, or Enterprise subscription. The only cost is the Azure infrastructure (see <a href="#step-azure">Section 9</a> and <a href="#nonprofit">Section 12</a>).
+</div>
+
+<!-- ===== SECTION 2: ARCHITECTURE ===== -->
+<h2 id="architecture">2. Architecture Overview</h2>
+
+<pre><span class="comment">┌─────────────────────────────────────────────────────────────────────────────┐
+│  Your GitHub Organisation (github.com/your-school)                          │
+│  ┌────────────────────────────────────────────────────────────────────────┐ │
+│  │  Repository: student-access-management                                 │ │
+│  │  ├── runbooks/         PowerShell scripts (Enable, Disable, etc.)      │ │
+│  │  ├── infrastructure/   Bicep templates (Azure resources)               │ │
+│  │  └── portal/           Next.js web application (Option 2 only)        │ │
+│  │                                                                        │ │
+│  │  GitHub Actions workflow                                               │ │
+│  │    On push → authenticate to Azure via OIDC → deploy Bicep → upload   │ │
+│  │    runbooks → (Option 2) deploy portal to App Service                  │ │
+│  └────────────────────────────────────────────────────────────────────────┘ │
+│              │  OIDC (OpenID Connect) — no secrets stored                   │
+└──────────────┼──────────────────────────────────────────────────────────────┘
+               │
+               ▼  Federated Identity Credential
+┌─────────────────────────────────────────────────────────── YOUR AZURE TENANT ─┐
+│                                                                                │
+│  Microsoft Entra ID                                                            │
+│  ├── App Registration: "GitHubActions-Deploy"                                 │
+│  │     Role: Contributor (scoped to resource group)                           │
+│  └── App Registration: "StudentAccessAutomation"                              │
+│        Permissions: User.ReadWrite.All (disable/enable accounts)              │
+│                     Group.Read.All (read group members)                        │
+│                                                                                │
+│  Resource Group: rg-student-access                                             │
+│  ├── Azure Automation Account                                                  │
+│  │     Managed Identity → assigned Graph API permissions                       │
+│  │     Runbooks: Enable-StudentAccess, Disable-StudentAccess                   │
+│  │     Schedules: WeekdayMorning (07:30), WeekdayEvening (16:30), etc.        │
+│  │     Variables: TenantId, StudentGroupId, ScheduleConfig (encrypted)        │
+│  ├── Log Analytics Workspace                                                   │
+│  │     Stores full audit trail of all account enable/disable operations        │
+│  └── App Service (Option 2 only)                                               │
+│        Hosts Next.js management portal                                         │
+│        Entra ID authentication (teachers/admins only)                          │
+│                                                                                │
+└────────────────────────────────────────────────────────────────────────────────┘
+               │  Microsoft Graph API calls (OAuth 2.0 / Managed Identity)
+               ▼
+┌────────────────────────────────────────────────────────────────────────────────┐
+│  Microsoft 365 / Entra ID                                                      │
+│  Student accounts: enabled ✓ / disabled ✗ based on schedule                   │
+└────────────────────────────────────────────────────────────────────────────────┘</span></pre>
+
+<!-- ===== SECTION 3: PREREQUISITES ===== -->
+<h2 id="prerequisites">3. Prerequisites</h2>
+
+<table>
+    <thead><tr><th>Requirement</th><th>Details</th><th style="width:18%">Who provides</th></tr></thead>
+    <tbody>
+        <tr>
+            <td><strong>Azure subscription</strong></td>
+            <td>An active Azure subscription linked to your Microsoft Entra tenant. You already have this. <a href="https://portal.azure.com" target="_blank">portal.azure.com</a></td>
+            <td><span class="badge badge-green">Customer</span></td>
+        </tr>
+        <tr>
+            <td><strong>Azure subscription — Owner or Contributor role</strong></td>
+            <td>Required to create resource groups and assign managed identity roles. Global Administrator in Entra ID also grants this. <a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles" target="_blank">RBAC built-in roles ↗</a></td>
+            <td><span class="badge badge-green">Customer</span></td>
+        </tr>
+        <tr>
+            <td><strong>Entra ID — Global Administrator (or App Administrator + Privileged Role Administrator)</strong></td>
+            <td>Required to register an Entra application and grant admin consent for Microsoft Graph API permissions. <a href="https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/permissions-reference" target="_blank">Entra role reference ↗</a></td>
+            <td><span class="badge badge-green">Customer</span></td>
+        </tr>
+        <tr>
+            <td><strong>Microsoft 365 — student accounts in an Entra ID security group</strong></td>
+            <td>Students must be members of one or more Entra ID (Azure AD) security groups. The runbooks operate on group members. Groups can be created in <a href="https://entra.microsoft.com" target="_blank">entra.microsoft.com</a>.</td>
+            <td><span class="badge badge-green">Customer</span></td>
+        </tr>
+        <tr>
+            <td><strong>GitHub account (organisation type)</strong></td>
+            <td>Does not yet exist — Atea assists with creation. See <a href="#step-github">Section 4</a>. <a href="https://github.com/organizations/plan" target="_blank">github.com/organizations/plan ↗</a></td>
+            <td><span class="badge badge-blue">Atea assists</span></td>
+        </tr>
+        <tr>
+            <td><strong>Git (local, optional)</strong></td>
+            <td>Only required if your IT team wishes to push code updates from a local machine. GitHub's web interface is sufficient for configuration changes. <a href="https://git-scm.com/downloads" target="_blank">git-scm.com ↗</a></td>
+            <td><span class="badge badge-orange">Optional</span></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- ===== SECTION 4: GITHUB ACCOUNT ===== -->
+<h2 id="step-github">4. Create a GitHub Organisation Account</h2>
+
+<p>A GitHub <em>organisation</em> account (as opposed to a personal account) is recommended because it allows multiple team members to be added with defined roles, and ownership is tied to the organisation rather than an individual.</p>
+
+<div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-body">
+        <strong>Go to GitHub's organisation creation page</strong>
+        Navigate to <a href="https://github.com/organizations/plan" target="_blank">https://github.com/organizations/plan</a> and select <strong>GitHub Free</strong> (0 NOK/month). Click <em>Create a free organisation</em>.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-body">
+        <strong>Choose an organisation name</strong>
+        Use a name that clearly identifies your institution — e.g. <code>skolen-it</code> or <code>nordstrand-vgs</code>. This becomes part of the URL: <code>github.com/nordstrand-vgs</code>. It can be changed later but the URL will change too.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-body">
+        <strong>Set the contact email to your IT administrator's work address</strong>
+        This should be a role-based email if possible (e.g. <code>it@school.no</code>) rather than a personal address. Ownership recovery depends on this email.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-body">
+        <strong>Add Atea as an Outside Collaborator (during implementation only)</strong>
+        Go to <strong>Organisation Settings → Members → Invite member</strong>. Add the Atea consultant's GitHub username with <em>Member</em> role. This access is removed after implementation and handover. <a href="https://docs.github.com/en/organizations/managing-membership-in-your-organization/inviting-users-to-join-your-organization" target="_blank">How to invite members ↗</a>
+    </div>
+</div>
+
+<div class="info-box">
+    &#9432; <strong>GitHub Free plan limits relevant to this solution:</strong><br>
+    Unlimited private repositories &nbsp;·&nbsp; 2,000 GitHub Actions minutes/month (this solution uses ~20–50 min/month) &nbsp;·&nbsp; 500 MB package storage.<br>
+    Full plan comparison: <a href="https://github.com/pricing" target="_blank">github.com/pricing ↗</a> &nbsp;|&nbsp;
+    Actions billing details: <a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions" target="_blank">GitHub Actions billing ↗</a>
+</div>
+
+<!-- ===== SECTION 5: GITHUB EDUCATION ===== -->
+<h2 id="step-education">5. Apply for GitHub for Education <span class="badge badge-orange">Optional — Recommended for Schools</span></h2>
+
+<p>If your institution qualifies as an educational organisation, GitHub for Education provides the <strong>GitHub Team plan at no cost</strong> (normally ~$4 USD/user/month). This includes 3,000 Actions minutes/month, additional security features, and advanced collaboration tools.</p>
+
+<div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-body">
+        <strong>Check eligibility</strong>
+        Your institution must be an accredited educational institution that grants degrees or diplomas. K–12 schools generally qualify. Full criteria: <a href="https://docs.github.com/en/education/explore-the-benefits-of-teaching-and-learning-with-github-education/github-education-for-schools/about-github-education-for-schools" target="_blank">About GitHub Education for Schools ↗</a>
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-body">
+        <strong>Submit the application</strong>
+        Go to <a href="https://education.github.com/discount_requests/application" target="_blank">https://education.github.com/discount_requests/application</a>. You will need to verify your institution with an official school email address and optionally a document proving educational status (school ID, letter from administration). Select <em>Organisation</em> as the account type.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-body">
+        <strong>Review time</strong>
+        Typically 1–7 business days. GitHub may request additional documentation. Atea can assist in preparing the application materials.
+    </div>
+</div>
+
+<div class="warn-box">
+    &#9888; You do not need to wait for GitHub for Education approval before proceeding. The GitHub Free plan is fully functional for this solution. Education benefits can be applied retroactively once approved.
+</div>
+
+<!-- ===== SECTION 6: APP REGISTRATION ===== -->
+<h2 id="step-entra">6. Register Applications in Microsoft Entra ID</h2>
+
+<p>Two Entra ID app registrations are required:</p>
+<ul>
+    <li><strong>GitHubActions-Deploy</strong> — used by the GitHub Actions CI/CD pipeline to deploy Azure infrastructure (Bicep templates). Requires <em>Contributor</em> role on the resource group.</li>
+    <li><strong>StudentAccessAutomation</strong> — used by the Azure Automation Account (via Managed Identity, not this registration directly) to read student groups and enable/disable accounts via Microsoft Graph API.</li>
+</ul>
+
+<div class="info-box">
+    &#9432; The Automation Account uses a <strong>System-assigned Managed Identity</strong> for Graph API calls — not an app registration secret. App registrations are used for GitHub Actions deployment authentication (OIDC) and, for Option 2, for portal authentication. This means no stored passwords or client secrets anywhere in the pipeline. Reference: <a href="https://learn.microsoft.com/en-us/azure/automation/enable-managed-identity-for-automation" target="_blank">Managed Identity for Azure Automation ↗</a>
+</div>
+
+<h3>6a. Register GitHubActions-Deploy (for CI/CD deployment)</h3>
+
+<div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-body">
+        <strong>Open Microsoft Entra admin center</strong>
+        Go to <a href="https://entra.microsoft.com" target="_blank">https://entra.microsoft.com</a> → <strong>Applications → App registrations → New registration</strong>.
+        <br>Official guide: <a href="https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app" target="_blank">Quickstart: Register an application ↗</a>
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-body">
+        <strong>Fill in registration details</strong>
+        <ul style="margin-top: 8px;">
+            <li>Name: <code>GitHubActions-Deploy</code></li>
+            <li>Supported account types: <em>Accounts in this organisational directory only (Single tenant)</em></li>
+            <li>Redirect URI: leave blank</li>
+        </ul>
+        Click <strong>Register</strong>. Note the <strong>Application (client) ID</strong> and <strong>Directory (tenant) ID</strong> — you will need these in Section 8.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-body">
+        <strong>Assign Contributor role on the resource group</strong>
+        Go to <a href="https://portal.azure.com" target="_blank">portal.azure.com</a> → <strong>Resource Groups → rg-student-access → Access control (IAM) → Add role assignment</strong>.
+        <ul style="margin-top: 8px;">
+            <li>Role: <strong>Contributor</strong></li>
+            <li>Assign access to: <em>User, group, or service principal</em></li>
+            <li>Select: <code>GitHubActions-Deploy</code></li>
+        </ul>
+        Reference: <a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal" target="_blank">Assign Azure roles ↗</a>
+    </div>
+</div>
+
+<div class="warn-box">
+    &#9888; <strong>Do not create client secrets</strong> for the GitHubActions-Deploy registration. Authentication is handled entirely via OIDC federation (see Section 7), which requires no stored credentials.
+</div>
+
+<h3>6b. Register Portal App (Option 2 only — for browser authentication)</h3>
+
+<div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-body">
+        <strong>Create a second app registration</strong>
+        Name: <code>StudentAccess-Portal</code>. Supported account types: Single tenant.
+        Under <strong>Redirect URIs</strong>, add: <code>https://&lt;your-app-service-name&gt;.azurewebsites.net/api/auth/callback/azure-ad</code>
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-body">
+        <strong>Create a client secret</strong>
+        Go to <strong>Certificates &amp; secrets → New client secret</strong>. Set expiry to 24 months. Copy the secret value immediately — it is only shown once. Store it in Azure Key Vault or as an encrypted GitHub Actions variable.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-body">
+        <strong>Grant Microsoft Graph permissions</strong>
+        Go to <strong>API permissions → Add a permission → Microsoft Graph → Delegated permissions</strong>. Add:
+        <ul style="margin-top: 8px;">
+            <li><code>User.Read</code> — sign in and read user profile</li>
+            <li><code>GroupMember.Read.All</code> — read group membership</li>
+        </ul>
+        Then click <strong>Grant admin consent for [your tenant]</strong>.
+        Reference: <a href="https://learn.microsoft.com/en-us/entra/identity-platform/permissions-consent-overview" target="_blank">Permissions and consent ↗</a>
+    </div>
+</div>
+
+<!-- ===== SECTION 7: OIDC FEDERATION ===== -->
+<h2 id="step-oidc">7. Configure OIDC Federation (GitHub → Azure)</h2>
+
+<p>OIDC (OpenID Connect) federation allows GitHub Actions to authenticate directly to Azure using a short-lived token — <strong>no client secrets, no passwords, no credentials stored anywhere</strong>. GitHub presents a signed JWT token to Azure, and Azure validates it against the registered federated credential.</p>
+
+<p>Official Microsoft guide: <a href="https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect" target="_blank">Use GitHub Actions to connect to Azure (OIDC) ↗</a><br>
+Additional reference: <a href="https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust" target="_blank">Configure a federated identity credential on an app registration ↗</a></p>
+
+<div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-body">
+        <strong>Open the GitHubActions-Deploy app registration</strong>
+        In <a href="https://entra.microsoft.com" target="_blank">entra.microsoft.com</a> → <strong>App registrations → GitHubActions-Deploy → Certificates &amp; secrets → Federated credentials → Add credential</strong>.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-body">
+        <strong>Configure the federated credential</strong>
+        Select <em>GitHub Actions deploying Azure resources</em> as the scenario. Fill in:
+        <ul style="margin-top: 8px;">
+            <li>Organisation: <code>your-github-org-name</code></li>
+            <li>Repository: <code>student-access-management</code></li>
+            <li>Entity type: <strong>Branch</strong></li>
+            <li>Branch: <code>main</code></li>
+            <li>Name: <code>github-actions-main-branch</code></li>
+        </ul>
+        Click <strong>Add</strong>. This trust relationship means: <em>only GitHub Actions workflows running on the <code>main</code> branch of your repository are authorised to authenticate as this application.</em>
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-body">
+        <strong>Add the credentials to your GitHub repository as Actions variables</strong>
+        In your GitHub repository: <strong>Settings → Secrets and variables → Actions → New repository secret</strong>.
+        <ul style="margin-top: 8px;">
+            <li><code>AZURE_CLIENT_ID</code> — Application (client) ID of GitHubActions-Deploy</li>
+            <li><code>AZURE_TENANT_ID</code> — Directory (tenant) ID of your Entra tenant</li>
+            <li><code>AZURE_SUBSCRIPTION_ID</code> — Your Azure subscription ID</li>
+        </ul>
+        <strong>No password or secret is stored — only public identifiers.</strong>
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-body">
+        <strong>Reference in GitHub Actions workflow (<code>.github/workflows/deploy.yml</code>)</strong>
+<pre style="margin-top: 10px;">- name: Azure Login (OIDC)
+  uses: azure/login@v2
+  with:
+    client-id: ${{ secrets.AZURE_CLIENT_ID }}
+    tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+    subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}</pre>
+        Full workflow reference: <a href="https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/configuring-openid-connect-in-azure" target="_blank">Configuring OpenID Connect in Azure ↗</a>
+    </div>
+</div>
+
+<div class="ok-box">
+    &#10003; <strong>Why this is more secure than using client secrets:</strong> OIDC tokens are short-lived (valid for ~10 minutes), automatically rotated on every run, and tied to a specific repository and branch. There is nothing to rotate, leak, or expire unexpectedly. Microsoft's own documentation recommends this approach for all GitHub-to-Azure CI/CD pipelines.
+</div>
+
+<!-- ===== SECTION 8: REPOSITORY ===== -->
+<h2 id="step-repo">8. Set Up the GitHub Repository</h2>
+
+<div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-body">
+        <strong>Create a private repository in your organisation</strong>
+        Go to <a href="https://github.com" target="_blank">github.com</a> → your organisation → <strong>New repository</strong>.
+        <ul style="margin-top: 8px;">
+            <li>Name: <code>student-access-management</code></li>
+            <li>Visibility: <strong>Private</strong></li>
+            <li>Initialise with a README: Yes</li>
+        </ul>
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-body">
+        <strong>Atea uploads the solution code</strong>
+        As part of the implementation, Atea commits all PowerShell runbooks, Bicep infrastructure templates, and (for Option 2) the Next.js portal source code to your private repository. You own the code — Atea's access is removed after handover.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-body">
+        <strong>Configure repository variables</strong>
+        Under <strong>Settings → Secrets and variables → Actions → Variables</strong>, add:
+        <ul style="margin-top: 8px;">
+            <li><code>AZURE_RESOURCE_GROUP</code> — e.g. <code>rg-student-access</code></li>
+            <li><code>AZURE_LOCATION</code> — e.g. <code>norwayeast</code></li>
+            <li><code>STUDENT_GROUP_ID</code> — Object ID of your Entra student group</li>
+            <li><code>AUTOMATION_ACCOUNT_NAME</code> — e.g. <code>aa-student-access</code></li>
+        </ul>
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-body">
+        <strong>Set branch protection on <code>main</code></strong>
+        Under <strong>Settings → Branches → Add branch protection rule</strong>. Require pull request reviews and status checks before merging. This prevents accidental direct pushes to production. <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches" target="_blank">About protected branches ↗</a>
+    </div>
+</div>
+
+<!-- ===== SECTION 9: DEPLOY AZURE ===== -->
+<h2 id="step-azure">9. Deploy Azure Resources</h2>
+
+<p>All Azure resources are defined as <strong>Bicep templates</strong> (Microsoft's infrastructure-as-code language). Deployment is triggered automatically by pushing to the <code>main</code> branch of your repository — GitHub Actions authenticates to Azure via OIDC and applies the templates.</p>
+
+<h3>Resources deployed</h3>
+<table>
+    <thead><tr><th>Resource</th><th>SKU / Tier</th><th style="width:22%">Monthly cost (est.)</th><th style="width:22%">Monthly cost nonprofit</th></tr></thead>
+    <tbody>
+        <tr>
+            <td><strong>Resource Group</strong><br><small>Logical container for all resources</small></td>
+            <td>N/A</td>
+            <td>0 kr</td>
+            <td>0 kr</td>
+        </tr>
+        <tr>
+            <td><strong>Azure Automation Account</strong><br><small>Runs PowerShell runbooks on schedule</small></td>
+            <td>500 min/month free. Typical usage: 264–528 min/month</td>
+            <td>0 NOK</td>
+            <td><span class="badge badge-green">0 NOK</span></td>
+        </tr>
+        <tr>
+            <td><strong>Log Analytics Workspace</strong><br><small>Audit trail for all account changes</small></td>
+            <td>5 GB/day free. This solution uses &lt; 1 MB/day</td>
+            <td>0 NOK</td>
+            <td><span class="badge badge-green">0 NOK</span></td>
+        </tr>
+        <tr>
+            <td><strong>App Service Plan + App Service</strong><br><small>Hosts the portal (Option 2 only)</small></td>
+            <td>B1 — Norway East list price</td>
+            <td>720 NOK/month</td>
+            <td><span class="badge badge-green">0 NOK (F1 free tier)</span></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="info-box">
+    &#9432; Azure Automation pricing reference: <a href="https://azure.microsoft.com/en-us/pricing/details/automation/" target="_blank">azure.microsoft.com/pricing/details/automation ↗</a><br>
+    App Service pricing: <a href="https://azure.microsoft.com/en-us/pricing/details/app-service/windows/" target="_blank">azure.microsoft.com/pricing/details/app-service ↗</a><br>
+    Log Analytics pricing: <a href="https://azure.microsoft.com/en-us/pricing/details/monitor/" target="_blank">azure.microsoft.com/pricing/details/monitor ↗</a>
+</div>
+
+<h3>Enable Managed Identity and grant Graph API permissions</h3>
+<p>After the Automation Account is deployed, a <strong>System-assigned Managed Identity</strong> is enabled and granted the minimum required Microsoft Graph API permissions:</p>
+<table>
+    <thead><tr><th>Permission</th><th>Type</th><th>Required for</th></tr></thead>
+    <tbody>
+        <tr>
+            <td><code>User.ReadWrite.All</code></td>
+            <td>Application</td>
+            <td>Enable and disable user accounts</td>
+        </tr>
+        <tr>
+            <td><code>GroupMember.Read.All</code></td>
+            <td>Application</td>
+            <td>Read members of student security groups</td>
+        </tr>
+        <tr>
+            <td><code>AuditLog.Read.All</code></td>
+            <td>Application</td>
+            <td>Read sign-in logs for monitoring reports</td>
+        </tr>
+    </tbody>
+</table>
+<p>Microsoft Graph permission reference: <a href="https://learn.microsoft.com/en-us/graph/permissions-reference" target="_blank">learn.microsoft.com/graph/permissions-reference ↗</a></p>
+
+<div class="warn-box">
+    &#9888; <strong>Admin consent required.</strong> Application-level Graph permissions must be granted by a Global Administrator or Privileged Role Administrator. This is a one-time step performed in the Azure Portal or via PowerShell. The Atea consultant will guide the customer's admin through this during implementation.
+</div>
+
+<h3>Configure Automation variables</h3>
+<p>The following encrypted variables are stored in the Automation Account after deployment:</p>
+<table>
+    <thead><tr><th>Variable name</th><th>Value</th><th>Encrypted</th></tr></thead>
+    <tbody>
+        <tr><td><code>TenantId</code></td><td>Your Entra tenant ID (GUID)</td><td>No</td></tr>
+        <tr><td><code>StudentGroupId</code></td><td>Object ID of the Entra student security group</td><td>No</td></tr>
+        <tr><td><code>ScheduleConfig</code></td><td>JSON: access hours per day of week</td><td>No</td></tr>
+        <tr><td><code>NotificationEmail</code></td><td>IT admin email for monitoring reports</td><td>No</td></tr>
+        <tr><td><code>ClientSecret</code></td><td>Only if portal auth uses client secret (Option 2)</td><td><span class="badge badge-green">Yes</span></td></tr>
+    </tbody>
+</table>
+
+<!-- ===== SECTION 10: PORTAL ===== -->
+<h2 id="step-portal">10. Deploy the Management Portal <span class="badge badge-blue">Option 2 Only</span></h2>
+
+<p>The management portal is a Next.js web application deployed to Azure App Service. It authenticates users against your Entra ID (only accounts you designate as administrators can log in) and provides a browser interface for managing schedules, student suspensions, and audit logs.</p>
+
+<div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-body">
+        <strong>App Service is deployed via GitHub Actions (same pipeline)</strong>
+        The CI/CD workflow deploys the Next.js build output to App Service using the <a href="https://github.com/Azure/webapps-deploy" target="_blank">azure/webapps-deploy ↗</a> action. No manual steps required — pushing to <code>main</code> triggers a full deployment.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-body">
+        <strong>Configure Entra ID authentication on the App Service</strong>
+        In the Azure Portal: <strong>App Service → Authentication → Add identity provider → Microsoft</strong>. Select the <code>StudentAccess-Portal</code> app registration created in Section 6b.<br>
+        Reference: <a href="https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad" target="_blank">Configure Entra ID authentication on App Service ↗</a>
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-body">
+        <strong>Add portal environment variables</strong>
+        In <strong>App Service → Configuration → Application settings</strong>, add:
+        <ul style="margin-top: 8px;">
+            <li><code>AZURE_AD_CLIENT_ID</code> — Client ID of StudentAccess-Portal app registration</li>
+            <li><code>AZURE_AD_CLIENT_SECRET</code> — Client secret (mark as slot setting, encrypted at rest)</li>
+            <li><code>AZURE_AD_TENANT_ID</code> — Your tenant ID</li>
+            <li><code>NEXTAUTH_SECRET</code> — A randomly generated 32-byte hex string</li>
+            <li><code>NEXTAUTH_URL</code> — e.g. <code>https://studentaccess.azurewebsites.net</code></li>
+        </ul>
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-body">
+        <strong>Designate portal administrators</strong>
+        Portal access is role-based. Atea configures an Entra ID security group (e.g. <code>StudentAccess-Admins</code>). Only members of this group can log in. Teachers, school administrators, and IT staff are added to this group as needed — directly from Entra admin center, no code changes required.
+    </div>
+</div>
+
+<!-- ===== SECTION 11: TEST ===== -->
+<h2 id="step-test">11. Test and Validate</h2>
+
+<div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-body">
+        <strong>Create a pilot group</strong>
+        Create a separate Entra ID security group (e.g. <code>SG-Students-Pilot</code>) with 3–5 test accounts (staff accounts playing the role of students). Configure the schedule for the pilot group first — not the entire student body.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-body">
+        <strong>Manually trigger the Disable runbook</strong>
+        In Azure Portal: <strong>Automation Account → Runbooks → Disable-StudentAccess → Start</strong>. Verify the pilot accounts are set to <em>Sign-in blocked</em> in Entra ID. Verify audit logs appear in Log Analytics.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-body">
+        <strong>Manually trigger the Enable runbook</strong>
+        Verify accounts are re-enabled. Confirm a pilot user can sign in successfully.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-body">
+        <strong>Validate the schedule</strong>
+        Wait for a scheduled trigger (or set the schedule to run in 5 minutes during testing). Confirm the correct accounts are enabled/disabled at the configured times.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">5</div>
+    <div class="step-body">
+        <strong>Full rollout</strong>
+        Once pilot validation is complete, move the production student group(s) to the live schedule. Monitor job output in the Automation Account for the first 2–3 days.
+    </div>
+</div>
+
+<!-- ===== SECTION 12: NONPROFIT ===== -->
+<h2 id="nonprofit">12. Nonprofit &amp; Education Pricing</h2>
+<p>Significant cost reductions are available to qualifying schools and nonprofit organisations. Atea assists with all applications.</p>
+
+<table>
+    <thead><tr><th>Programme</th><th>Benefit</th><th>Eligibility</th><th style="width:19%">How to apply</th></tr></thead>
+    <tbody>
+        <tr>
+            <td><strong>Microsoft Azure for Nonprofits</strong></td>
+            <td>~37,450 NOK/year ($3,500 USD) in free Azure credits per year. Renews annually. Covers Azure Automation, Log Analytics, and in most cases the entire solution running cost.</td>
+            <td>Registered nonprofit, NGO, or certain educational institutions. Must meet <a href="https://www.microsoft.com/en-us/nonprofits/eligibility" target="_blank">Microsoft eligibility criteria ↗</a></td>
+            <td><a href="https://www.microsoft.com/en-us/nonprofits/azure" target="_blank">microsoft.com/nonprofits/azure ↗</a></td>
+        </tr>
+        <tr>
+            <td><strong>Microsoft 365 for Education</strong></td>
+            <td>Free or heavily discounted Microsoft 365 A1/A3/A5 plans. If already on an Education plan, you are eligible for reduced Azure pricing.</td>
+            <td>Accredited educational institutions (K–12 and higher education)</td>
+            <td><a href="https://www.microsoft.com/en-us/education/products/microsoft-365" target="_blank">microsoft.com/education ↗</a></td>
+        </tr>
+        <tr>
+            <td><strong>GitHub for Education (Organisations)</strong></td>
+            <td>GitHub Team plan features at no cost. 3,000 GitHub Actions minutes/month (vs 2,000 on Free). Advanced repository access controls.</td>
+            <td>Verified educational organisations</td>
+            <td><a href="https://education.github.com/discount_requests/application" target="_blank">GitHub Education application ↗</a></td>
+        </tr>
+        <tr>
+            <td><strong>Azure App Service F1 (Free Tier)</strong></td>
+            <td>App Service F1 tier: 0 NOK/month. Suitable for portal hosting with low-to-medium concurrent user load. (B1: <strong>720 NOK/month</strong> — recommended for production use.)</td>
+            <td>Any Azure subscription — no application needed</td>
+            <td>Selected during Bicep deployment</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="ok-box">
+    &#10003; <strong>Combined nonprofit scenario:</strong> Azure for Nonprofits credits (~37,450 NOK/year) + GitHub Free (0 NOK) + App Service F1 (0 NOK) = <strong>0 NOK/month</strong> for the Portal + Script option. One-time implementation fee from Atea applies.
+</div>
+
+<!-- ===== SECTION 13: HOW TO ORDER ===== -->
+<h2 id="order">13. How to Order from Atea</h2>
+
+<p>Atea delivers this solution as a <strong>fixed-scope implementation project</strong>. The process from first contact to live system typically takes <strong>2–3 weeks</strong>, with 4–8 hours of active technical work.</p>
+
+<h3>Engagement Process</h3>
+
+<div class="step-box">
+    <div class="step-num">1</div>
+    <div class="step-body">
+        <strong>Initial contact and option selection</strong>
+        Contact your Atea account manager or reply to the offer email. Let us know:
+        <ul style="margin-top: 8px;">
+            <li>Which option you prefer: <strong>Script-Only</strong> or <strong>Portal + Script</strong></li>
+            <li>Approximate number of students</li>
+            <li>Whether you believe you qualify for nonprofit pricing (Atea will verify)</li>
+        </ul>
+        Not sure which option to choose? We can arrange a free 30-minute demo call — we will show you the live portal in a real school Microsoft 365 environment.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">2</div>
+    <div class="step-body">
+        <strong>Nonprofit eligibility check</strong>
+        Atea reviews your organisation's eligibility for Microsoft for Nonprofits and GitHub for Education. If you qualify, we prepare and submit the applications on your behalf. Typical processing time: 1–2 weeks. This step can run in parallel with the engagement process.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">3</div>
+    <div class="step-body">
+        <strong>Written project proposal</strong>
+        Atea sends a formal written proposal including:
+        <ul style="margin-top: 8px;">
+            <li>Scope of work (exactly what is included)</li>
+            <li>Project timeline with milestones</li>
+            <li>Fixed-price or time-and-materials cost estimate (consultant hours)</li>
+            <li>Estimated monthly Azure running costs for your specific usage</li>
+            <li>Terms and conditions</li>
+        </ul>
+        You review, request changes if needed, and sign. No work begins before the proposal is approved.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">4</div>
+    <div class="step-body">
+        <strong>Implementation kick-off</strong>
+        Atea requests temporary access to your Azure tenant (Contributor on a new resource group) and your GitHub organisation. Atea performs all setup steps described in this guide. Daily status updates are provided via email or Teams.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">5</div>
+    <div class="step-body">
+        <strong>Pilot test</strong>
+        All changes are first tested with a small pilot group (3–5 accounts) in your live tenant. Schedules, enable/disable jobs, and (for Option 2) portal functionality are validated before rolling out to all students.
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">6</div>
+    <div class="step-body">
+        <strong>Full rollout and handover</strong>
+        Schedule is applied to all student groups. Atea provides:
+        <ul style="margin-top: 8px;">
+            <li>Complete written documentation of all configured resources, variables, and runbooks</li>
+            <li>Operations guide for day-to-day management (suspensions, schedule changes, adding students)</li>
+            <li>A 60-minute handover session with your IT team (video call)</li>
+            <li>Atea's access to your Azure tenant and GitHub is removed</li>
+        </ul>
+    </div>
+</div>
+<div class="step-box">
+    <div class="step-num">7</div>
+    <div class="step-body">
+        <strong>Post-implementation support</strong>
+        Atea is available for support requests after handover. Ongoing support can be included in a support agreement or handled on a time-and-materials basis as needed. Because you own all source code and infrastructure, you are never locked in to Atea — any competent Azure developer can take over maintenance if needed.
+    </div>
+</div>
+
+<h3>What to prepare before implementation</h3>
+<table>
+    <thead><tr><th>Item</th><th>Details</th></tr></thead>
+    <tbody>
+        <tr><td>Azure subscription access</td><td>An account with Owner or Contributor + User Access Administrator role on the subscription, or a dedicated resource group. Atea will specify the minimum required access in the project proposal.</td></tr>
+        <tr><td>Entra ID Global Administrator (temporary)</td><td>Required to grant admin consent for Graph API permissions. Only needed during implementation — can be time-limited.</td></tr>
+        <tr><td>List of student groups</td><td>Names or Object IDs of the Entra ID security groups containing students. Multiple groups with different schedules are supported.</td></tr>
+        <tr><td>Desired schedule</td><td>Access hours per day of week, plus any regular blocked periods (holidays, exam periods). Can be changed after implementation.</td></tr>
+        <tr><td>Portal admin list (Option 2)</td><td>Names and email addresses of staff who should have access to the management portal (teachers, administrators, IT staff).</td></tr>
+    </tbody>
+</table>
+
+<!-- ===== SECTION 14: CONTACTS ===== -->
+<h2 id="contacts">14. Contacts &amp; Official References</h2>
+
+<h3>Contact Atea</h3>
+<table>
+    <thead><tr><th>Contact</th><th>Role</th><th>Details</th></tr></thead>
+    <tbody>
+        <tr><td><strong>Your Atea Account Manager</strong></td><td>Commercial questions, pricing, proposals</td><td>Contact your existing Atea account manager, or email <a href="mailto:post@atea.no">post@atea.no</a></td></tr>
+        <tr><td><strong>Atea Microsoft Solutions Team</strong></td><td>Technical questions, demo requests</td><td>Reference this document and ask for the Microsoft Solutions team</td></tr>
+    </tbody>
+</table>
+
+<h3>Official Microsoft Documentation</h3>
+<table>
+    <thead><tr><th>Topic</th><th>Link</th></tr></thead>
+    <tbody>
+        <tr><td>Azure portal</td><td><a href="https://portal.azure.com" target="_blank">portal.azure.com</a></td></tr>
+        <tr><td>Microsoft Entra admin center</td><td><a href="https://entra.microsoft.com" target="_blank">entra.microsoft.com</a></td></tr>
+        <tr><td>Register an app in Entra ID</td><td><a href="https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app" target="_blank">learn.microsoft.com — Quickstart: Register an application</a></td></tr>
+        <tr><td>Configure federated identity credentials</td><td><a href="https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust" target="_blank">learn.microsoft.com — Workload identity federation</a></td></tr>
+        <tr><td>GitHub Actions OIDC with Azure</td><td><a href="https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect" target="_blank">learn.microsoft.com — Connect from Azure (OIDC)</a></td></tr>
+        <tr><td>Azure Automation overview</td><td><a href="https://learn.microsoft.com/en-us/azure/automation/overview" target="_blank">learn.microsoft.com — Azure Automation overview</a></td></tr>
+        <tr><td>Enable managed identity for Automation</td><td><a href="https://learn.microsoft.com/en-us/azure/automation/enable-managed-identity-for-automation" target="_blank">learn.microsoft.com — Managed Identity for Automation</a></td></tr>
+        <tr><td>Assign Azure RBAC roles</td><td><a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments-portal" target="_blank">learn.microsoft.com — Assign Azure roles (portal)</a></td></tr>
+        <tr><td>Microsoft Graph permissions reference</td><td><a href="https://learn.microsoft.com/en-us/graph/permissions-reference" target="_blank">learn.microsoft.com — Graph permissions reference</a></td></tr>
+        <tr><td>Azure App Service authentication (Entra ID)</td><td><a href="https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-provider-aad" target="_blank">learn.microsoft.com — App Service + Entra ID auth</a></td></tr>
+        <tr><td>Azure for Nonprofits</td><td><a href="https://www.microsoft.com/en-us/nonprofits/azure" target="_blank">microsoft.com/nonprofits/azure</a></td></tr>
+        <tr><td>Azure Automation pricing</td><td><a href="https://azure.microsoft.com/en-us/pricing/details/automation/" target="_blank">azure.microsoft.com/pricing/details/automation</a></td></tr>
+    </tbody>
+</table>
+
+<h3>Official GitHub Documentation</h3>
+<table>
+    <thead><tr><th>Topic</th><th>Link</th></tr></thead>
+    <tbody>
+        <tr><td>GitHub plans and pricing</td><td><a href="https://github.com/pricing" target="_blank">github.com/pricing</a></td></tr>
+        <tr><td>Create a GitHub organisation</td><td><a href="https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch" target="_blank">docs.github.com — Create a new organisation</a></td></tr>
+        <tr><td>GitHub for Education (organisations)</td><td><a href="https://education.github.com/discount_requests/application" target="_blank">education.github.com — Apply for discount</a></td></tr>
+        <tr><td>About GitHub for Education for Schools</td><td><a href="https://docs.github.com/en/education/explore-the-benefits-of-teaching-and-learning-with-github-education/github-education-for-schools/about-github-education-for-schools" target="_blank">docs.github.com — About GitHub Education for Schools</a></td></tr>
+        <tr><td>GitHub Actions billing</td><td><a href="https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions" target="_blank">docs.github.com — About billing for GitHub Actions</a></td></tr>
+        <tr><td>Configuring OIDC in Azure (GitHub side)</td><td><a href="https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/configuring-openid-connect-in-azure" target="_blank">docs.github.com — OIDC in Azure</a></td></tr>
+        <tr><td>Protected branches</td><td><a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches" target="_blank">docs.github.com — About protected branches</a></td></tr>
+    </tbody>
+</table>
+
+<div style="margin-top: 50px; border-top: 2px solid #e6e6e6; padding-top: 20px; font-size: 12px; color: #605E5C;">
+    <strong style="color: #323130;">Atea AS</strong> — Microsoft Solutions Partner &nbsp;·&nbsp; Student Login Time Management for Microsoft 365<br><br>
+    All prices are in Norwegian Kroner (NOK). Azure for Nonprofits: ~37,450 NOK/year ($3,500 USD) in free credits — eligibility required. App Service F1 free tier has resource and uptime limitations; B1 tier recommended for production portal deployments. GitHub Actions minutes estimated at 20–50 min/month for this solution workload — well within the GitHub Free plan allocation of 2,000 min/month. This document is intended for the named customer only and contains proprietary Atea project and pricing information.
+</div>
+
+</body>
+</html>

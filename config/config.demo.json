@@ -25,7 +25,7 @@
                 "https://atea-sam-portal.azurewebsites.net"
             ],
             "Sku": "B1",
-            "Cost": "~115 kr/mo"
+            "Cost": "720 NOK/month"
         },
         "RedirectUris": [
             "http://localhost:3000/api/auth/callback/microsoft-entra-id",

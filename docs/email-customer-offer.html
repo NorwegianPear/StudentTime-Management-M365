@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<!--
+    EMAIL TEMPLATE - Inline styles are INTENTIONAL and REQUIRED
+    Email clients (Outlook, Gmail, etc.) do not support external CSS files.
+    Inline styles are the only reliable way to style HTML emails.
+    Do not move styles to external CSS - it will break email rendering.
+    htmlhint no-inline-styles:false
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login Time Management for Microsoft 365 — Solution Offer from Atea</title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.7; color: #323130; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #ffffff;">
+
+    <!-- ===== HEADER ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 10px;">
+        <tr>
+            <td bgcolor="#0078D4" style="padding: 30px 30px 20px 30px;">
+                <div style="color: white; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">Atea AS — Microsoft Solutions Partner</div>
+                <div style="color: white; font-size: 26px; font-weight: bold; line-height: 1.3;">&#127891; Student Login Time Management<br>for Microsoft 365</div>
+                <div style="color: #BFD9F4; font-size: 14px; margin-top: 10px;">An automated solution that restricts when students can log into school computers — built on Azure, using tools your school already has.</div>
+            </td>
+        </tr>
+    </table>
+
+    <p style="margin-top: 25px;">Hi [Customer Name],</p>
+
+    <p>Thank you for your interest. We have put together this overview to help you understand <strong>exactly what we are offering</strong>, how it works in practice, what it costs, and what your options are. We have tried to make this as clear as possible — no technical jargon where it is not necessary.</p>
+
+    <!-- ===== QUICK SUMMARY BOXES ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 25px 0; border-collapse: separate; border-spacing: 8px;">
+        <tr>
+            <td bgcolor="#107C10" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Monthly Cost</div>
+                <div style="font-size: 28px; font-weight: bold; margin: 6px 0;">0 NOK</div>
+                <div style="font-size: 11px;">Script-Only Solution</div>
+            </td>
+            <td bgcolor="#0078D4" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">With Portal</div>
+                <div style="font-size: 28px; font-weight: bold; margin: 6px 0;">720 NOK</div>
+                <div style="font-size: 11px;">App Service B1 / month</div>
+            </td>
+            <td bgcolor="#5C2D91" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Implementation</div>
+                <div style="font-size: 28px; font-weight: bold; margin: 6px 0;">4–8 hrs</div>
+                <div style="font-size: 11px;">Active setup work (~1 week)</div>
+            </td>
+            <td bgcolor="#D13438" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Extra Licenses</div>
+                <div style="font-size: 28px; font-weight: bold; margin: 6px 0;">NONE</div>
+                <div style="font-size: 11px;">Works with what you have</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 1: THE PROBLEM ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 45px;">&#10067; What Problem Does This Solve?</h2>
+
+    <p>Many schools using Microsoft 365 face a common challenge: <strong>students can log in to their school accounts at any time of day or night</strong> — evenings, weekends, holidays. This leads to:</p>
+
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#FFF4CE">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; width: 5%; font-size: 20px; text-align: center;">&#9888;</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>Students accessing school services outside school hours</strong> — gaming platforms, social apps, or content not suitable for unsupervised use.</td>
+        </tr>
+        <tr bgcolor="#FFF4CE">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; font-size: 20px; text-align: center;">&#9888;</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>No automatic enforcement</strong> — teachers and IT staff have to manually intervene when issues arise.</td>
+        </tr>
+        <tr bgcolor="#FFF4CE">
+            <td style="padding: 12px; font-size: 20px; text-align: center;">&#9888;</td>
+            <td style="padding: 12px;"><strong>Microsoft 365 has no built-in schedule feature</strong> — there is no native "disable logins after 16:00" option in the platform.</td>
+        </tr>
+    </table>
+
+    <p>Our solution <strong>fills this gap</strong> by using Azure Automation to automatically enable and disable student accounts on a schedule you define — for example, Monday–Friday 07:50–16:05, with no access on weekends or holidays.</p>
+
+    <!-- ===== SECTION 2: HOW IT WORKS ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 45px;">&#9881; How Does It Work? (Plain Language)</h2>
+
+    <p>The solution runs entirely in Microsoft's own cloud (Azure). Here is what happens every school day, automatically — without anyone needing to do anything:</p>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0;">
+        <tr>
+            <td>
+                <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 4px;">
+                    <tr>
+                        <td bgcolor="#0078D4" style="width: 52px; min-width: 52px; text-align: center; padding: 18px; color: white; font-size: 22px; font-weight: bold; vertical-align: top;">1</td>
+                        <td bgcolor="#EFF6FF" style="padding: 18px; vertical-align: top;">
+                            <strong style="color: #0078D4;">07:50 — Azure Automation wakes up</strong><br>
+                            <span style="font-size: 13px; color: #605E5C;">A scheduled job in Azure runs automatically. It connects to your Microsoft 365 tenant using a secure registered app — no passwords stored in scripts, fully audited.</span>
+                        </td>
+                    </tr>
+                </table>
+                <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 4px;">
+                    <tr>
+                        <td bgcolor="#0078D4" style="width: 52px; min-width: 52px; text-align: center; padding: 18px; color: white; font-size: 22px; font-weight: bold; vertical-align: top;">2</td>
+                        <td bgcolor="#EFF6FF" style="padding: 18px; vertical-align: top;">
+                            <strong style="color: #0078D4;">It reads your student group</strong><br>
+                            <span style="font-size: 13px; color: #605E5C;">The automation looks up a security group in your Microsoft 365 tenant — e.g., "Students - Class 2025". Every member of that group is managed by the schedule. Teachers are never in this group.</span>
+                        </td>
+                    </tr>
+                </table>
+                <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 4px;">
+                    <tr>
+                        <td bgcolor="#107C10" style="width: 52px; min-width: 52px; text-align: center; padding: 18px; color: white; font-size: 22px; font-weight: bold; vertical-align: top;">3</td>
+                        <td bgcolor="#F0FFF0" style="padding: 18px; vertical-align: top;">
+                            <strong style="color: #107C10;">Student accounts are enabled &#128275;</strong><br>
+                            <span style="font-size: 13px; color: #605E5C;">Each student account is set to "enabled" via the Microsoft Graph API. Students can now sign in to Teams, OneDrive, school computers — everything works as normal.</span>
+                        </td>
+                    </tr>
+                </table>
+                <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 4px;">
+                    <tr>
+                        <td bgcolor="#D13438" style="width: 52px; min-width: 52px; text-align: center; padding: 18px; color: white; font-size: 22px; font-weight: bold; vertical-align: top;">4</td>
+                        <td bgcolor="#FFF5F5" style="padding: 18px; vertical-align: top;">
+                            <strong style="color: #D13438;">16:05 — Student accounts are disabled &#128274;</strong><br>
+                            <span style="font-size: 13px; color: #605E5C;">A second scheduled job runs. All student accounts are set to "disabled". Active sessions are revoked immediately. Students are signed out and cannot sign back in until the next morning.</span>
+                        </td>
+                    </tr>
+                </table>
+                <table cellpadding="0" cellspacing="0" style="width: 100%;">
+                    <tr>
+                        <td bgcolor="#5C2D91" style="width: 52px; min-width: 52px; text-align: center; padding: 18px; color: white; font-size: 22px; font-weight: bold; vertical-align: top;">5</td>
+                        <td bgcolor="#F5F0FF" style="padding: 18px; vertical-align: top;">
+                            <strong style="color: #5C2D91;">Everything is logged &#128202;</strong><br>
+                            <span style="font-size: 13px; color: #605E5C;">Every enable and disable action is written to Azure Log Analytics. You can see a full audit trail of which accounts were changed and when. Alerts can be configured if a job fails.</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- REAL EXAMPLE BOX -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0;">
+        <tr>
+            <td bgcolor="#FFF4CE" style="padding: 20px; border-left: 4px solid #FFB900;">
+                <strong style="color: #323130;">&#128161; Real-life example — What a student experiences:</strong>
+                <p style="margin: 10px 0 0 0; font-size: 13px; color: #323130;">
+                    Emma is in 7th grade. On Monday morning at <strong>07:55 she can log in</strong> to her school computer and Teams — everything works normally.
+                    At <strong>16:05 she is automatically signed out</strong> and cannot log back in. If she is in the middle of writing a document, it has already auto-saved to OneDrive — no work is lost.
+                    On Saturday she tries to log in from home — <strong>access is denied</strong>. On Monday morning everything works again automatically, without IT staff doing anything.
+                </p>
+                <p style="margin: 10px 0 0 0; font-size: 13px; color: #605E5C;">Teacher and staff accounts are <strong>never affected</strong> — only students in the designated group are managed by the schedule.</p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 3: SOLUTION OPTIONS ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 45px;">&#128196; Choose Your Solution Level</h2>
+    <p>We offer two levels of capability. The <strong>core automation is identical in both</strong> — the only difference is whether your staff get a browser-based management portal, or manage things through Azure directly.</p>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0; border-collapse: separate; border-spacing: 12px;">
+        <tr>
+            <td style="width: 50%; vertical-align: top; background: #F3F2F1; border: 2px solid #d0d0d0; padding: 22px;">
+                <div style="font-size: 28px; margin-bottom: 8px;">&#128196;</div>
+                <div style="font-size: 19px; font-weight: bold; color: #323130;">Option 1 — Script Only</div>
+                <div style="font-size: 12px; color: #605E5C; margin: 4px 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px;">Azure Automation · No web interface</div>
+                <div style="font-size: 12px; background: #e0e0e0; color: #323130; padding: 5px 10px; display: inline-block; margin: 8px 0 14px 0; font-weight: bold;">BEST FOR: IT-savvy schools</div>
+                <p style="font-size: 13px; margin: 0 0 12px 0;">The automation runs in Azure on a schedule. Staff who need to make changes (suspend a student, adjust a schedule) do so by running a PowerShell script or using the Azure Portal directly. No web interface is provided.</p>
+                <p style="font-size: 13px; font-style: italic; color: #605E5C; margin: 0 0 14px 0;">Think of this as a manual gearbox car — it gets you there, costs less, but requires more hands-on IT knowledge to operate.</p>
+                <table cellpadding="4" cellspacing="0" style="width: 100%;">
+                    <tr><td style="font-size: 13px; color: #107C10; padding: 3px 0;">&#10003; Lowest possible monthly cost</td></tr>
+                    <tr><td style="font-size: 13px; color: #107C10; padding: 3px 0;">&#10003; No extra web hosting needed</td></tr>
+                    <tr><td style="font-size: 13px; color: #107C10; padding: 3px 0;">&#10003; Fully automated — runs without daily input</td></tr>
+                    <tr><td style="font-size: 13px; color: #107C10; padding: 3px 0;">&#10003; Full audit log in Log Analytics</td></tr>
+                    <tr><td style="font-size: 13px; color: #107C10; padding: 3px 0;">&#10003; Quicker to set up (~4 hrs)</td></tr>
+                    <tr><td style="padding: 8px 0;"><hr style="border: none; border-top: 1px solid #ddd; margin: 0;"></td></tr>
+                    <tr><td style="font-size: 13px; color: #D13438; padding: 3px 0;">&#8722; Staff need Azure Portal access to make changes</td></tr>
+                    <tr><td style="font-size: 13px; color: #D13438; padding: 3px 0;">&#8722; No dashboard to see student status at a glance</td></tr>
+                    <tr><td style="font-size: 13px; color: #D13438; padding: 3px 0;">&#8722; Suspending a student requires running a script</td></tr>
+                    <tr><td style="font-size: 13px; color: #D13438; padding: 3px 0;">&#8722; Not suitable for non-technical staff day-to-day</td></tr>
+                </table>
+                <div style="margin-top: 20px; background: #323130; color: white; padding: 14px; text-align: center; font-size: 17px; font-weight: bold;">
+                    0 NOK / month
+                    <div style="font-size: 12px; font-weight: normal; margin-top: 4px; color: #c8c6c4;">All usage within Azure free tiers</div>
+                </div>
+            </td>
+
+            <td style="width: 50%; vertical-align: top; background: #EFF6FF; border: 2px solid #0078D4; padding: 22px;">
+                <div style="font-size: 28px; margin-bottom: 8px;">&#127760;</div>
+                <div style="font-size: 19px; font-weight: bold; color: #0078D4;">Option 2 — Portal + Script</div>
+                <div style="font-size: 12px; color: #605E5C; margin: 4px 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px;">Azure Automation + Web Management Portal</div>
+                <div style="font-size: 12px; background: #0078D4; color: white; padding: 5px 10px; display: inline-block; margin: 8px 0 14px 0; font-weight: bold;">&#11088; RECOMMENDED for most schools</div>
+                <p style="font-size: 13px; margin: 0 0 12px 0;">Includes everything in Option 1, <strong>plus a web-based management portal</strong> hosted on Azure. Any staff member opens their browser, signs in with their normal Microsoft 365 account, and can manage students without any technical knowledge.</p>
+                <p style="font-size: 13px; font-style: italic; color: #605E5C; margin: 0 0 14px 0;">Think of this as an automatic gearbox car with GPS — same engine, but much easier for everyone to use, including non-technical staff.</p>
+                <table cellpadding="4" cellspacing="0" style="width: 100%;">
+                    <tr><td style="font-size: 13px; color: #107C10; padding: 3px 0;">&#10003; Everything in Option 1, plus:</td></tr>
+                    <tr><td style="font-size: 13px; color: #107C10; padding: 3px 0;">&#10003; Browser-based portal — no technical skills needed</td></tr>
+                    <tr><td style="font-size: 13px; color: #107C10; padding: 3px 0;">&#10003; See all students and their status at a glance</td></tr>
+                    <tr><td style="font-size: 13px; color: #107C10; padding: 3px 0;">&#10003; Suspend / re-enable a student with one click</td></tr>
+                    <tr><td style="font-size: 13px; color: #107C10; padding: 3px 0;">&#10003; Edit schedules and policies visually in the browser</td></tr>
+                    <tr><td style="font-size: 13px; color: #107C10; padding: 3px 0;">&#10003; Staff log in with their M365 account (via Teams/Outlook)</td></tr>
+                    <tr><td style="font-size: 13px; color: #107C10; padding: 3px 0;">&#10003; Role-based access: principal, teacher, IT admin</td></tr>
+                    <tr><td style="padding: 8px 0;"><hr style="border: none; border-top: 1px solid #b3d4f5; margin: 0;"></td></tr>
+                    <tr><td style="font-size: 13px; color: #D13438; padding: 3px 0;">&#8722; Requires App Service to host the portal</td></tr>
+                    <tr><td style="font-size: 13px; color: #D13438; padding: 3px 0;">&#8722; Slightly higher monthly cost (but 0 kr for nonprofits)</td></tr>
+                </table>
+                <div style="margin-top: 20px; background: #0078D4; color: white; padding: 14px; text-align: center; font-size: 17px; font-weight: bold;">
+                    720 NOK / month
+                    <div style="font-size: 12px; font-weight: normal; margin-top: 4px; color: #BFD9F4;">Non-Profit: 0 NOK / month (F1 free tier) *</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <p style="font-size: 12px; color: #605E5C; margin-top: 0;">* Non-Profit: App Service F1 tier is always free (no Azure for Nonprofits required). Azure for Nonprofits ($3,500 USD/year ≈ 37,450 NOK in credits) can additionally cover any other Azure costs if your organisation qualifies.</p>
+
+    <!-- ===== SECTION 4: HOSTING MODELS ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 45px;">&#128640; Deployment — Your Azure, Your GitHub, Your Control</h2>
+    <p>Since you already have your <strong>own Azure subscription and tenant</strong>, Atea deploys everything directly into your environment. Your data stays in your tenant and you are billed directly by Microsoft. For source code and automated deployment, we recommend setting up a <strong>free GitHub account for your organisation</strong> — Atea guides you through this as part of the project.</p>
+
+    <table cellpadding="14" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #d0d0d0;">
+        <tr bgcolor="#0078D4">
+            <th style="color: white; text-align: left; padding: 15px; width: 28%; font-weight: 600;">What</th>
+            <th style="color: white; text-align: left; padding: 15px; font-weight: 600;">Details</th>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 14px; border-bottom: 1px solid #e6e6e6;"><strong>&#9989; Azure environment</strong></td>
+            <td style="padding: 14px; border-bottom: 1px solid #e6e6e6; font-size: 13px;"><strong>Your existing Azure subscription and tenant.</strong> Atea deploys the Automation Account, runbooks, and (optionally) the portal App Service directly into your environment. No new subscription needed — you are already billed by Microsoft and your data never leaves your tenant.</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 14px; border-bottom: 1px solid #e6e6e6;"><strong>&#128202; GitHub — new account for your organisation</strong></td>
+            <td style="padding: 14px; border-bottom: 1px solid #e6e6e6; font-size: 13px;">Atea recommends creating a <strong>GitHub organisation account</strong> for your institution. We will assist with the setup, configure OIDC federation to your Azure tenant, and provide full handover documentation. You retain complete ownership of the repository and the deployment pipeline.<br><br>
+            <table cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <tr bgcolor="#e8f5e9">
+                    <td style="padding: 6px 10px; border: 1px solid #c8e6c9;"><strong>GitHub Free</strong></td>
+                    <td style="padding: 6px 10px; border: 1px solid #c8e6c9; color: #107C10;">0 kr / month</td>
+                    <td style="padding: 6px 10px; border: 1px solid #c8e6c9; color: #605E5C;">Unlimited private repositories. Includes <strong>2,000 GitHub Actions minutes/month</strong> at no cost. This solution typically consumes under 50 minutes per month — well within the free allocation.</td>
+                </tr>
+                <tr bgcolor="#e8f5e9">
+                    <td style="padding: 6px 10px; border: 1px solid #c8e6c9;"><strong>GitHub for Education</strong></td>
+                    <td style="padding: 6px 10px; border: 1px solid #c8e6c9; color: #107C10;">0 kr / month</td>
+                    <td style="padding: 6px 10px; border: 1px solid #c8e6c9; color: #605E5C;">Available to qualifying educational institutions. Includes GitHub Team features and <strong>3,000 Actions minutes/month</strong> at no cost. Atea can assist with the application.</td>
+                </tr>
+                <tr bgcolor="#fff3e0">
+                    <td style="padding: 6px 10px; border: 1px solid #ffe0b2;"><strong>Actions overage</strong></td>
+                    <td style="padding: 6px 10px; border: 1px solid #ffe0b2; color: #605E5C;">~0.09 kr / min</td>
+                    <td style="padding: 6px 10px; border: 1px solid #ffe0b2; color: #605E5C;">Only applies if monthly usage exceeds the included free quota. For this solution, overage is not expected under normal operational conditions.</td>
+                </tr>
+            </table>
+            </td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 14px; border-bottom: 1px solid #e6e6e6;"><strong>&#128279; OIDC Federation to Azure</strong></td>
+            <td style="padding: 14px; border-bottom: 1px solid #e6e6e6; font-size: 13px;">GitHub Actions connects to your Azure tenant using <strong>OpenID Connect (OIDC) federation</strong> — a modern, passwordless authentication method. This means no client secrets or passwords are ever stored in GitHub. Deployment is triggered automatically when code is pushed, and only your GitHub repository is trusted to deploy to your Azure.</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 14px; border-bottom: 1px solid #e6e6e6;"><strong>&#128100; Who manages &amp; maintains?</strong></td>
+            <td style="padding: 14px; border-bottom: 1px solid #e6e6e6; font-size: 13px;">Your IT team manages the solution with full documentation and a handover session from Atea. Atea support is available when updates are needed. Because you own the GitHub repository, any developer you add can contribute — you are not locked in to Atea.</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 14px; border-bottom: 1px solid #e6e6e6;"><strong>&#128274; Where is your data?</strong></td>
+            <td style="padding: 14px; border-bottom: 1px solid #e6e6e6; font-size: 13px; color: #107C10; font-weight: bold;">100% in your own Azure tenant — full data sovereignty. GDPR compliance is straightforward as no data leaves your environment.</td>
+        </tr>
+        <tr bgcolor="#E8F5E9">
+            <td style="padding: 14px; border-bottom: 1px solid #e6e6e6;"><strong>&#128176; Monthly running cost</strong></td>
+            <td style="padding: 14px; border-bottom: 1px solid #e6e6e6; font-size: 13px; font-weight: bold; color: #107C10;">Azure usage only — invoiced directly by Microsoft to your organisation. GitHub Free plan: 0 NOK/month. Script-only option: <strong>0 NOK/month</strong> (all within Azure free tiers). With management portal (App Service B1, Norway East): <strong>720 NOK/month</strong>.</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 14px;"><strong>&#129354; One-time setup cost</strong></td>
+            <td style="padding: 14px; font-size: 13px;">One-time Atea implementation fee (hours-based). Includes GitHub account setup, OIDC federation configuration, Azure deployment, and a handover session with documentation.</td>
+        </tr>
+    </table>
+
+    <!-- RECOMMENDATION BOX -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0;">
+        <tr>
+            <td bgcolor="#FFF4CE" style="padding: 22px; border-left: 5px solid #FFB900;">
+                <strong style="color: #323130; font-size: 15px;">&#128161; Atea's recommendation:</strong>
+                <p style="margin: 12px 0 0 0; font-size: 14px;"><strong>Option 2 (Portal + Script)</strong> deployed into <strong>your existing Azure subscription</strong>, with a <strong>new free GitHub account + OIDC federation</strong> for secure automated deployment. Here is why:</p>
+                <ul style="font-size: 13px; margin-top: 8px;">
+                    <li style="margin-bottom: 6px;">You already have Azure — Atea deploys directly into your tenant. No new subscriptions, no re-invoicing, no middleman.</li>
+                    <li style="margin-bottom: 6px;">Your teachers and admin staff get a simple browser interface — no Azure or PowerShell knowledge needed to suspend a student or adjust a schedule.</li>
+                    <li style="margin-bottom: 6px;">All data stays in <em>your</em> Azure tenant — you are fully in control, GDPR compliance is straightforward.</li>
+                    <li style="margin-bottom: 6px;">A free GitHub account is all you need — Atea sets it up for you and configures OIDC federation to Azure. No passwords stored anywhere. No prior GitHub experience required.</li>
+                    <li style="margin-bottom: 6px;">You own the GitHub repository — you can add your own IT staff, and you are not locked in to Atea for future changes.</li>
+                    <li>Script-only option costs <strong>0 NOK/month</strong> — all usage within Azure free tiers (Automation: 500 min/month free, Log Analytics: 5 GB/day free).</li>
+                    <li>With the management portal (App Service B1): <strong>720 NOK/month</strong> (Norway East list price).</li>
+                    <li>If you qualify as a nonprofit, App Service F1 is always free — bringing the portal option to <strong>0 NOK/month</strong> as well.</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 5: COST BREAKDOWN ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 45px;">&#128200; Monthly Cost Breakdown — Norway East (NOK)</h2>
+    <p style="font-size: 14px;">All prices are the exact Norway East list prices from the Azure pricing calculator. Azure Automation free tier: 500 min/month included. Log Analytics free tier: 5 GB/day included. This solution stays within both free tiers for schools up to ~400 students.</p>
+
+    <h3 style="color: #323130; margin-top: 25px; margin-bottom: 6px;">&#128196; Option 1 — Script Only</h3>
+    <p style="font-size: 13px; color: #605E5C; margin-top: 0;">Two Azure resources required: Azure Automation (runs the scripts on schedule) and Log Analytics (stores the audit log).</p>
+    <table cellpadding="13" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 25px; border: 1px solid #d0d0d0;">
+        <tr bgcolor="#323130">
+            <th style="color: white; text-align: left; padding: 13px; width: 35%;">Resource</th>
+            <th style="color: white; text-align: left; padding: 13px; width: 25%;">What it does</th>
+            <th style="color: white; text-align: center; padding: 13px; width: 20%;">Regular</th>
+            <th style="color: white; text-align: center; padding: 13px; width: 20%;">Non-Profit</th>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6;"><strong>&#9729; Azure Automation</strong></td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; font-size: 12px; color: #605E5C;">Runs enable/disable scripts on schedule — approx. 60 jobs/mo</td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK</td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6;"><strong>&#128202; Log Analytics Workspace</strong></td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; font-size: 12px; color: #605E5C;">Stores full audit trail of all account changes</td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK</td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK</td>
+        </tr>
+        <tr bgcolor="#E8F5E9">
+            <td style="padding: 13px; font-weight: bold; font-size: 15px;" colspan="2">&#128176; Total Monthly Cost — Option 1</td>
+            <td style="padding: 13px; text-align: center; font-weight: bold; font-size: 15px; color: #107C10;">0 NOK</td>
+            <td style="padding: 13px; text-align: center; font-weight: bold; font-size: 15px; color: #107C10;">0 NOK</td>
+        </tr>
+    </table>
+
+    <h3 style="color: #0078D4; margin-top: 25px; margin-bottom: 6px;">&#127760; Option 2 — Portal + Script</h3>
+    <p style="font-size: 13px; color: #605E5C; margin-top: 0;">Adds an Azure App Service to host the web portal. Nonprofits can use the F1 free tier, making the portal cost 0 NOK/month.</p>
+    <table cellpadding="13" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 10px; border: 1px solid #d0d0d0;">
+        <tr bgcolor="#0078D4">
+            <th style="color: white; text-align: left; padding: 13px; width: 35%;">Resource</th>
+            <th style="color: white; text-align: left; padding: 13px; width: 25%;">What it does</th>
+            <th style="color: white; text-align: center; padding: 13px; width: 20%;">Regular</th>
+            <th style="color: white; text-align: center; padding: 13px; width: 20%;">Non-Profit</th>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6;"><strong>&#9729; Azure Automation</strong></td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; font-size: 12px; color: #605E5C;">Runs the enable/disable scripts on schedule</td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK</td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6;"><strong>&#128202; Log Analytics Workspace</strong></td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; font-size: 12px; color: #605E5C;">Stores full audit trail of all account changes</td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK</td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6;"><strong>&#127760; Azure App Service B1</strong></td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; font-size: 12px; color: #605E5C;">Hosts the management web portal (Norway East list price)</td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold;">720 NOK/month</td>
+            <td style="padding: 13px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK (F1 free tier)</td>
+        </tr>
+        <tr bgcolor="#EFF6FF">
+            <td style="padding: 13px; font-weight: bold; font-size: 15px;" colspan="2">&#128176; Total Monthly Cost — Option 2</td>
+            <td style="padding: 13px; text-align: center; font-weight: bold; font-size: 15px;">720 NOK</td>
+            <td style="padding: 13px; text-align: center; font-weight: bold; font-size: 15px; color: #107C10;">0 NOK *</td>
+        </tr>
+    </table>
+    <p style="font-size: 12px; color: #605E5C;">* Azure for Nonprofits: ~37,450 NOK/year in free credits ($3,500 USD). App Service F1 always free (no nonprofit status needed). GitHub Free plan: sufficient for this solution.</p>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 18px 0;">
+        <tr>
+            <td bgcolor="#EFF6FF" style="padding: 18px; border-left: 4px solid #0078D4;">
+                <strong style="color: #0078D4;">&#128202; GitHub — Your Organisation Account (Recommended)</strong>
+                <p style="margin: 10px 0 6px 0; font-size: 13px;">You do not currently have a GitHub account — Atea will assist in creating one for your organisation as part of the implementation. We recommend the <strong>GitHub Free plan</strong>, which is sufficient for this solution.</p>
+                <table cellpadding="7" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                    <tr bgcolor="#0078D4">
+                        <th style="color: white; text-align: left; padding: 8px; font-size: 12px;">Plan</th>
+                        <th style="color: white; text-align: center; padding: 8px; font-size: 12px;">Cost</th>
+                        <th style="color: white; text-align: left; padding: 8px; font-size: 12px;">Actions minutes included</th>
+                        <th style="color: white; text-align: left; padding: 8px; font-size: 12px;">Notes</th>
+                    </tr>
+                    <tr bgcolor="#f8f9fa">
+                        <td style="padding: 8px; border-bottom: 1px solid #e6e6e6; font-size: 12px;"><strong>&#11088; GitHub Free</strong></td>
+                        <td style="padding: 8px; border-bottom: 1px solid #e6e6e6; text-align: center; font-size: 12px; color: #107C10; font-weight: bold;">0 kr / mo</td>
+                        <td style="padding: 8px; border-bottom: 1px solid #e6e6e6; font-size: 12px;">2,000 min / month</td>
+                        <td style="padding: 8px; border-bottom: 1px solid #e6e6e6; font-size: 12px; color: #605E5C;">Recommended. This solution typically consumes 20–50 minutes/month — well within the free allocation. Unlimited private repositories included.</td>
+                    </tr>
+                    <tr bgcolor="#ffffff">
+                        <td style="padding: 8px; font-size: 12px;"><strong>GitHub for Education</strong></td>
+                        <td style="padding: 8px; text-align: center; font-size: 12px; color: #107C10; font-weight: bold;">0 kr / mo</td>
+                        <td style="padding: 8px; font-size: 12px;">3,000 min / month</td>
+                        <td style="padding: 8px; font-size: 12px; color: #605E5C;">Available to qualifying educational institutions. Includes GitHub Team features at no cost. Atea can assist with the application process.</td>
+                    </tr>
+                </table>
+                <p style="margin: 12px 0 4px 0; font-size: 12px; color: #605E5C;">&#9432; <strong>OIDC Federation:</strong> GitHub Actions authenticates to Azure using OpenID Connect — a passwordless, credential-free method. No client secrets are stored in GitHub at any point. Only your organisation's GitHub repository is authorised to initiate deployments to your Azure environment.</p>
+                <p style="margin: 6px 0 0 0; font-size: 12px; color: #A19F9D;">&#9432; <em>Note: While Atea operates its own GitHub organisation, we do not recommend using a shared organisation for customer deployments. Shared organisations with multiple administrators introduce unnecessary access-control complexity and security risk. A dedicated account for your organisation is the recommended and more secure approach.</em></p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 6: FEATURE COMPARISON ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 45px;">&#10003; Full Feature Comparison</h2>
+
+    <table cellpadding="11" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0; border: 1px solid #d0d0d0;">
+        <tr bgcolor="#5C2D91">
+            <th style="color: white; text-align: left; padding: 13px; width: 46%;">Feature</th>
+            <th style="color: white; text-align: center; padding: 13px; width: 27%;">&#128196; Script Only</th>
+            <th style="color: white; text-align: center; padding: 13px; width: 27%;">&#127760; Portal + Script</th>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6;">Automatic enable/disable on daily schedule</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold; font-size: 16px;">&#10003;</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold; font-size: 16px;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6;">Multiple groups with different schedules</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6;">Works with existing M365 / Entra ID (no extra licenses)</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6;">Active session revocation (signs out logged-in students immediately)</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6;">Full audit log of every account change (Log Analytics)</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6;">Holiday and exception day support</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; color: #605E5C;">&#128187; Staff management portal (browser-based, no technical skills needed)</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #D13438; font-size: 16px;">&#8722;</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold; font-size: 16px;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; color: #605E5C;">&#128101; Live student status dashboard (who is active right now)</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #D13438; font-size: 16px;">&#8722;</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; color: #605E5C;">&#128274; One-click suspend / re-enable individual student</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #D13438; font-size: 16px;">&#8722;</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; color: #605E5C;">&#128197; Visual schedule and policy editor in browser</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #D13438; font-size: 16px;">&#8722;</td>
+            <td style="padding: 11px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 11px; color: #605E5C;">&#128273; Microsoft 365 SSO login for staff (no extra accounts needed)</td>
+            <td style="padding: 11px; text-align: center; color: #D13438; font-size: 16px;">&#8722;</td>
+            <td style="padding: 11px; text-align: center; color: #107C10; font-size: 16px;">&#10003;</td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 7: FAQ ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 45px;">&#10067; Frequently Asked Questions</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0; border-collapse: separate; border-spacing: 0;">
+        <tr>
+            <td bgcolor="#F3F2F1" style="padding: 16px 20px; border-bottom: 3px solid #ffffff;">
+                <strong style="color: #0078D4;">Q: Will teacher and staff accounts be affected by the schedule?</strong>
+                <p style="margin: 8px 0 0 0; font-size: 13px;">No. Only students who are members of the designated security group (e.g., "Students - All") are controlled by the schedule. Teacher, admin, and IT staff accounts are never touched — they continue to work at all times.</p>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#F3F2F1" style="padding: 16px 20px; border-bottom: 3px solid #ffffff;">
+                <strong style="color: #0078D4;">Q: What happens if a student is writing a document at 16:05 when accounts are locked?</strong>
+                <p style="margin: 8px 0 0 0; font-size: 13px;">Microsoft 365 apps (Word, Teams, OneDrive) save automatically and continuously. When the session is revoked, the student's work is already saved to the cloud. They will not lose anything. The account disable is a login block, not a data deletion — all their files remain exactly as they were.</p>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#F3F2F1" style="padding: 16px 20px; border-bottom: 3px solid #ffffff;">
+                <strong style="color: #0078D4;">Q: A student has an exam tomorrow evening — can we give them extended access?</strong>
+                <p style="margin: 8px 0 0 0; font-size: 13px;">Yes. With <strong>Option 1</strong>, an IT admin runs a PowerShell script to temporarily re-enable specific students or change the schedule for that day. With <strong>Option 2</strong> (Portal), any authorised staff member — teacher, admin, principal — can do this in two clicks from their browser. No IT involvement required.</p>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#F3F2F1" style="padding: 16px 20px; border-bottom: 3px solid #ffffff;">
+                <strong style="color: #0078D4;">Q: Do we need to buy extra Microsoft 365 licenses?</strong>
+                <p style="margin: 8px 0 0 0; font-size: 13px;">No. The solution uses only Azure Automation and Entra ID features that are already available with a standard Microsoft 365 Education or Business subscription. No new licenses, no additional Microsoft software purchases.</p>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#F3F2F1" style="padding: 16px 20px; border-bottom: 3px solid #ffffff;">
+                <strong style="color: #0078D4;">Q: What does "nonprofit pricing" mean, and does our school qualify?</strong>
+                <p style="margin: 8px 0 0 0; font-size: 13px;">Microsoft offers significant discounts and free credits to registered nonprofit and educational organisations. If your school qualifies, you can receive <strong>~37,450 NOK/year in free Azure credits</strong> and heavily discounted or free GitHub. We can help you check eligibility and complete the application — it typically takes 1–2 weeks and we handle most of the paperwork.</p>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#F3F2F1" style="padding: 16px 20px; border-bottom: 3px solid #ffffff;">
+                <strong style="color: #0078D4;">Q: Is this secure? What access does the solution need to our Microsoft 365 tenant?</strong>
+                <p style="margin: 8px 0 0 0; font-size: 13px;">Yes. The solution uses a dedicated Azure App Registration (a service account) with the minimum permissions required: read group members, and enable/disable user accounts. It cannot read emails, access files, or do anything outside those two operations. All activity is logged. No passwords are stored — the connection uses modern OAuth 2.0 certificate-based authentication.</p>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#F3F2F1" style="padding: 16px 20px;">
+                <strong style="color: #0078D4;">Q: How long does the implementation take?</strong>
+                <p style="margin: 8px 0 0 0; font-size: 13px;">Typically <strong>4–8 hours of active work</strong>, spread over approximately one week. This includes: setting up the Azure environment, configuring the automation rules, connecting to your Microsoft 365 tenant, pilot testing with a small group of students, validation, and full documentation handover to your IT team.</p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 8: NEXT STEPS ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 45px;">&#128204; How to Get Started — 4 Simple Steps</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#0078D4" style="width: 52px; min-width: 52px; text-align: center; padding: 20px; color: white; font-size: 24px; font-weight: bold; vertical-align: top;">1</td>
+            <td bgcolor="#EFF6FF" style="padding: 20px; vertical-align: top; border-bottom: 3px solid white;">
+                <strong style="font-size: 14px;">Reply to let us know which option you prefer</strong><br>
+                <span style="font-size: 13px; color: #605E5C;">Tell us: Script-Only or Portal+Script? Not sure? We can schedule a free 30-minute call to walk through the options together and make a recommendation based on your school's size and IT setup. Either way, deployment is always into your own Azure environment with your own GitHub account.</span>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#0078D4" style="text-align: center; padding: 20px; color: white; font-size: 24px; font-weight: bold; vertical-align: top;">2</td>
+            <td bgcolor="#EFF6FF" style="padding: 20px; vertical-align: top; border-bottom: 3px solid white;">
+                <strong style="font-size: 14px;">We check your nonprofit eligibility</strong><br>
+                <span style="font-size: 13px; color: #605E5C;">If you qualify for Microsoft for Nonprofits or GitHub for Education, we help you apply for free Azure credits and discounted services. We handle the application process — you just confirm you are a qualifying nonprofit organisation. This can reduce monthly running costs to 0 kr.</span>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#0078D4" style="text-align: center; padding: 20px; color: white; font-size: 24px; font-weight: bold; vertical-align: top;">3</td>
+            <td bgcolor="#EFF6FF" style="padding: 20px; vertical-align: top; border-bottom: 3px solid white;">
+                <strong style="font-size: 14px;">Atea sends a formal written proposal</strong><br>
+                <span style="font-size: 13px; color: #605E5C;">We prepare a written project proposal with: a clear scope of work, a timeline, and a fixed-price (or hourly) cost estimate for the implementation. No surprises — you know exactly what you are getting and what it costs before signing anything.</span>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#0078D4" style="text-align: center; padding: 20px; color: white; font-size: 24px; font-weight: bold; vertical-align: top;">4</td>
+            <td bgcolor="#EFF6FF" style="padding: 20px; vertical-align: top;">
+                <strong style="font-size: 14px;">Implementation, pilot test, and handover</strong><br>
+                <span style="font-size: 13px; color: #605E5C;">Atea sets everything up. We first test with a small pilot group of students to validate the schedule works correctly, then roll out to all students. Full documentation is provided — your IT team will know exactly how to manage, monitor, and update the solution going forward.</span>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== CTA ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 35px 0;">
+        <tr>
+            <td bgcolor="#0078D4" style="padding: 30px; text-align: center; color: white;">
+                <div style="font-size: 15px; margin-bottom: 8px; opacity: 0.9;">Ready to protect your students' screen time and simplify IT management?</div>
+                <div style="font-size: 22px; font-weight: bold; margin-bottom: 8px;">Reply to this email or book a free 30-minute demo call.</div>
+                <div style="font-size: 14px; opacity: 0.85;">We will walk you through the live portal and show you exactly how it looks in a real school Microsoft 365 environment.</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== FOOTER ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 30px; border-top: 2px solid #e6e6e6;">
+        <tr>
+            <td style="padding: 20px 0; color: #605E5C; font-size: 12px;">
+                <strong style="color: #323130;">Atea AS</strong> — Microsoft Solutions Partner · Student Access Management for Microsoft 365<br><br>
+                <em>All prices are estimates in Norwegian Kroner (NOK). Exchange rates: 1 EUR ≈ 11.50 NOK, 1 USD ≈ 10.70 NOK (March 2026).
+                Actual Azure costs vary by usage and region.
+                Azure for Nonprofits: ~37,450 NOK/year in free credits. Nonprofit eligibility required.
+                App Service F1 free tier has performance and uptime limitations; B1 tier recommended for production use.</em>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
+        <tr>
+            <td bgcolor="#107C10" style="width: 25%; color: white; padding: 20px; text-align: center;">
+                <div style="font-size: 13px;">&#128176; MONTHLY COST</div>
+                <div style="font-size: 30px; font-weight: bold; margin: 8px 0;">0 NOK</div>
+                <div style="font-size: 11px;">Script-Only Solution</div>
+            </td>
+            <td bgcolor="#0078D4" style="width: 25%; color: white; padding: 20px; text-align: center;">
+                <div style="font-size: 13px;">&#9729; WITH PORTAL</div>
+                <div style="font-size: 30px; font-weight: bold; margin: 8px 0;">720 NOK</div>
+                <div style="font-size: 11px;">App Service B1 / month</div>
+            </td>
+            <td bgcolor="#5C2D91" style="width: 25%; color: white; padding: 20px; text-align: center;">
+                <div style="font-size: 13px;">&#9201; IMPLEMENTATION</div>
+                <div style="font-size: 30px; font-weight: bold; margin: 8px 0;">4–8 hrs</div>
+                <div style="font-size: 11px;">Active Work (~1 week)</div>
+            </td>
+            <td bgcolor="#D13438" style="width: 25%; color: white; padding: 20px; text-align: center;">
+                <div style="font-size: 13px;">&#128273; EXTRA LICENSES</div>
+                <div style="font-size: 30px; font-weight: bold; margin: 8px 0;">NONE</div>
+                <div style="font-size: 11px;">Required</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 1: SOLUTION OPTIONS ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128196; Choose Your Solution</h2>
+    <p>We offer two levels of capability. Both use the same Azure Automation backend — the difference is whether you also get a management web portal for your staff.</p>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0; border-collapse: separate; border-spacing: 12px;">
+        <tr>
+            <!-- OPTION 1: Script-Only -->
+            <td style="width: 50%; vertical-align: top; background: #F3F2F1; border: 2px solid #e6e6e6; padding: 20px;">
+                <div style="font-size: 22px; margin-bottom: 6px;">&#128196;</div>
+                <div style="font-size: 18px; font-weight: bold; color: #323130; margin-bottom: 4px;">Option 1 — Script Only</div>
+                <div style="font-size: 13px; color: #605E5C; margin-bottom: 16px;">Azure Automation, no web interface</div>
+                <p style="font-size: 13px;">Automated schedules run directly in Azure. Staff manage exceptions via PowerShell scripts or the Azure Portal. Simple, lightweight, and low-cost.</p>
+                <table cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 12px;">
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #107C10;">&#10003; Lowest possible cost</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #107C10;">&#10003; No web hosting required</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #107C10;">&#10003; Fully automated schedules</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #107C10;">&#10003; Log Analytics monitoring</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #D13438;">&#8722; Staff need Azure Portal access</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #D13438;">&#8722; No visual student dashboard</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #D13438;">&#8722; Manual suspensions via script</td>
+                    </tr>
+                </table>
+                <div style="margin-top: 20px; background: #107C10; color: white; padding: 12px; text-align: center; font-size: 16px; font-weight: bold;">0 NOK/month<br><span style="font-size: 12px; font-weight: normal;">All usage within Azure free tiers</span></div>
+            </td>
+
+            <!-- OPTION 2: Portal + Script -->
+            <td style="width: 50%; vertical-align: top; background: #EFF6FF; border: 2px solid #0078D4; padding: 20px;">
+                <div style="font-size: 22px; margin-bottom: 6px;">&#127760;</div>
+                <div style="font-size: 18px; font-weight: bold; color: #0078D4; margin-bottom: 4px;">Option 2 — Portal + Script</div>
+                <div style="font-size: 13px; color: #605E5C; margin-bottom: 16px;">Full management web portal + automation</div>
+                <p style="font-size: 13px;">Includes everything in Option 1, plus a <strong>web-based management portal</strong> on Azure App Service. Staff can manage students, schedules, and suspensions through a browser — no Azure or PowerShell knowledge required.</p>
+                <table cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 12px;">
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #107C10;">&#10003; Visual student management dashboard</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #107C10;">&#10003; Schedule &amp; policy editor in browser</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #107C10;">&#10003; One-click suspensions &amp; exceptions</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #107C10;">&#10003; Microsoft 365 login (no extra accounts)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #D13438;">&#8722; Requires App Service hosting</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #D13438;">&#8722; Slightly higher monthly cost</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 6px 0; font-size: 13px; color: #D13438;">&#8722; CI/CD pipeline recommended</td>
+                    </tr>
+                </table>
+                <div style="margin-top: 20px; background: #0078D4; color: white; padding: 12px; text-align: center; font-size: 16px; font-weight: bold;">720 NOK/month<br><span style="font-size: 12px; font-weight: normal;">Non-Profit: 0 NOK/month (App Service F1 free tier)</span></div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 2: HOSTING/DEPLOYMENT SCENARIOS ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128640; Choose Your Hosting Model</h2>
+    <p>Regardless of which solution option you choose, you also decide <strong>who owns the Azure subscription and GitHub</strong> for the code and automation pipeline.</p>
+
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#0078D4">
+            <th style="color: white; text-align: left; padding: 14px; width: 22%;">Feature</th>
+            <th style="color: white; text-align: center; padding: 14px; width: 39%;">&#128736; Scenario A — Atea-Hosted</th>
+            <th style="color: white; text-align: center; padding: 14px; width: 39%;">&#127968; Scenario B — Customer-Hosted</th>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>GitHub</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Atea GitHub Enterprise<br><span style="font-size: 12px; color: #605E5C;">~221 kr / user / mo<br>Nonprofit: ~42 kr / user / mo</span></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Customer's own GitHub<br><span style="font-size: 12px; color: #605E5C;">Free / Team / Enterprise<br>GitHub for Education (FREE)</span></td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>Azure Subscription</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Atea Azure Subscription<br><span style="font-size: 12px; color: #605E5C;">Billed to Atea, re-invoiced</span></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Customer's own Azure<br><span style="font-size: 12px; color: #605E5C;">Pay-as-you-go or Nonprofit credits</span></td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>Maintenance</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Atea manages updates and operations</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Customer IT manages (with Atea support)</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>Data Control</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center;">Atea tenant</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">&#10003; Full customer control</td>
+        </tr>
+        <tr bgcolor="#E8F5E9">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;"><strong>Monthly Cost</strong></td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold;">Azure usage + GitHub seats + Atea fee</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold; color: #107C10;">Azure usage only (customer pays direct)</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px;"><strong>Setup Cost</strong></td>
+            <td style="padding: 12px; text-align: center;">Included in Atea project rate</td>
+            <td style="padding: 12px; text-align: center;">One-time Atea implementation fee</td>
+        </tr>
+    </table>
+
+    <!-- RECOMMENDATION BOX -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0;">
+        <tr>
+            <td bgcolor="#FFF4CE" style="padding: 20px; border-left: 4px solid #FFB900;">
+                <strong style="color: #323130;">&#128161; Our recommendation for schools:</strong>
+                <p style="margin: 8px 0 0 0; font-size: 14px; color: #323130;">
+                    For most schools we recommend <strong>Option 2 (Portal + Script)</strong> hosted under <strong>Scenario B (Customer-Hosted)</strong>. 
+                    This gives your IT staff a simple browser-based interface to manage students, 
+                    all data stays in your own Azure tenant, and schools registered as nonprofits 
+                    can cover nearly all Azure costs with the free <strong>~37,450 NOK/year</strong> Azure for Nonprofits credits.
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 3: DETAILED COST BREAKDOWN ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128200; Monthly Cost Breakdown (NOK)</h2>
+
+    <!-- Script-Only Cost Table -->
+    <h3 style="color: #323130; margin-top: 25px; margin-bottom: 10px;">&#128196; Option 1 — Script Only</h3>
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 25px; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#323130">
+            <th style="color: white; text-align: left; padding: 12px; width: 40%;">Azure Resource</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 30%;">Regular</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 30%;">Non-Profit</th>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">&#9729; Azure Automation</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">0 NOK</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">&#128202; Log Analytics</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">0 NOK</td>
+        </tr>
+        <tr bgcolor="#E8F5E9">
+            <td style="padding: 12px; font-weight: bold;">&#128176; Total</td>
+            <td style="padding: 12px; text-align: center; font-weight: bold; color: #107C10;">0 NOK/month</td>
+            <td style="padding: 12px; text-align: center; font-weight: bold; color: #107C10;">0 NOK/month</td>
+        </tr>
+    </table>
+
+    <!-- Portal + Script Cost Table -->
+    <h3 style="color: #0078D4; margin-top: 25px; margin-bottom: 10px;">&#127760; Option 2 — Portal + Script</h3>
+    <table cellpadding="12" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-bottom: 25px; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#0078D4">
+            <th style="color: white; text-align: left; padding: 12px; width: 40%;">Azure Resource</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 30%;">Regular</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 30%;">Non-Profit</th>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">&#9729; Azure Automation</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">0 NOK</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">&#128202; Log Analytics</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">0 NOK</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">0 NOK</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6;">&#127760; App Service B1 (Portal)</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; font-weight: bold;">720 NOK/month</td>
+            <td style="padding: 12px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">0 NOK (F1 free tier)</td>
+        </tr>
+        <tr bgcolor="#EFF6FF">
+            <td style="padding: 12px; font-weight: bold;">&#128176; Total</td>
+            <td style="padding: 12px; text-align: center; font-weight: bold;">720 NOK/month</td>
+            <td style="padding: 12px; text-align: center; font-weight: bold; color: #107C10;">0 NOK/month *</td>
+        </tr>
+    </table>
+
+    <p style="font-size: 12px; color: #605E5C;">* App Service F1 free tier — no nonprofit status required. Azure for Nonprofits (~37,450 NOK/year in credits) can additionally cover costs if your organisation qualifies. GitHub Free plan: sufficient for this solution.</p>
+
+    <!-- GitHub Pricing Note -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#EFF6FF" style="padding: 16px; border-left: 4px solid #0078D4;">
+                <strong style="color: #0078D4;">&#128101; GitHub Pricing (for Scenario A — Atea-Hosted):</strong>
+                <ul style="margin: 8px 0 0 0; font-size: 13px;">
+                    <li>GitHub Enterprise via Atea: <strong>~221 kr / user / month</strong></li>
+                    <li>GitHub Enterprise — Nonprofit: <strong>~42 kr / user / month</strong></li>
+                    <li>GitHub Team — Nonprofit or Educational: <strong>FREE</strong></li>
+                    <li>GitHub Actions CI/CD (OIDC federation with Azure): <strong>FREE</strong> — no secrets, no passwords stored</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 4: WHAT'S INCLUDED ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#10003; What's Included in Both Options</h2>
+
+    <table cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0; border: 1px solid #e6e6e6;">
+        <tr bgcolor="#5C2D91">
+            <th style="color: white; text-align: left; padding: 12px; width: 40%;">Feature</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 30%;">&#128196; Script Only</th>
+            <th style="color: white; text-align: center; padding: 12px; width: 30%;">&#127760; Portal + Script</th>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6;">Automated login time restrictions</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">&#10003;</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6;">Configurable schedule per group</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">&#10003;</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6;">Student account enable/disable via Graph API</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">&#10003;</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6;">Log Analytics monitoring &amp; alerts</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">&#10003;</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6;">No extra Microsoft 365 licenses needed</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">&#10003;</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6;">Web-based staff management portal</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #D13438;">&#8722;</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10; font-weight: bold;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6;">Visual student list &amp; status dashboard</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #D13438;">&#8722;</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6;">One-click suspensions &amp; exceptions</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #D13438;">&#8722;</td>
+            <td style="padding: 10px; border-bottom: 1px solid #e6e6e6; text-align: center; color: #107C10;">&#10003;</td>
+        </tr>
+        <tr bgcolor="#f8f9fa">
+            <td style="padding: 10px;">M365 SSO login for staff (no extra accounts)</td>
+            <td style="padding: 10px; text-align: center; color: #D13438;">&#8722;</td>
+            <td style="padding: 10px; text-align: center; color: #107C10;">&#10003;</td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 5: NEXT STEPS ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128204; Next Steps</h2>
+
+    <table cellpadding="15" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <tr bgcolor="#F3F2F1">
+            <td style="padding: 15px; border-bottom: 1px solid #e6e6e6; width: 5%; font-size: 22px; text-align: center;">1</td>
+            <td style="padding: 15px; border-bottom: 1px solid #e6e6e6;">
+                <strong>Choose your option and scenario</strong><br>
+                <span style="font-size: 13px; color: #605E5C;">Let us know if you'd like Script-Only or Portal+Script, and whether you want Atea to host or deploy to your own Azure.</span>
+            </td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 15px; border-bottom: 1px solid #e6e6e6; font-size: 22px; text-align: center;">2</td>
+            <td style="padding: 15px; border-bottom: 1px solid #e6e6e6;">
+                <strong>Verify nonprofit eligibility</strong><br>
+                <span style="font-size: 13px; color: #605E5C;">If your school qualifies for Microsoft for Nonprofits, you may be eligible for ~37,450 NOK/year in free Azure credits and discounted GitHub. We can assist with the application.</span>
+            </td>
+        </tr>
+        <tr bgcolor="#F3F2F1">
+            <td style="padding: 15px; border-bottom: 1px solid #e6e6e6; font-size: 22px; text-align: center;">3</td>
+            <td style="padding: 15px; border-bottom: 1px solid #e6e6e6;">
+                <strong>We prepare a project proposal</strong><br>
+                <span style="font-size: 13px; color: #605E5C;">Atea prepares a detailed proposal including implementation scope, timeline, and fixed/hourly pricing based on your choice.</span>
+            </td>
+        </tr>
+        <tr bgcolor="#ffffff">
+            <td style="padding: 15px; font-size: 22px; text-align: center;">4</td>
+            <td style="padding: 15px;">
+                <strong>Implementation and handover</strong><br>
+                <span style="font-size: 13px; color: #605E5C;">Typically 4–8 hours of active work spread over ~1 week. Full documentation and knowledge transfer to your IT team is included.</span>
+            </td>
+        </tr>
+    </table>
+
+    <!-- CTA -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 30px 0;">
+        <tr>
+            <td bgcolor="#0078D4" style="padding: 25px; text-align: center; color: white;">
+                <div style="font-size: 16px; margin-bottom: 10px;">Ready to move forward or have questions?</div>
+                <div style="font-size: 20px; font-weight: bold;">Reply to this email or book a 30-minute call with us.</div>
+                <div style="font-size: 14px; margin-top: 10px; opacity: 0.9;">We are happy to walk you through a live demo of the portal.</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- FOOTER -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 30px; border-top: 1px solid #e6e6e6;">
+        <tr>
+            <td style="padding: 20px 0; color: #605E5C; font-size: 12px;">
+                <strong>Atea AS</strong> — Microsoft Solutions Partner<br>
+                Student Access Management for Microsoft 365<br>
+                <em>Prices in NOK and are estimates. Exchange rates: 1 EUR ≈ 11.50 NOK, 1 USD ≈ 10.70 NOK (2026).</em><br>
+                <em>Azure for Nonprofits: ~37,450 NOK/year in free credits. Nonprofit eligibility required.</em>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

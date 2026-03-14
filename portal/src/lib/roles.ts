@@ -2,7 +2,7 @@
 // Controls who can access the portal and what they can do.
 // External tenants (like atea.no) can be granted read-only or admin access.
 
-export type PortalRole = "admin" | "viewer";
+export type PortalRole = "admin" | "viewer" | "deny";
 
 export interface RoleMapping {
   /** User's email (UPN) — exact match, case-insensitive */
@@ -34,12 +34,42 @@ function getRoleMappings(): RoleMapping[] {
 
   // Default configuration — customize as needed
   return [
-    // School tenant users are admin by default via TENANT_DOMAIN check.
-    // These explicit entries ensure access even if TENANT_DOMAIN isn't set:
+    // ── ateara.onmicrosoft.com — known admins ──────────────────────────────
     { email: "lene.kadaa@ateara.onmicrosoft.com", role: "admin" },
     { email: "veronica.hogemark@ateara.onmicrosoft.com", role: "admin" },
     { email: "uy.le.thai.phan@ateara.onmicrosoft.com", role: "admin" },
-    // All atea.no users get read-only access by default
+    { email: "siril.aasheim@ateara.onmicrosoft.com", role: "admin" },
+
+    // ── ateara.onmicrosoft.com — demo student accounts (no portal access) ──
+    // Class 8A
+    { email: "emma.hansen@ateara.onmicrosoft.com", role: "deny" },
+    { email: "noah.johansen@ateara.onmicrosoft.com", role: "deny" },
+    { email: "olivia.olsen@ateara.onmicrosoft.com", role: "deny" },
+    { email: "william.larsen@ateara.onmicrosoft.com", role: "deny" },
+    { email: "sophia.andersen@ateara.onmicrosoft.com", role: "deny" },
+    // Class 9B
+    { email: "liam.pedersen@ateara.onmicrosoft.com", role: "deny" },
+    { email: "mia.nilsen@ateara.onmicrosoft.com", role: "deny" },
+    { email: "lucas.kristiansen@ateara.onmicrosoft.com", role: "deny" },
+    { email: "ella.jensen@ateara.onmicrosoft.com", role: "deny" },
+    { email: "oscar.karlsen@ateara.onmicrosoft.com", role: "deny" },
+    // Class 10A
+    { email: "jakob.berg@ateara.onmicrosoft.com", role: "deny" },
+    { email: "nora.haugen@ateara.onmicrosoft.com", role: "deny" },
+    { email: "filip.hagen@ateara.onmicrosoft.com", role: "deny" },
+    { email: "ingrid.eriksen@ateara.onmicrosoft.com", role: "deny" },
+    { email: "erik.bakken@ateara.onmicrosoft.com", role: "deny" },
+    // Class 10B
+    { email: "sara.lie@ateara.onmicrosoft.com", role: "deny" },
+    { email: "magnus.dahl@ateara.onmicrosoft.com", role: "deny" },
+    { email: "amalie.lund@ateara.onmicrosoft.com", role: "deny" },
+    { email: "henrik.moen@ateara.onmicrosoft.com", role: "deny" },
+    { email: "thea.holm@ateara.onmicrosoft.com", role: "deny" },
+
+    // ── ateara.onmicrosoft.com — all other users (demo teachers, IT staff) ─
+    { domain: "ateara.onmicrosoft.com", role: "viewer" },
+
+    // ── atea.no — all users get read-only access by default ───────────────
     { domain: "atea.no", role: "viewer" },
     // Specific atea.no users promoted to admin
     { email: "veronica.hogemark@atea.no", role: "admin" },
@@ -48,6 +78,7 @@ function getRoleMappings(): RoleMapping[] {
     { email: "paul.johnny.klock@atea.no", role: "admin" },
     { email: "uy.le.thai.phan@atea.no", role: "admin" },
     { email: "lene.kadaa@atea.no", role: "admin" },
+    { email: "siril.aasheim@atea.no", role: "admin" },
   ];
 }
 
@@ -72,22 +103,25 @@ export function getUserRole(email: string | null | undefined): PortalRole | null
   const domain = normalizedEmail.split("@")[1];
   const mappings = getRoleMappings();
 
-  // The school's own tenant always gets admin
+  // The school's own tenant — check email/domain mappings first, fall back to admin
   const primaryDomain = process.env.TENANT_DOMAIN?.toLowerCase();
   if (primaryDomain && domain === primaryDomain) {
     // But check if there's an explicit override for this specific email
     const emailMatch = mappings.find((m) => m.email?.toLowerCase() === normalizedEmail);
-    if (emailMatch) return emailMatch.role;
+    if (emailMatch) return emailMatch.role === "deny" ? null : emailMatch.role;
+    // Check domain-level mapping (allows viewer/deny for primary domain subsets)
+    const domainMatch = mappings.find((m) => m.domain?.toLowerCase() === domain);
+    if (domainMatch) return domainMatch.role === "deny" ? null : domainMatch.role;
     return "admin";
   }
 
   // Check explicit email match first (highest priority)
   const emailMatch = mappings.find((m) => m.email?.toLowerCase() === normalizedEmail);
-  if (emailMatch) return emailMatch.role;
+  if (emailMatch) return emailMatch.role === "deny" ? null : emailMatch.role;
 
   // Check domain match
   const domainMatch = mappings.find((m) => m.domain?.toLowerCase() === domain);
-  if (domainMatch) return domainMatch.role;
+  if (domainMatch) return domainMatch.role === "deny" ? null : domainMatch.role;
 
   // No match — deny access unless they're from an allowed tenant
   // (handled by auth.ts callback)

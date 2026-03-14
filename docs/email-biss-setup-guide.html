@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<!--
+    EMAIL TEMPLATE - Inline styles are INTENTIONAL and REQUIRED
+    Email clients (Outlook, Gmail, etc.) do not support external CSS files.
+    htmlhint no-inline-styles:false
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup &amp; Implementation Guide — Student Login Time Management — BISS Stavanger</title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.7; color: #323130; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #ffffff;">
+
+    <!-- ===== HEADER ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 10px;">
+        <tr>
+            <td bgcolor="#107C10" style="padding: 30px 30px 20px 30px;">
+                <div style="color: white; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">Atea AS — Microsoft Solutions Partner</div>
+                <div style="color: white; font-size: 26px; font-weight: bold; line-height: 1.3;">&#128736;&#65039; Setup &amp; Implementation Guide<br>Student Login Time Management — BISS Stavanger</div>
+                <div style="color: #B3E5B3; font-size: 14px; margin-top: 10px;">Step-by-step setup of the Azure Automation solution that restricts student login times in Microsoft 365 — including prerequisites, roles needed, and go-live checklist.</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Summary Boxes -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 20px 0; border-collapse: separate; border-spacing: 8px;">
+        <tr>
+            <td bgcolor="#107C10" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Setup Time</div>
+                <div style="font-size: 26px; font-weight: bold; margin: 6px 0;">2–4 hrs</div>
+                <div style="font-size: 11px;">Active work to production</div>
+            </td>
+            <td bgcolor="#0078D4" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Atea Consultancy</div>
+                <div style="font-size: 26px; font-weight: bold; margin: 6px 0;">~15 hrs</div>
+                <div style="font-size: 11px;">Total including testing &amp; go-live support</div>
+            </td>
+            <td bgcolor="#5C2D91" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Required Access</div>
+                <div style="font-size: 26px; font-weight: bold; margin: 6px 0;">2 roles</div>
+                <div style="font-size: 11px;">Global Admin + Azure Owner/Contributor</div>
+            </td>
+            <td bgcolor="#CA5010" style="width: 25%; color: white; padding: 18px; text-align: center; vertical-align: top;">
+                <div style="font-size: 11px; letter-spacing: 1px; text-transform: uppercase;">Extra Software</div>
+                <div style="font-size: 26px; font-weight: bold; margin: 6px 0;">NONE</div>
+                <div style="font-size: 11px;">Uses existing M365 &amp; Azure only</div>
+            </td>
+        </tr>
+    </table>
+
+    <p>Hi [Contact Name],</p>
+
+    <p>This guide covers everything needed to implement the <strong>Student Login Time Management solution</strong> at BISS. The solution automatically enables and disables student Microsoft 365 accounts on a daily schedule using Azure Automation and Microsoft Graph API — no additional software, no server, no per-student licenses needed.</p>
+
+    <!-- ===== SECTION 1: HOW IT WORKS ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#9881;&#65039; How the Solution Works</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#EFF6FC" style="padding: 18px 20px; border-left: 4px solid #0078D4; font-size: 13px;">
+                <p style="margin: 0 0 10px 0;">Every school day, two automated jobs run on a schedule:</p>
+                <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td bgcolor="#107C10" style="color: white; padding: 10px 15px; font-weight: bold; font-size: 13px; width: 40%;">&#9989; 07:55 — Enable Access</td>
+                        <td style="padding: 10px 15px; font-size: 13px; color: #323130;">Azure Automation runs <code>Enable-StudentAccess.ps1</code> → Sets <code>accountEnabled = true</code> for all students in the student security group via Microsoft Graph API.</td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#D13438" style="color: white; padding: 10px 15px; font-weight: bold; font-size: 13px;">&#128683; 16:05 — Disable Access</td>
+                        <td style="padding: 10px 15px; font-size: 13px; color: #323130;">Azure Automation runs <code>Disable-StudentAccess.ps1</code> → Sets <code>accountEnabled = false</code> + revokes all active sessions (forces immediate logout).</td>
+                    </tr>
+                </table>
+                <p style="margin: 10px 0 0 0;">Weekend and holiday management is configurable. Only students in the designated Entra ID security group are affected — teachers and staff are unaffected.</p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 2: PREREQUISITES ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#9989; Prerequisites — What You Need Before We Start</h2>
+
+    <h3 style="color: #323130; margin-top: 20px;">1. Microsoft 365 / Entra ID (BISS must provide)</h3>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+        <thead>
+            <tr bgcolor="#F3F2F1">
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #107C10; font-size: 13px;">Requirement</th>
+                <th style="text-align: center; padding: 10px 12px; border-bottom: 2px solid #107C10; font-size: 13px;">Status</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #107C10; font-size: 13px;">Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Microsoft 365 tenant (any education plan)</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center; color: #107C10;">&#9989; Already have</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Works with A1, A3, A5, or commercial M365 plans.</td>
+            </tr>
+            <tr bgcolor="#FAFAFA">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Entra ID (Azure AD) — any tier</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center; color: #107C10;">&#9989; Included with M365</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;"><strong>No Entra ID Premium required.</strong> Free tier is sufficient.</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">&#128274; Global Administrator account (temporary access for setup)</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center; color: #CA5010;">&#9888; Must grant Atea</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Needed to create App Registration and grant Graph API permissions. Can be a temporary account or BISS IT performs this step directly.</td>
+            </tr>
+            <tr bgcolor="#FAFAFA">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Student Security Group in Entra ID</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center; color: #CA5010;">&#9888; Must be created</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">One or more security groups containing the student accounts to manage. Teachers/staff must NOT be in this group.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 style="color: #323130; margin-top: 20px;">2. Azure Subscription (Pay-As-You-Go)</h3>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+        <thead>
+            <tr bgcolor="#F3F2F1">
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #107C10; font-size: 13px;">Requirement</th>
+                <th style="text-align: center; padding: 10px 12px; border-bottom: 2px solid #107C10; font-size: 13px;">Status</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #107C10; font-size: 13px;">Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Azure subscription (Pay-As-You-Go)</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center; color: #CA5010;">&#9888; Must be created</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Free to create. Only pay for resources used (~25–55 NOK/month script-only, ~750–780 NOK/month with portal). M365 Education licenses (A1/A3/A5) already in use at BISS — no additional licensing cost for this solution. Can be created at <a href="https://azure.microsoft.com/free" style="color: #0078D4;">azure.microsoft.com/free</a> — comes with $200 free credit for 30 days.</td>
+            </tr>
+            <tr bgcolor="#FAFAFA">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">&#128274; Azure Owner or Contributor role on subscription</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center; color: #CA5010;">&#9888; Must grant Atea</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Required to deploy Azure Automation Account and App Service. Can be scoped to a specific Resource Group.</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Region: Norway East</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center; color: #107C10;">&#9989; Recommended</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Data residency in Norway, typically lowest latency for Norwegian Entra ID tenants.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ===== SECTION 3: SETUP PHASES ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128203; Setup Phases — Step by Step</h2>
+
+    <!-- Phase 1 -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#EFF6FC" style="padding: 5px 15px; border-left: 4px solid #0078D4; font-size: 13px;">
+                <h3 style="color: #0078D4; margin: 10px 0 5px 0;">&#128196; Phase 1 — Prepare Entra ID &amp; App Registration <span style="font-weight: normal; font-size: 12px; color: #605E5C;">(~45 min | Performed by: BISS IT or Atea with temporary access)</span></h3>
+                <ol style="margin: 5px 0; padding-left: 20px;">
+                    <li><strong>Create a student security group</strong> in Microsoft Entra admin center:
+                        <ul style="font-size: 12px; margin: 4px 0; color: #605E5C;">
+                            <li>Go to <a href="https://entra.microsoft.com" style="color: #0078D4;">entra.microsoft.com</a> → Groups → New Group</li>
+                            <li>Type: Security, Name: e.g. <code>STM-Students-BISS</code></li>
+                            <li>Add each student account as a member (or sync from School Data Sync)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Create App Registration</strong> (service account for the automation):
+                        <ul style="font-size: 12px; margin: 4px 0; color: #605E5C;">
+                            <li>Entra admin center → App Registrations → New Registration</li>
+                            <li>Name: <code>STM-StudentTimeManagement</code>, Single tenant</li>
+                            <li>Create a Client Secret (note the value — only shown once)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Grant API permissions</strong> to the App Registration:
+                        <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 8px 0;">
+                            <tr bgcolor="#F3F2F1">
+                                <th style="padding: 6px 10px; text-align: left; font-size: 12px; border: 1px solid #E1DFDD;">Permission</th>
+                                <th style="padding: 6px 10px; text-align: left; font-size: 12px; border: 1px solid #E1DFDD;">Type</th>
+                                <th style="padding: 6px 10px; text-align: left; font-size: 12px; border: 1px solid #E1DFDD;">Purpose</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; font-family: monospace;">User.ReadWrite.All</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; color: #D13438;">Application</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; color: #605E5C;">Enable/disable student accounts</td>
+                            </tr>
+                            <tr bgcolor="#F3F2F1">
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; font-family: monospace;">Group.Read.All</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; color: #D13438;">Application</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; color: #605E5C;">Read group membership to find students</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; font-family: monospace;">User.RevokeSessions.All</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; color: #D13438;">Application</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; color: #605E5C;">Force immediate logout when disabling accounts</td>
+                            </tr>
+                        </table>
+                        <p style="font-size: 12px; color: #A4262C; margin: 4px 0;">&#9888; Requires <strong>Global Administrator</strong> to click "Grant admin consent" after adding permissions.</p>
+                    </li>
+                    <li><strong>Note down</strong> the following values (needed in Phase 2):
+                        <ul style="font-size: 12px; margin: 4px 0; color: #605E5C;">
+                            <li>Tenant ID (from Entra → Overview)</li>
+                            <li>Application (Client) ID (from the App Registration)</li>
+                            <li>Client Secret value</li>
+                            <li>Student Group Object ID</li>
+                        </ul>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Phase 2 -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#E6F2E3" style="padding: 5px 15px; border-left: 4px solid #107C10; font-size: 13px;">
+                <h3 style="color: #107C10; margin: 10px 0 5px 0;">&#9729;&#65039; Phase 2 — Deploy Azure Automation <span style="font-weight: normal; font-size: 12px; color: #605E5C;">(~60 min | Performed by: Atea)</span></h3>
+                <ol style="margin: 5px 0; padding-left: 20px;">
+                    <li><strong>Create Resource Group</strong> in Azure Portal → Resource Groups → Create
+                        <ul style="font-size: 12px; margin: 4px 0; color: #605E5C;"><li>Name: <code>rg-studenttime-biss-prod</code>, Region: Norway East</li></ul>
+                    </li>
+                    <li><strong>Create Azure Automation Account</strong>
+                        <ul style="font-size: 12px; margin: 4px 0; color: #605E5C;">
+                            <li>Azure Portal → Create Resource → Automation → Automation Account</li>
+                            <li>Name: <code>aa-studenttime-biss</code>, Resource Group: above, Region: Norway East</li>
+                            <li>System-assigned managed identity: <strong>On</strong></li>
+                        </ul>
+                    </li>
+                    <li><strong>Add Automation Variables</strong> (Credentials → New Variable — mark as encrypted):
+                        <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 8px 0;">
+                            <tr bgcolor="#F3F2F1">
+                                <th style="padding: 6px 10px; text-align: left; font-size: 12px; border: 1px solid #E1DFDD;">Variable Name</th>
+                                <th style="padding: 6px 10px; text-align: left; font-size: 12px; border: 1px solid #E1DFDD;">Type</th>
+                                <th style="padding: 6px 10px; text-align: left; font-size: 12px; border: 1px solid #E1DFDD;">Value</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; font-family: monospace;">TenantId</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD;">String</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; color: #605E5C;">BISS Entra Tenant ID (GUID)</td>
+                            </tr>
+                            <tr bgcolor="#F3F2F1">
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; font-family: monospace;">ClientId</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD;">String</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; color: #605E5C;">App Registration Client ID</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; font-family: monospace;">ClientSecret</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD;">String <strong style="color: #D13438;">(Encrypted)</strong></td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; color: #605E5C;">Client Secret value from Phase 1</td>
+                            </tr>
+                            <tr bgcolor="#F3F2F1">
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; font-family: monospace;">StudentGroupId</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD;">String</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; color: #605E5C;">Object ID of the student security group</td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li><strong>Import PowerShell runbooks</strong> (provided by Atea):
+                        <ul style="font-size: 12px; margin: 4px 0; color: #605E5C;">
+                            <li><code>Enable-StudentAccess.ps1</code> — morning script</li>
+                            <li><code>Disable-StudentAccess.ps1</code> — afternoon script</li>
+                        </ul>
+                    </li>
+                    <li><strong>Install required modules</strong> in Automation Account → Modules → Browse Gallery:
+                        <ul style="font-size: 12px; margin: 4px 0; color: #605E5C;">
+                            <li><code>Microsoft.Graph.Authentication</code> (latest)</li>
+                            <li><code>Microsoft.Graph.Users</code> (latest)</li>
+                            <li><code>Microsoft.Graph.Groups</code> (latest)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Create Schedules</strong> (Automation Account → Schedules):
+                        <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 8px 0;">
+                            <tr bgcolor="#F3F2F1">
+                                <th style="padding: 6px 10px; text-align: left; font-size: 12px; border: 1px solid #E1DFDD;">Schedule Name</th>
+                                <th style="padding: 6px 10px; text-align: left; font-size: 12px; border: 1px solid #E1DFDD;">Recurrence</th>
+                                <th style="padding: 6px 10px; text-align: left; font-size: 12px; border: 1px solid #E1DFDD;">Time (Oslo)</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; font-family: monospace;">Enable-Students-Daily</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD;">Mon–Fri, Daily</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; font-weight: bold; color: #107C10;">07:55</td>
+                            </tr>
+                            <tr bgcolor="#F3F2F1">
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; font-family: monospace;">Disable-Students-Daily</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD;">Mon–Fri, Daily</td>
+                                <td style="padding: 6px 10px; font-size: 12px; border: 1px solid #E1DFDD; font-weight: bold; color: #D13438;">16:05</td>
+                            </tr>
+                        </table>
+                        <p style="font-size: 12px; color: #605E5C; margin: 4px 0;">Note: Azure Automation uses UTC internally. For Norway (UTC+1 in winter, UTC+2 in summer), set schedules accordingly. Our scripts handle this automatically.</p>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Phase 3 (Optional Portal) -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#F5F0FA" style="padding: 5px 15px; border-left: 4px solid #5C2D91; font-size: 13px;">
+                <h3 style="color: #5C2D91; margin: 10px 0 5px 0;">&#127760; Phase 3 (Optional) — Deploy Management Portal <span style="font-weight: normal; font-size: 12px; color: #605E5C;">(~45 min | Adds ~720 NOK/month — App Service B1, Norway East)</span></h3>
+                <p style="font-size: 13px; margin: 5px 0; color: #605E5C;">If BISS wants a visual web interface for IT staff and teachers to view status, manage students and policies — skip this phase for script-only deployment.</p>
+                <ol style="margin: 5px 0; padding-left: 20px;">
+                    <li><strong>Create App Service Plan B1</strong> in the same Resource Group (Norway East)</li>
+                    <li><strong>Create Web App</strong> (Node.js 20, resource group, B1 plan)</li>
+                    <li><strong>Configure Application Settings</strong> (environment variables):
+                        <ul style="font-size: 12px; margin: 4px 0; color: #605E5C;">
+                            <li><code>AZURE_TENANT_ID</code>, <code>AZURE_CLIENT_ID</code>, <code>AZURE_CLIENT_SECRET</code></li>
+                            <li><code>STUDENT_GROUP_ID</code> — Object ID of student group</li>
+                            <li><code>GROUP_NAME_PREFIX</code> — e.g. <code>STM-</code> (filters which groups are shown)</li>
+                            <li><code>NEXTAUTH_SECRET</code> — Random 32-character string (for session security)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Deploy portal code</strong> via GitHub Actions (CI/CD pipeline provided by Atea)</li>
+                    <li><strong>Configure RBAC</strong> — assign Admin or Viewer roles to BISS IT/management users</li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Phase 4: Testing -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#FFF4CE" style="padding: 5px 15px; border-left: 4px solid #F7B500; font-size: 13px;">
+                <h3 style="color: #CA5010; margin: 10px 0 5px 0;">&#129514; Phase 4 — Testing &amp; Validation <span style="font-weight: normal; font-size: 12px; color: #605E5C;">(2–5 days | Performed jointly by Atea + BISS IT)</span></h3>
+                <ol style="margin: 5px 0; padding-left: 20px;">
+                    <li><strong>Create a test group</strong> with 2–3 test accounts (NOT real students yet)</li>
+                    <li><strong>Run runbooks manually</strong> from Azure Portal → Automation Account → Runbooks → Start</li>
+                    <li><strong>Verify accounts are enabled/disabled</strong> in Entra admin center</li>
+                    <li><strong>Test sign-in behavior</strong>: log in as test student, trigger disable runbook, confirm forced logout</li>
+                    <li><strong>Verify schedule fires automatically</strong> — check Automation Account → Jobs next morning and afternoon</li>
+                    <li><strong>Monitor for 3–5 school days</strong> before moving to production group</li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Phase 5: Go Live -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#E6F2E3" style="padding: 5px 15px; border-left: 4px solid #107C10; font-size: 13px;">
+                <h3 style="color: #107C10; margin: 10px 0 5px 0;">&#128640; Phase 5 — Go Live <span style="font-weight: normal; font-size: 12px; color: #605E5C;">(~30 min | Performed by: BISS IT)</span></h3>
+                <ol style="margin: 5px 0; padding-left: 20px;">
+                    <li>Update <code>StudentGroupId</code> variable in Azure Automation to point to the real student production group</li>
+                    <li>Inform relevant staff (teachers, reception) of the new login time rules</li>
+                    <li>Enable scheduled runbooks (if paused during testing)</li>
+                    <li>Confirm first automatic enable/disable run in the Azure Portal job logs</li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== SECTION 4: WHAT BISS NEEDS TO PROVIDE ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128221; What BISS Needs to Provide</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <thead>
+            <tr bgcolor="#F3F2F1">
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px;">Item</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px;">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">&#128274; Global Admin access</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Temporary access for Atea to create App Registration, OR BISS IT can do this step with step-by-step guidance from us.</td>
+            </tr>
+            <tr bgcolor="#FAFAFA">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">&#128274; Azure Contributor access</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">On the Azure subscription or Resource Group for Atea to deploy the Automation Account and optional App Service.</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">&#128100; Student account list</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Either a CSV/Excel file of student usernames, or BISS IT creates the Entra ID security group directly.</td>
+            </tr>
+            <tr bgcolor="#FAFAFA">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">&#8987; Agreed login time windows</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Enable time (e.g. 07:55), Disable time (e.g. 16:05), days of week, and whether weekends should remain disabled. Can be changed post-deployment.</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">&#128176; Azure subscription / payment method</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Pay-As-You-Go subscription with a credit card or invoice billing. BISS owns and controls all Azure resources.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ===== IMPORTANT NOTES ===== -->
+    <h2 style="color: #A4262C; border-left: 4px solid #D13438; padding-left: 15px; margin-top: 40px;">&#9888;&#65039; Important Notes &amp; Limitations</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#FDE7E9" style="padding: 18px 20px; border-left: 4px solid #D13438; font-size: 13px;">
+                <ul style="margin: 0; padding-left: 20px;">
+                    <li><strong>Affects login only — not device usage:</strong> This solution disables the Microsoft 365 cloud account. Students already logged into a local Windows session (not requiring cloud auth) are not immediately affected unless session revocation is triggered.</li>
+                    <li><strong>Teachers/staff are NOT affected</strong> — only accounts in the designated student group are managed. Admins and staff accounts are never touched.</li>
+                    <li><strong>Schedules run on school days only by default</strong> (Mon–Fri). Holiday management requires either manual pause of schedules or a custom holiday calendar extension (available as an add-on).</li>
+                    <li><strong>Client secret must be rotated annually</strong> — After 1 year, the App Registration secret expires. We recommend a reminder in your IT calendar 1 month before expiry.</li>
+                    <li><strong>No Intune, no Conditional Access, no VPN required</strong> — this solution is entirely cloud-based and requires none of those.</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== TIMELINE SUMMARY ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128203; Delivery Timeline</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <tr bgcolor="#0078D4">
+            <td style="padding: 10px 12px; color: white; font-weight: bold; font-size: 13px; width: 30%;">Phase</td>
+            <td style="padding: 10px 12px; color: white; font-weight: bold; font-size: 13px; width: 20%;">Duration</td>
+            <td style="padding: 10px 12px; color: white; font-weight: bold; font-size: 13px;">Who Does What</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">1. Prerequisites &amp; Entra ID</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">1–3 days</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">BISS IT creates student group + Azure subscription. Atea guides or performs App Registration.</td>
+        </tr>
+        <tr bgcolor="#FAFAFA">
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">2. Azure Automation Deployment</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">~2 hours</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Atea deploys and configures via provided scripts.</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">3. Portal (optional)</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">~45 min</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Atea deploys web portal to Azure App Service.</td>
+        </tr>
+        <tr bgcolor="#FAFAFA">
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">4. Testing &amp; Validation</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">3–5 school days</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Joint: Atea monitors, BISS IT verifies behavior with test accounts.</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; font-weight: bold;">5. Go Live</td>
+            <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #605E5C;">~30 min</td>
+            <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #605E5C;">BISS IT switches to production group, informs staff.</td>
+        </tr>
+        <tr bgcolor="#EFF6FC">
+            <td style="padding: 12px; font-weight: bold; font-size: 13px;">Total calendar time</td>
+            <td colspan="2" style="padding: 12px; font-size: 13px; font-weight: bold; color: #0078D4;">~1–2 weeks from start to full production</td>
+        </tr>
+    </table>
+
+    <!-- Next Steps -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128640; Suggested Next Steps</h2>
+
+    <ol style="font-size: 13px; line-height: 2;">
+        <li>Confirm which option BISS prefers: <strong>Script-Only</strong> (~25–55 NOK/month Azure only) or <strong>With Portal</strong> (~750–780 NOK/month Azure only) — M365 Education licenses already covered by existing agreement</li>
+        <li>BISS IT creates the Azure Pay-As-You-Go subscription (we can assist): <a href="https://azure.microsoft.com/free" style="color: #0078D4;">azure.microsoft.com/free</a></li>
+        <li>BISS IT creates the student security group in Entra admin center with test accounts (2–3 students)</li>
+        <li>Atea and BISS IT schedule a 2-hour kickoff session to begin Phase 2</li>
+        <li>Live — target within 2 weeks of kickoff</li>
+    </ol>
+
+    <p style="margin-top: 25px;">Please feel free to reply with any questions, or contact me directly to schedule the kickoff.</p>
+
+    <p>Best regards,</p>
+    <p><strong>[Your Name]</strong><br>
+    Atea AS — Microsoft Solutions Partner<br>
+    <a href="mailto:[your.email]@atea.no" style="color: #0078D4;">[your.email]@atea.no</a><br>
+    Tel: [+47 xxx xx xxx]</p>
+
+    <!-- ===== FOOTER ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 40px;">
+        <tr>
+            <td bgcolor="#F3F2F1" style="padding: 15px 20px; font-size: 11px; color: #605E5C; border-top: 2px solid #107C10;">
+                <strong>Useful links:</strong><br>
+                Microsoft Entra admin center: <a href="https://entra.microsoft.com" style="color: #0078D4;">entra.microsoft.com</a> |
+                Azure Portal: <a href="https://portal.azure.com" style="color: #0078D4;">portal.azure.com</a> |
+                Azure Automation docs: <a href="https://learn.microsoft.com/en-us/azure/automation/" style="color: #0078D4;">learn.microsoft.com/azure/automation</a> |
+                Microsoft Graph API: <a href="https://learn.microsoft.com/en-us/graph/api/user-update" style="color: #0078D4;">learn.microsoft.com/graph/api/user-update</a>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

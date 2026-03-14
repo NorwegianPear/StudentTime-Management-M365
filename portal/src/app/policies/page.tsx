@@ -54,6 +54,7 @@ export default function PoliciesPage() {
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [groupSearch, setGroupSearch] = useState("");
+  const [activeTab, setActiveTab] = useState<"policies" | "schedule">("policies");
   const menuRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
 
@@ -259,6 +260,15 @@ export default function PoliciesPage() {
   const managedGroupIds = new Set(groups.map((g) => g.id));
   const managedGroupNameMap = new Map(groups.map((g) => [g.id, g.displayName]));
 
+  // Schedule view helpers
+  const nowDate = new Date();
+  const currentHHMM = `${nowDate.getHours().toString().padStart(2, "00")}:${nowDate.getMinutes().toString().padStart(2, "00")}`;
+  const todayName = nowDate.toLocaleDateString("en-US", { weekday: "long" });
+  const resolveManagedGroups = (pol: SchedulePolicy): string[] =>
+    pol.assignedGroupIds
+      .filter((id) => managedGroupIds.has(id))
+      .map((id) => managedGroupNameMap.get(id) || id);
+
   // Summary stats
   const activePolicies = policies.filter((p) => p.isActive);
   const totalGroups = new Set(
@@ -272,7 +282,7 @@ export default function PoliciesPage() {
         subtitle={t("policies.subtitle")}
         actions={
           <button
-            onClick={() => { setShowCreate(true); setEditingId(null); setFormData({ ...emptyForm }); }}
+            onClick={() => { setShowCreate(true); setEditingId(null); setFormData({ ...emptyForm }); setActiveTab("policies"); }}
             className="px-4 py-2 bg-[var(--accent)] text-white rounded-lg hover:bg-[var(--accent-hover)] transition-colors text-sm font-medium shadow-sm"
           >
             {t("policies.newPolicy")}
@@ -305,6 +315,27 @@ export default function PoliciesPage() {
         </div>
       </div>
 
+      {/* ── Tab Bar ──────────────────────────────────────────────── */}
+      <div className="flex gap-1 mb-6 p-1 rounded-lg border theme-border w-fit" style={{ background: "var(--surface-secondary)" }}>
+        <button
+          onClick={() => setActiveTab("policies")}
+          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            activeTab === "policies" ? "bg-[var(--accent)] text-white shadow-sm" : "theme-text-secondary hover:opacity-80"
+          }`}
+        >
+          📋 {t("policies.title")}
+        </button>
+        <button
+          onClick={() => setActiveTab("schedule")}
+          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            activeTab === "schedule" ? "bg-[var(--accent)] text-white shadow-sm" : "theme-text-secondary hover:opacity-80"
+          }`}
+        >
+          📅 {t("schedules.title")}
+        </button>
+      </div>
+
+      {activeTab === "policies" && (<>
       {error && (
         <div className="mb-4 p-3 rounded-lg text-sm flex items-center justify-between" style={{ background: "var(--badge-red-bg)", color: "var(--badge-red-text)", borderWidth: 1, borderColor: "var(--badge-red-border)" }}>
           <span>{error}</span>
@@ -488,6 +519,15 @@ export default function PoliciesPage() {
                   >
                     {policy.isActive ? t("common.active") : t("common.inactive")}
                   </button>
+                  {/* Inline Edit Button */}
+                  <button
+                    onClick={() => startEdit(policy)}
+                    title={t("common.edit")}
+                    className="shrink-0 ml-1 px-2.5 py-1 rounded-lg border theme-border text-xs font-medium theme-text-secondary hover:bg-[var(--accent)] hover:text-white hover:border-[var(--accent)] transition-colors flex items-center gap-1.5"
+                  >
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    {t("common.edit")}
+                  </button>
                 </div>
 
                 {/* ⋯ Action Menu */}
@@ -611,6 +651,121 @@ export default function PoliciesPage() {
           </div>
         )}
       </div>
+      </>)}
+
+      {/* ── Schedule View ──────────────────────────────────────────── */}
+      {activeTab === "schedule" && (
+        <div>
+          {/* Current time banner */}
+          <div className="mb-6 p-4 rounded-lg flex items-center gap-3 border" style={{ background: "var(--badge-blue-bg)", color: "var(--badge-blue-text)", borderColor: "var(--badge-blue-border)" }}>
+            <span className="text-xl">🕐</span>
+            <div>
+              <p className="text-sm font-medium">{t("schedules.currentTime", { time: currentHHMM, day: todayName })}</p>
+              <p className="text-xs mt-0.5 opacity-80">{activePolicies.length} {activePolicies.length === 1 ? "active policy" : "active policies"} — {t("schedules.definedOnPolicies")}</p>
+            </div>
+          </div>
+
+          {/* Daily Timeline */}
+          <div className="theme-surface rounded-xl border theme-border p-6 mb-6">
+            <h2 className="text-lg font-semibold theme-text-primary mb-4">{t("schedules.dailyTimeline")}</h2>
+            {activePolicies.length === 0 ? (
+              <p className="theme-text-muted text-center py-8">{t("schedules.noActivePolicies")}</p>
+            ) : (
+              <div className="space-y-5">
+                {activePolicies.map((pol) => {
+                  const enablePct = timePct(pol.enableTime);
+                  const disablePct = timePct(pol.disableTime);
+                  const widthPct = disablePct - enablePct;
+                  const isScheduledToday = pol.daysOfWeek.includes(todayName);
+                  const isWithinWindow = isScheduledToday && currentHHMM >= pol.enableTime && currentHHMM < pol.disableTime;
+                  const polGroups = resolveManagedGroups(pol);
+                  return (
+                    <div key={pol.id}>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: isWithinWindow ? "var(--badge-green-text)" : "var(--text-muted)" }} />
+                          <span className="text-sm font-semibold theme-text-primary">{pol.name}</span>
+                          {isWithinWindow && (
+                            <span className="text-xs font-medium px-2 py-0.5 rounded-full" style={{ background: "var(--badge-green-bg)", color: "var(--badge-green-text)" }}>{t("schedules.activeNow")}</span>
+                          )}
+                          <button onClick={() => { startEdit(pol); setActiveTab("policies"); }} className="text-xs font-medium hover:underline" style={{ color: "var(--accent)" }}>{t("common.edit")}</button>
+                        </div>
+                        <span className="text-xs theme-text-muted font-medium">{pol.enableTime} – {pol.disableTime}</span>
+                      </div>
+                      <div className="relative">
+                        <div className="flex justify-between mb-1 px-0.5">
+                          {[0, 3, 6, 9, 12, 15, 18, 21, 24].map((h) => (
+                            <span key={h} className="text-[9px] theme-text-muted w-0 text-center">{String(h === 24 ? 0 : h).padStart(2, "0")}</span>
+                          ))}
+                        </div>
+                        <div className="h-7 rounded-md relative overflow-hidden" style={{ background: "var(--surface-secondary)" }}>
+                          {[3, 6, 9, 12, 15, 18, 21].map((h) => (
+                            <div key={h} className="absolute top-0 bottom-0 w-px" style={{ left: `${(h / 24) * 100}%`, background: "var(--surface-border)" }} />
+                          ))}
+                          <div className="absolute top-0.5 bottom-0.5 rounded transition-all flex items-center justify-center"
+                            style={{ left: `${enablePct}%`, width: `${widthPct}%`, background: isWithinWindow ? "var(--badge-green-text)" : "var(--text-muted)", opacity: isScheduledToday ? 0.8 : 0.3 }}>
+                            {widthPct > 15 && <span className="text-white text-[10px] font-semibold tracking-wide">{pol.enableTime} — {pol.disableTime}</span>}
+                          </div>
+                          {isScheduledToday && (
+                            <div className="absolute top-0 bottom-0 w-0.5 z-10" style={{ left: `${timePct(currentHHMM)}%`, background: "var(--accent)" }} />
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                        {polGroups.length > 0 ? polGroups.map((name, i) => (
+                          <span key={i} className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium" style={{ background: "var(--badge-blue-bg)", color: "var(--badge-blue-text)", borderWidth: 1, borderColor: "var(--badge-blue-border)" }}>{name}</span>
+                        )) : <span className="text-xs theme-text-muted italic">{t("schedules.noGroupsAssigned")}</span>}
+                        {!isScheduledToday && <span className="text-xs theme-text-muted ml-1">({t("schedules.notScheduledToday")})</span>}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <div className="flex flex-wrap gap-5 mt-5 pt-4 border-t" style={{ borderColor: "var(--surface-border)" }}>
+              <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full" style={{ background: "var(--badge-green-text)", opacity: 0.8 }} /><span className="text-xs theme-text-secondary">{t("schedules.legend.accessEnabled")}</span></div>
+              <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full border" style={{ background: "var(--surface-secondary)", borderColor: "var(--surface-border)" }} /><span className="text-xs theme-text-secondary">{t("schedules.legend.accessDisabled")}</span></div>
+              <div className="flex items-center gap-2"><div className="w-4 h-0.5 rounded" style={{ background: "var(--accent)" }} /><span className="text-xs theme-text-secondary">{t("schedules.legend.currentTime")}</span></div>
+              <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded-full" style={{ background: "var(--badge-green-text)" }} /><span className="text-xs theme-text-secondary">{t("schedules.legend.activeNow")}</span></div>
+            </div>
+          </div>
+
+          {/* All policies table */}
+          <div className="theme-surface rounded-xl border theme-border overflow-hidden">
+            <div className="px-5 py-4 border-b flex items-center justify-between" style={{ borderColor: "var(--surface-border)" }}>
+              <h2 className="text-lg font-semibold theme-text-primary">{t("schedules.allPolicies")}</h2>
+              <button onClick={() => { setShowCreate(true); setEditingId(null); setFormData({ ...emptyForm }); setActiveTab("policies"); }} className="px-3 py-1.5 bg-[var(--accent)] text-white rounded-lg text-xs font-medium hover:bg-[var(--accent-hover)] transition-colors">{t("policies.newPolicy")}</button>
+            </div>
+            <table className="w-full">
+              <thead>
+                <tr className="border-b" style={{ backgroundColor: "var(--table-header-bg, var(--surface-secondary))", borderColor: "var(--surface-border)" }}>
+                  <th className="text-left px-5 py-3 text-xs font-semibold theme-text-muted uppercase tracking-wider">{t("schedules.tablePolicy")}</th>
+                  <th className="text-left px-5 py-3 text-xs font-semibold theme-text-muted uppercase tracking-wider">{t("schedules.tableWindow")}</th>
+                  <th className="text-left px-5 py-3 text-xs font-semibold theme-text-muted uppercase tracking-wider">{t("schedules.tableDays")}</th>
+                  <th className="text-left px-5 py-3 text-xs font-semibold theme-text-muted uppercase tracking-wider">{t("schedules.tableGroups")}</th>
+                  <th className="text-center px-5 py-3 text-xs font-semibold theme-text-muted uppercase tracking-wider">{t("schedules.tableStatus")}</th>
+                  <th className="text-center px-5 py-3 text-xs font-semibold theme-text-muted uppercase tracking-wider">{t("common.edit")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {policies.map((p) => {
+                  const pGroups = resolveManagedGroups(p);
+                  return (
+                    <tr key={p.id} className="border-b theme-border hover:opacity-90 transition-colors">
+                      <td className="px-5 py-3"><span className="text-sm font-medium theme-text-primary">{p.name}</span>{p.description && <p className="text-xs theme-text-muted mt-0.5">{p.description}</p>}</td>
+                      <td className="px-5 py-3 text-sm theme-text-secondary font-medium">{p.enableTime} – {p.disableTime}</td>
+                      <td className="px-5 py-3"><div className="flex flex-wrap gap-1">{p.daysOfWeek.map((d) => (<span key={d} className="px-1.5 py-0.5 rounded text-xs font-medium" style={{ background: "var(--surface-secondary)", color: "var(--text-secondary)" }}>{d.slice(0, 3)}</span>))}</div></td>
+                      <td className="px-5 py-3">{pGroups.length > 0 ? <div className="flex flex-wrap gap-1">{pGroups.map((name, i) => (<span key={i} className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium" style={{ background: "var(--badge-blue-bg)", color: "var(--badge-blue-text)" }}>{name}</span>))}</div> : <span className="text-xs theme-text-muted">{t("schedules.noGroupsAssigned")}</span>}</td>
+                      <td className="px-5 py-3 text-center"><button onClick={() => toggleActive(p)} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold cursor-pointer transition-colors" style={{ background: p.isActive ? "var(--badge-green-bg)" : "var(--badge-yellow-bg)", color: p.isActive ? "var(--badge-green-text)" : "var(--badge-yellow-text)", borderWidth: 1, borderColor: p.isActive ? "var(--badge-green-border)" : "var(--badge-yellow-border)" }}>{p.isActive ? t("common.active") : t("common.inactive")}</button></td>
+                      <td className="px-5 py-3 text-center"><button onClick={() => { startEdit(p); setActiveTab("policies"); }} className="text-xs font-medium px-2.5 py-1 rounded-lg border theme-border theme-text-secondary hover:bg-[var(--accent)] hover:text-white hover:border-[var(--accent)] transition-colors">{t("common.edit")}</button></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* Delete confirm */}
       <ConfirmDialog

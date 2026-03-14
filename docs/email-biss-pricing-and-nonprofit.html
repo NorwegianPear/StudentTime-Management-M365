@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<!--
+    EMAIL TEMPLATE - Inline styles are INTENTIONAL and REQUIRED
+    Email clients (Outlook, Gmail, etc.) do not support external CSS files.
+    htmlhint no-inline-styles:false
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Pricing & Microsoft Nonprofit Eligibility — BISS Stavanger</title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.7; color: #323130; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #ffffff;">
+
+    <!-- ===== HEADER ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-bottom: 10px;">
+        <tr>
+            <td bgcolor="#0078D4" style="padding: 30px 30px 20px 30px;">
+                <div style="color: white; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">Atea AS — Microsoft Solutions Partner</div>
+                <div style="color: white; font-size: 26px; font-weight: bold; line-height: 1.3;">&#128178; Azure Pricing &amp; Microsoft Nonprofit Eligibility<br>Student Login Time Management — BISS Stavanger</div>
+                <div style="color: #BFD9F4; font-size: 14px; margin-top: 10px;">Accurate Azure cost estimates and the specific legal reasons why BISS does not qualify for Microsoft nonprofit pricing.</div>
+            </td>
+        </tr>
+    </table>
+
+    <p style="margin-top: 25px;">Hi [Contact Name],</p>
+
+    <p>Following our recent conversation, I want to give you a clear and honest overview of two things:</p>
+    <ol>
+        <li>The <strong>actual Azure costs</strong> for running the Student Login Time Management solution, based on official Microsoft pricing.</li>
+        <li>The <strong>specific reasons</strong> why BISS Stavanger does not qualify for Microsoft nonprofit pricing — with references to the official Norwegian Business Registry and Microsoft's eligibility criteria.</li>
+    </ol>
+
+    <!-- ===== PART 1: AZURE PRICING ===== -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#9729;&#65039; Part 1 — Azure Cost Breakdown (Pay-As-You-Go)</h2>
+
+    <p>The solution has two deployment modes. Costs are based on <strong>official Microsoft Azure pricing for Norway East region</strong> (March 2026, Pay-As-You-Go).</p>
+
+    <!-- Option A: Script-Only -->
+    <h3 style="color: #323130; margin-top: 30px;">&#128196; Option A — Script-Only (No Management Portal)</h3>
+    <p style="color: #605E5C; font-size: 13px; margin-bottom: 4px;">Azure Automation runbooks only — no web interface. Everything managed via Azure Portal directly.</p>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <thead>
+            <tr bgcolor="#F3F2F1">
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #323130;">Azure Component</th>
+                <th style="text-align: right; padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #323130;">Monthly Cost (NOK)</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #323130;">Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Azure Automation Account</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #107C10;">~0–3 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Free tier: 500 min/month included. Normal usage: ~300–500 min/month (daily enable/disable runs across ~400 students). Busy months with policy changes, special group re-configurations, admin test re-runs, or extra policy groups may push to ~600–700 min → overage ~2–3 NOK. Essentially free in practice.</td>
+            </tr>
+            <tr bgcolor="#FAFAFA">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Log Analytics Workspace</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold;">~25–50 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Basic monitoring and job logs. Can be skipped or minimized further.</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">Resource Group / Storage</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #107C10;">~0 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">No additional resource cost.</td>
+            </tr>
+            <tr bgcolor="#FAFAFA">
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px;">Microsoft 365 A licenses (students &amp; staff)</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; text-align: right; font-weight: bold; color: #107C10;">0 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #605E5C;">Already included in BISS's existing M365 Education (A1/A3/A5) agreement. This solution requires no additional M365 licenses.</td>
+            </tr>
+            <tr bgcolor="#EFF6FC">
+                <td style="padding: 12px; font-size: 14px; font-weight: bold; color: #323130;">TOTAL — Script-Only</td>
+                <td style="padding: 12px; font-size: 18px; font-weight: bold; color: #107C10; text-align: right;">~25–55 NOK/mnd</td>
+                <td style="padding: 12px; font-size: 13px; color: #605E5C;">Azure only. M365 licensing already covered.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Option B: With Portal -->
+    <h3 style="color: #323130; margin-top: 30px;">&#127760; Option B — With Management Portal</h3>
+    <p style="color: #605E5C; font-size: 13px; margin-bottom: 4px;">Full web-based admin portal in addition to the automation. Hosted on Azure App Service B1.</p>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <thead>
+            <tr bgcolor="#F3F2F1">
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #323130;">Azure Component</th>
+                <th style="text-align: right; padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #323130;">Monthly Cost (NOK)</th>
+                <th style="text-align: right; padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #323130;">USD Reference</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #323130;">Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Azure Automation Account</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #107C10;">~0–3 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; color: #107C10;">~$0</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Free: 500 min/month. Normal usage ~300–500 min. Occasional overages during policy changes, special group re-configs, or admin test re-runs (~2–3 NOK).</td>
+            </tr>
+            <tr bgcolor="#FAFAFA">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">App Service Plan B1</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold;">~720 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right;">~$54.75</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">1 core, 1.75 GB RAM. Norway East region, NOK list price (confirmed in Azure Calculator). Microsoft's NOK price in Norway East is set independently of USD conversion.</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Log Analytics Workspace</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold;">~25–50 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right;">~$3–5</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;">Portal + runbook logs. Cost scales with data volume — low for this solution.</td>
+            </tr>
+            <tr bgcolor="#FAFAFA">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Resource Group / Storage</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; font-weight: bold; color: #107C10;">~0 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: right; color: #107C10;">$0</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #605E5C;"></td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px;">Microsoft 365 A licenses (students &amp; staff)</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; text-align: right; font-weight: bold; color: #107C10;">0 NOK</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; text-align: right; color: #107C10;">$0</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #0078D4; font-size: 13px; color: #605E5C;">Already included in BISS's existing M365 Education (A1/A3/A5) agreement. No additional M365 licenses required.</td>
+            </tr>
+            <tr bgcolor="#EFF6FC">
+                <td style="padding: 12px; font-size: 14px; font-weight: bold; color: #323130;">TOTAL — With Portal</td>
+                <td style="padding: 12px; font-size: 18px; font-weight: bold; color: #D13438; text-align: right;">~750–780 NOK/mnd</td>
+                <td style="padding: 12px; font-size: 14px; font-weight: bold; text-align: right; color: #605E5C;">~$58–70</td>
+                <td style="padding: 12px; font-size: 13px; color: #605E5C;">Azure only. M365 licensing already covered.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Footnote / Source -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 5px 0 30px 0;">
+        <tr>
+            <td bgcolor="#FFF4CE" style="padding: 12px 15px; border-left: 4px solid #F7B500; font-size: 12px; color: #323130;">
+                &#128161; <strong>Pricing basis:</strong> Official Microsoft Azure Pay-As-You-Go pricing, March 2026. Exchange rate 1 USD ≈ 10.70 NOK.<br>
+                &#128279; App Service pricing: <a href="https://azure.microsoft.com/en-us/pricing/details/app-service/windows/" style="color: #0078D4;">azure.microsoft.com/pricing/details/app-service/windows</a><br>
+                &#128279; Azure Automation pricing: <a href="https://azure.microsoft.com/en-us/pricing/details/automation/" style="color: #0078D4;">azure.microsoft.com/pricing/details/automation</a><br>
+                &#128279; Verify with the Azure Calculator: <a href="https://azure.microsoft.com/en-us/pricing/calculator/" style="color: #0078D4;">azure.microsoft.com/pricing/calculator</a>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Cost reduction note -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 0 0 30px 0;">
+        <tr>
+            <td bgcolor="#EFF6FC" style="padding: 15px 18px; border-left: 4px solid #0078D4; font-size: 13px; color: #323130;">
+                <strong>&#128200; Cost reduction options:</strong> If the portal (Option B) is chosen, costs can be reduced by:
+                <ul style="margin: 8px 0 0 0;">
+                    <li>Scaling down to <strong>App Service F1 (Free tier)</strong> for testing — then move to B1 for production. F1 is limited to 60 CPU minutes/day and has no SLA — not recommended for production.</li>
+                    <li>Choosing <strong>Script-Only (Option A)</strong> if a web interface is not required — saves ~720 NOK/month (the App Service B1 cost).</li>
+                    <li>Reducing Log Analytics data retention from default 90 days to 30 days to lower storage costs.</li>
+                    <li>Azure Automation stays essentially free regardless of option — even with human error re-runs, policy group changes, and special schedule testing, the overage cost is under 5 NOK/month.</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ===== PART 2: NONPROFIT ELIGIBILITY ===== -->
+    <h2 style="color: #A4262C; border-left: 4px solid #D13438; padding-left: 15px; margin-top: 40px;">&#10060; Part 2 — Why BISS Stavanger Does Not Qualify for Microsoft Nonprofit Pricing</h2>
+
+    <p>We have verified the legal status of all three BISS entities directly against the <strong>Norwegian Business Registry (Brønnøysundregistrene)</strong>. The results are clear and unambiguous.</p>
+
+    <!-- Registry Results Table -->
+    <h3 style="color: #323130; margin-top: 25px;">&#128196; BISS Legal Registration — Confirmed from Brønnøysundregistrene</h3>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <thead>
+            <tr bgcolor="#F3F2F1">
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #D13438; font-size: 13px; color: #323130;">Entity</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #D13438; font-size: 13px; color: #323130;">Org. Number</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #D13438; font-size: 13px; color: #323130;">Legal Form</th>
+                <th style="text-align: left; padding: 10px 12px; border-bottom: 2px solid #D13438; font-size: 13px; color: #323130;">Sector Code</th>
+                <th style="text-align: center; padding: 10px 12px; border-bottom: 2px solid #D13438; font-size: 13px; color: #323130;">Frivillighets&shy;registeret?</th>
+                <th style="text-align: center; padding: 10px 12px; border-bottom: 2px solid #D13438; font-size: 13px; color: #323130;">Nonprofit eligible?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">BISS Sentrum</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-family: monospace;">818 476 272</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #D13438; font-weight: bold;">AS — Aksjeselskap<br><span style="font-size: 11px; font-weight: normal; color: #605E5C;">(Limited company)</span></td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #D13438;">2100 — Private aksjeselskaper mv.</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center; color: #D13438; font-weight: bold;">&#10060; No</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center; color: #D13438; font-weight: bold;">&#10060; No</td>
+            </tr>
+            <tr bgcolor="#FAFAFA">
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold;">BISS Preschool</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-family: monospace;">930 685 186</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #D13438; font-weight: bold;">AS — Aksjeselskap<br><span style="font-size: 11px; font-weight: normal; color: #605E5C;">(Limited company)</span></td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; color: #D13438;">2100 — Private aksjeselskaper mv.</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center; color: #D13438; font-weight: bold;">&#10060; No</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; text-align: center; color: #D13438; font-weight: bold;">&#10060; No</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #E1DFDD; font-size: 13px; font-weight: bold;">BISS Gausel</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #E1DFDD; font-size: 13px; font-family: monospace;">920 222 315</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #E1DFDD; font-size: 13px; color: #CA5010; font-weight: bold;">STI — Stiftelse<br><span style="font-size: 11px; font-weight: normal; color: #605E5C;">(Commercial foundation)</span></td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #E1DFDD; font-size: 13px; color: #D13438;">2100 — Private aksjeselskaper mv.</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #E1DFDD; font-size: 13px; text-align: center; color: #D13438; font-weight: bold;">&#10060; No</td>
+                <td style="padding: 10px 12px; border-bottom: 2px solid #E1DFDD; font-size: 13px; text-align: center; color: #D13438; font-weight: bold;">&#10060; No</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="font-size: 12px; color: #605E5C;">&#128279; Source: Brønnøysundregistrene Enhetsregisteret API — <a href="https://data.brreg.no/enhetsregisteret/api/enheter/818476272" style="color: #0078D4;">818476272</a> | <a href="https://data.brreg.no/enhetsregisteret/api/enheter/930685186" style="color: #0078D4;">930685186</a> | <a href="https://data.brreg.no/enhetsregisteret/api/enheter/920222315" style="color: #0078D4;">920222315</a></p>
+
+    <!-- Why this matters explanation -->
+    <h3 style="color: #323130; margin-top: 30px;">&#128270; Detailed Explanation — Why Each Entity Fails</h3>
+
+    <!-- BISS Sentrum / Preschool -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#FDE7E9" style="padding: 18px 20px; border-left: 4px solid #D13438;">
+                <strong style="color: #A4262C;">&#10060; BISS Sentrum AS &amp; BISS Preschool AS — Aksjeselskap (Limited Company)</strong>
+                <p style="margin: 8px 0 0 0; font-size: 13px;">An <em>Aksjeselskap</em> (AS) is a Norwegian limited liability company — the same corporate form as any commercial business. It has private shareholders, distributes profits as dividends, and exists to generate return on investment. This is the most fundamental disqualifier. Microsoft's nonprofit program is explicitly unavailable to for-profit entities regardless of sector or mission.</p>
+                <p style="margin: 8px 0 0 0; font-size: 13px;"><strong>Capital confirmed in registry:</strong> BISS Sentrum AS has 100 shares at 1,000 NOK each (kr 100,000 share capital). BISS Preschool AS has 1,000 shares at 100 NOK each (kr 100,000 share capital). Both are registered in the commercial company registry (Foretaksregisteret).</p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- BISS Gausel -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#FDF2E9" style="padding: 18px 20px; border-left: 4px solid #CA5010;">
+                <strong style="color: #CA5010;">&#9888;&#65039; BISS Gausel STI — Stiftelse, but commercial (Sector 2100)</strong>
+                <p style="margin: 8px 0 0 0; font-size: 13px;">BISS Gausel is registered as a <em>Stiftelse</em> (Foundation), which in Norway can be either charitable (<em>ideell stiftelse</em>) or commercial (<em>næringsdrivende stiftelse</em>). The key differentiators are:</p>
+                <ul style="margin: 8px 0; font-size: 13px;">
+                    <li><strong>Institutional sector code 2100</strong> ("Private aksjeselskaper mv.") — This is the same classification as commercial companies, NOT the charitable/NGO sector (7000–8000). This is assigned by Statistics Norway and indicates how the entity economically operates.</li>
+                    <li><strong>NOT registered in Frivillighetsregisteret</strong> — Norway's Voluntary Organizations Registry (run by Brønnøysundregistrene) is where genuine charities and nonprofits register to access public grants and charitable status. BISS Gausel is absent from this registry.</li>
+                    <li><strong>Registered in Stiftelsesregisteret</strong> — this is the general foundation registry and does not itself confer charitable status. Both commercial and charitable foundations are listed here.</li>
+                </ul>
+                <p style="margin: 8px 0 0 0; font-size: 13px;">Microsoft validates Norwegian nonprofit status through its partner <strong>Percent.org / TechSoup</strong>, which checks the Frivillighetsregisteret and sector classification. BISS Gausel would not pass this validation.</p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Microsoft's requirement -->
+    <h3 style="color: #323130; margin-top: 30px;">&#128196; Microsoft's Nonprofit Eligibility Requirement</h3>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#EFF6FC" style="padding: 18px 20px; border-left: 4px solid #0078D4; font-size: 13px;">
+                <strong>Microsoft requires organizations to be:</strong>
+                <blockquote style="margin: 10px 0; padding-left: 15px; border-left: 3px solid #0078D4; color: #605E5C; font-style: italic;">
+                    "A nonprofit or non-governmental organization with recognition of nonprofit status from the relevant government authority, equivalent to 501(c)(3) status under the United States Internal Revenue Code."
+                </blockquote>
+                <p style="margin: 8px 0 0 0;">In Norway, the equivalent recognized form is either registration in <strong>Frivillighetsregisteret</strong> or formal recognition as an ideell (charitable/non-commercial) organization by Skatteetaten. <em>None of the three BISS entities meet this criterion.</em></p>
+                <p style="margin: 8px 0 0 0;">&#128279; Source: <a href="https://www.microsoft.com/en-us/nonprofits/eligibility" style="color: #0078D4;">microsoft.com/en-us/nonprofits/eligibility</a></p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Recommendation box -->
+    <h3 style="color: #323130; margin-top: 30px;">&#127891; What BISS Can Use Instead — Microsoft 365 Education</h3>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin: 15px 0;">
+        <tr>
+            <td bgcolor="#E6F2E3" style="padding: 18px 20px; border-left: 4px solid #107C10; font-size: 13px;">
+                <strong style="color: #107C10;">Good news: BISS likely qualifies for Microsoft 365 Education licensing</strong>
+                <p style="margin: 8px 0 0 0;">Schools that are accredited educational institutions — regardless of for-profit or nonprofit status — can qualify for <strong>Microsoft 365 Education</strong> through Microsoft's Education program. This is separate from the nonprofit program:</p>
+                <ul style="margin: 8px 0;">
+                    <li><strong>Microsoft 365 A1</strong> — Free for students and teachers at eligible schools</li>
+                    <li><strong>Microsoft 365 A3/A5</strong> — Significantly discounted for accredited schools</li>
+                </ul>
+                <p style="margin: 8px 0 0 0;">The Azure costs in this document use standard <strong>Pay-As-You-Go pricing</strong> which applies to BISS. Azure for Education credits are typically only for students/research, not for school administrative infrastructure.</p>
+                <p style="margin: 8px 0 0 0;">&#128279; <a href="https://www.microsoft.com/en-us/education/products/microsoft-365" style="color: #0078D4;">microsoft.com/en-us/education/products/microsoft-365</a></p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Summary -->
+    <h2 style="color: #005A9E; border-left: 4px solid #0078D4; padding-left: 15px; margin-top: 40px;">&#128203; Summary</h2>
+
+    <table cellpadding="0" cellspacing="0" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+        <tr bgcolor="#F3F2F1">
+            <td style="padding: 12px; font-weight: bold; border-bottom: 2px solid #0078D4; font-size: 13px;">Topic</td>
+            <td style="padding: 12px; font-weight: bold; border-bottom: 2px solid #0078D4; font-size: 13px;">Conclusion</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Script-Only monthly Azure cost</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold; color: #107C10;">~25–55 NOK/month</td>
+        </tr>
+        <tr bgcolor="#FAFAFA">
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">With portal (App Service B1) monthly Azure cost</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold; color: #D13438;">~750–780 NOK/month</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Does BISS qualify for Microsoft nonprofit pricing?</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold; color: #D13438;">&#10060; No — all three entities are commercial (AS or commercial Stiftelse, sector 2100, not in Frivillighetsregisteret)</td>
+        </tr>
+        <tr bgcolor="#FAFAFA">
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px;">Alternative program available to BISS</td>
+            <td style="padding: 10px 12px; border-bottom: 1px solid #E1DFDD; font-size: 13px; font-weight: bold; color: #107C10;">&#9989; Microsoft 365 Education — already in use (A1/A3/A5)</td>
+        </tr>
+    </table>
+
+    <p style="margin-top: 30px;">Please do not hesitate to reach out if you have any questions about the pricing, or if you would like us to run through the Azure Calculator estimate together for Norway East region specifically.</p>
+
+    <p>Best regards,</p>
+    <p><strong>[Your Name]</strong><br>
+    Atea AS — Microsoft Solutions Partner<br>
+    <a href="mailto:[your.email]@atea.no" style="color: #0078D4;">[your.email]@atea.no</a></p>
+
+    <!-- ===== FOOTER ===== -->
+    <table cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 40px;">
+        <tr>
+            <td bgcolor="#F3F2F1" style="padding: 15px 20px; font-size: 11px; color: #605E5C; border-top: 2px solid #0078D4;">
+                <strong>References:</strong><br>
+                [1] Brønnøysundregistrene — BISS Sentrum AS: <a href="https://data.brreg.no/enhetsregisteret/api/enheter/818476272" style="color: #0078D4;">data.brreg.no/enhetsregisteret/api/enheter/818476272</a><br>
+                [2] Brønnøysundregistrene — BISS Preschool AS: <a href="https://data.brreg.no/enhetsregisteret/api/enheter/930685186" style="color: #0078D4;">data.brreg.no/enhetsregisteret/api/enheter/930685186</a><br>
+                [3] Brønnøysundregistrene — BISS Gausel STI: <a href="https://data.brreg.no/enhetsregisteret/api/enheter/920222315" style="color: #0078D4;">data.brreg.no/enhetsregisteret/api/enheter/920222315</a><br>
+                [4] Microsoft Nonprofit Eligibility: <a href="https://www.microsoft.com/en-us/nonprofits/eligibility" style="color: #0078D4;">microsoft.com/en-us/nonprofits/eligibility</a><br>
+                [5] Azure App Service Pricing: <a href="https://azure.microsoft.com/en-us/pricing/details/app-service/windows/" style="color: #0078D4;">azure.microsoft.com/pricing/details/app-service/windows</a><br>
+                [6] Azure Automation Pricing: <a href="https://azure.microsoft.com/en-us/pricing/details/automation/" style="color: #0078D4;">azure.microsoft.com/pricing/details/automation</a>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
