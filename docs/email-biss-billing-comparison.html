@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Azure Billing Options — BISS Student Time Management</title>
+<style>
+  body{font-family:'Segoe UI',Arial,sans-serif;margin:0;padding:24px;background:#f4f6fb;color:#222}
+  .wrap{max-width:700px;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.09)}
+  .hdr{background:#0f4c81;color:#fff;padding:28px 36px 20px}
+  .hdr h1{margin:0 0 6px;font-size:20px;font-weight:700}
+  .hdr p{margin:0;font-size:12px;opacity:.8}
+  .body{padding:28px 36px}
+  p{font-size:13px;line-height:1.6;color:#333;margin:0 0 14px}
+  h2{font-size:14px;font-weight:700;color:#0f4c81;margin:24px 0 10px;border-bottom:2px solid #e3eaf8;padding-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:6px}
+  th{background:#0f4c81;color:#fff;padding:9px 12px;text-align:left;font-weight:600}
+  th.c{text-align:center}
+  td{padding:8px 12px;border-bottom:1px solid #eaecf4;vertical-align:middle}
+  tr:nth-child(even) td{background:#f7f9ff}
+  td.c{text-align:center}
+  td.g{color:#1b5e20;font-weight:700}
+  td.b{color:#0f4c81;font-weight:700}
+  td.muted{color:#888;font-size:12px}
+  .note{font-size:11px;color:#888;margin:2px 0 14px}
+  .rec{background:#e3f2fd;border-left:4px solid #0f4c81;border-radius:4px;padding:12px 16px;font-size:13px;margin:16px 0}
+  .warn{background:#fff8e1;border-left:4px solid #f9a825;border-radius:4px;padding:10px 14px;font-size:12px;color:#555;margin:10px 0 16px}
+  .badge-payg{display:inline-block;background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7;border-radius:10px;padding:1px 9px;font-size:11px;font-weight:700}
+  .badge-no{display:inline-block;background:#fce4ec;color:#b71c1c;border:1px solid #f48fb1;border-radius:10px;padding:1px 9px;font-size:11px;font-weight:700}
+  .badge-yes{display:inline-block;background:#e3f2fd;color:#0f4c81;border:1px solid #90caf9;border-radius:10px;padding:1px 9px;font-size:11px;font-weight:700}
+  .sig{margin-top:24px;padding-top:14px;border-top:1px solid #eee;font-size:12px;color:#666}
+  .sig strong{display:block;font-size:13px;color:#222}
+  .foot{background:#f7f9ff;border-top:1px solid #eaecf4;padding:14px 36px;font-size:11px;color:#aaa}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <h1>Azure Billing Options — Student Login Time Management</h1>
+  <p>The British International School (BISS) · Norway East · March 2026</p>
+</div>
+
+<div class="body">
+
+<p>Hi Adnan,</p>
+<p>You asked whether there are monthly, quarterly, or annual billing options with different rates. I've verified this directly against your subscription. Here is the full picture.</p>
+
+<!-- ── BILLING MODEL ───────────────────────────────────────── -->
+<h2>How Azure App Service Is Billed</h2>
+<p>Azure App Service is billed <strong>per hour</strong> and invoiced <strong>monthly</strong>. There is no built-in quarterly or annual billing period in Azure — your invoice arrives once a month. However, Microsoft offers <em>Reserved Instances</em> for certain tiers that let you commit to 1 or 3 years upfront at a significant discount.</p>
+
+<div class="warn">
+  <strong>⚠️ Important:</strong> I checked your subscription's RateCard and the public Reservations catalogue for Norway East.
+  The <strong>Basic tier (B1) does NOT support reserved instances</strong> — it is Pay-As-You-Go only.
+  Reservations are only available from <strong>Premium v3 / v4 and Isolated v2</strong> tiers upward.
+</div>
+
+<!-- ── OPTION B1 LINUX PAYG ───────────────────────────────── -->
+<h2>Option B — B1 Linux (Recommended) · Pay-As-You-Go</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Budget period</th>
+      <th class="c">NOK (excl. MVA)</th>
+      <th class="c">Commitment discount</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Monthly</strong></td>
+      <td class="c b"><strong>131 NOK</strong></td>
+      <td class="c"><span class="badge-payg">PAYG — no lock-in</span></td>
+      <td>Azure invoice every month. Cancel any time, charges stop within the hour.</td>
+    </tr>
+    <tr>
+      <td><strong>Quarterly</strong></td>
+      <td class="c b"><strong>393 NOK</strong></td>
+      <td class="c"><span class="badge-no">No discount</span></td>
+      <td>3 × 131 NOK. Same hourly rate — useful for school budget planning (per semester).</td>
+    </tr>
+    <tr>
+      <td><strong>Annual (school year)</strong></td>
+      <td class="c b"><strong>1 572 NOK</strong></td>
+      <td class="c"><span class="badge-no">No discount</span></td>
+      <td>12 × 131 NOK. Same rate — good for annual IT budget line. Stop the service during long holidays to save.</td>
+    </tr>
+  </tbody>
+</table>
+<p class="note">Authenticated RateCard · Subscription f06e6997 · B1 Linux 0.179924 NOK/hr · NO East · 14 Mar 2026 · Excl. MVA</p>
+
+<!-- ── HOLIDAY SAVING TIP ──────────────────────────────────── -->
+<h2>💡 Save During School Holidays</h2>
+<p>Because PAYG charges stop the moment you delete or stop the App Service Plan, you can reduce costs during long breaks:</p>
+<table>
+  <thead>
+    <tr><th>Period</th><th class="c">Duration</th><th class="c">Saving</th><th>Running total/year</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Run all year (worst case)</td>
+      <td class="c">12 months</td>
+      <td class="c">—</td>
+      <td class="b">1 572 NOK</td>
+    </tr>
+    <tr>
+      <td>Pause July + Aug (summer)</td>
+      <td class="c">10 months</td>
+      <td class="c g">−262 NOK</td>
+      <td class="g"><strong>1 310 NOK</strong></td>
+    </tr>
+    <tr>
+      <td>Pause Jul, Aug + Christmas (2 wks)</td>
+      <td class="c">~9.5 months</td>
+      <td class="c g">−327 NOK</td>
+      <td class="g"><strong>1 245 NOK</strong></td>
+    </tr>
+  </tbody>
+</table>
+<p class="note">Pausing = deleting the App Service Plan (takes ~2 min). Redeploy takes ~5 min. Automation runbooks are unaffected — they continue running independently.</p>
+
+<!-- ── RESERVED INSTANCE ALTERNATIVE ─────────────────────── -->
+<h2>Reserved Instance Alternative (If You Want a Committed Rate)</h2>
+<p>If you prefer a fixed committed annual price with a guaranteed discount, the lowest tier that supports reservations in Norway East is <strong>Premium v3 Linux (P1mv3)</strong>. This is overkill for a school admin portal but shown for completeness:</p>
+<table>
+  <thead>
+    <tr>
+      <th>Plan</th>
+      <th class="c">PAYG/month</th>
+      <th class="c">1-Year Reserved</th>
+      <th class="c">3-Year Reserved</th>
+      <th>Performance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>B1 Linux</strong> <em>(current recommendation)</em></td>
+      <td class="c b">131 NOK</td>
+      <td class="c muted">Not available</td>
+      <td class="c muted">Not available</td>
+      <td>1 vCore, 1.75 GB RAM</td>
+    </tr>
+    <tr>
+      <td><strong>P1mv3 Linux</strong> <em>(reservation eligible)</em></td>
+      <td class="c">1 754 NOK</td>
+      <td class="c"><span class="badge-yes">1 346 NOK/mo</span></td>
+      <td class="c"><span class="badge-yes">78 NOK/mo</span></td>
+      <td>2 vCore, 16 GB RAM — extreme overkill</td>
+    </tr>
+  </tbody>
+</table>
+<p class="note">Reservation prices from Azure Retail Prices API · Norway East · Public MSRP · P1mv3 3-yr = 2 796 NOK upfront ÷ 36 months = ~78 NOK/mo amortised</p>
+
+<div class="rec">
+  <strong>💡 Conclusion:</strong> For a small school admin portal, <strong>B1 Linux PAYG at 131 NOK/month</strong> is the right choice — there is no commitment pricing available for this tier, and the PAYG model is actually an advantage: you can pause it during summer holiday and save ~262 NOK/year with zero effort.
+  <br><br>
+  The only reason to consider a higher tier would be if the portal becomes slow under load — which is very unlikely for a tool used by 2–5 admin staff.
+</div>
+
+<p>Let me know if you'd like to proceed with Option B (Script + Portal) at <strong>131 NOK/month</strong>, or if you'd prefer to start with Option A (Script only, free) and add the portal later.</p>
+
+<div class="sig">
+  <strong>Uy Le Thai Phan</strong>
+  Senior Consultant · Cloud &amp; Modern Workplace · Atea AS<br>
+  uy.le.thai.phan@atea.no
+</div>
+
+</div>
+<div class="foot">
+  Authenticated Microsoft Commerce RateCard (bearer token) · Subscription f06e6997 (CSP_2015-05-01) · Norway East · 14 March 2026 ·
+  Azure Retail Prices API (reservation prices) · All prices excl. MVA (reclaimable by MVA-registered organisations)
+</div>
+</div>
+</body>
+</html>

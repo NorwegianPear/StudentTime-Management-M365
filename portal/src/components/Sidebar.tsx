@@ -12,6 +12,7 @@ const navItems = [
   { labelKey: "nav.groups", href: "/groups", icon: "📁" },
   { labelKey: "nav.specialGroups", href: "/special-groups", icon: "⭐" },
   { labelKey: "nav.policies", href: "/policies", icon: "🕒" },
+  { labelKey: "nav.holidayCalendar", href: "/holidays", icon: "📅" },
   { labelKey: "nav.pendingChanges", href: "/pending-changes", icon: "🔄" },
   { labelKey: "nav.auditLog", href: "/audit", icon: "📋" },
   { labelKey: "nav.docs", href: "/docs", icon: "📖" },

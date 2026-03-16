@@ -173,6 +173,7 @@ export interface AuditLogEntry {
   action:
     | "enable" | "disable" | "manual_toggle"
     | "policy_created" | "policy_deleted" | "policy_assigned" | "policy_updated"
+    | "holiday_added" | "holiday_removed" | "holiday_generated"
     | "student_suspended" | "student_unsuspended"
     | "student_transferred" | "student_created" | "student_removed"
     | "bulk_promote"

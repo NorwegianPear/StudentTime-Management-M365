@@ -68,6 +68,7 @@ const en = {
     specialGroups: "Special Groups",
     policies: "Policies",
     schedules: "Schedules",
+    holidayCalendar: "Holiday Calendar",
     pendingChanges: "Pending Changes",
     auditLog: "Audit Log",
     docs: "Documentation",

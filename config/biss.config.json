@@ -1,0 +1,163 @@
+{
+  "_comment": "BISS production configuration — local copy, ready for deployment. No secrets here.",
+  "_generated": "2026-03-16",
+  "_tenantAnalysis": "Groups discovered from live tenant on 2026-03-16 via Microsoft Graph",
+
+  "tenant": {
+    "tenantId": "33b8f1e2-8260-4e97-882a-8def9f04a9d8",
+    "subscriptionId": "f06e6997-dde7-4504-bd2c-b67805f3b08c",
+    "subscriptionName": "Azure subscription 1",
+    "schoolName": "Bergan International School (BISS)",
+    "primaryDomain": "biss.no",
+    "adminUPN": "Adnan.Awan@biss.no"
+  },
+
+  "azure": {
+    "resourceGroupName": "rg-biss-studentaccess",
+    "automationAccountName": "biss-studentaccess-automation",
+    "location": "norwayeast",
+    "appServicePlanName": "asp-biss-sam-portal",
+    "webAppName": "app-biss-sam-portal",
+    "appServiceSku": "B1"
+  },
+
+  "portal": {
+    "displayName": "BISS Student Access Management Portal",
+    "appRegistrationName": "BISS SAM Portal",
+    "redirectUris": [
+      "http://localhost:3000/api/auth/callback/microsoft-entra-id",
+      "https://app-biss-sam-portal.azurewebsites.net/api/auth/callback/microsoft-entra-id"
+    ]
+  },
+
+  "_scheduleNote": "Times are in the school's local timezone (W. Europe Standard Time = CET/CEST). These can be changed at any time through the portal UI or by updating the SchedulePolicies Automation Variable directly.",
+
+  "defaultSchedule": {
+    "enableTime": "07:00",
+    "disableTime": "18:00",
+    "daysOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "timezone": "W. Europe Standard Time",
+    "holidayCalendarEnabled": true,
+    "_note": "Saturday and Sunday are always off (not in daysOfWeek). Public holidays are skipped automatically via the HolidayCalendar Automation Variable."
+  },
+
+  "_groupsNote": "These groups were discovered from the live BISS tenant on 2026-03-16. The solution will manage ALL students across both campuses (Gausel + Sentrum) using the MYP, PYP and College groups as the primary enforcement targets. Class_Of_20xx groups are graduation-year cohorts that overlap.",
+
+  "studentGroups": [
+    {
+      "_campus": "Gausel",
+      "displayName": "MYP Students Gausel",
+      "id": "adac1d63-989d-423e-b793-61f37938b494",
+      "programme": "MYP",
+      "securityEnabled": true,
+      "includeInPolicy": true,
+      "_note": "Primary MYP student group for Gausel campus"
+    },
+    {
+      "_campus": "Sentrum",
+      "displayName": "MYP_Sentrum_Students",
+      "id": "0904b785-87e2-4ea8-95ee-6e7d67438055",
+      "programme": "MYP",
+      "securityEnabled": true,
+      "includeInPolicy": true,
+      "_note": "Primary MYP student group for Sentrum campus"
+    },
+    {
+      "_campus": "Sentrum",
+      "displayName": "PYP_Students_Sentrum",
+      "id": "3a968d58-640c-446c-a8c2-ca3a1b09f2c8",
+      "programme": "PYP",
+      "securityEnabled": true,
+      "includeInPolicy": true,
+      "_note": "Primary PYP student group for Sentrum campus"
+    },
+    {
+      "_campus": "Both",
+      "displayName": "College Students",
+      "id": "7504f2a0-69c9-43f9-8d82-7011630a690e",
+      "programme": "Diploma/College",
+      "securityEnabled": true,
+      "includeInPolicy": true,
+      "_note": "Diploma Programme / College students — may need extended hours during exam periods"
+    },
+    {
+      "_campus": "Both",
+      "displayName": "Class_Of_2026_Security_Group",
+      "id": "d9fc0794-63bd-4df5-a54a-2d0244456182",
+      "programme": "Graduation cohort",
+      "securityEnabled": true,
+      "includeInPolicy": false,
+      "_note": "Graduation year group — already covered by MYP/College groups. Kept here for reference."
+    },
+    {
+      "_campus": "Both",
+      "displayName": "Class_Of_2027_Security_Group",
+      "id": "29f82b95-381a-425e-9df1-b41b534453ef",
+      "programme": "Graduation cohort",
+      "securityEnabled": true,
+      "includeInPolicy": false,
+      "_note": "Graduation year group — reference only"
+    },
+    {
+      "_campus": "Both",
+      "displayName": "Class_Of_2028_Security_Group",
+      "id": "d648e6b1-a906-4aa7-870a-917c6679967b",
+      "programme": "Graduation cohort",
+      "securityEnabled": true,
+      "includeInPolicy": false,
+      "_note": "Graduation year group — reference only"
+    },
+    {
+      "_campus": "Both",
+      "displayName": "Class_of_2029_Security_Group",
+      "id": "e9674067-e451-4f2f-9dea-c32279379df4",
+      "programme": "Graduation cohort",
+      "securityEnabled": true,
+      "includeInPolicy": false,
+      "_note": "Graduation year group — reference only"
+    }
+  ],
+
+  "_activePolicyGroups": [
+    "adac1d63-989d-423e-b793-61f37938b494",
+    "0904b785-87e2-4ea8-95ee-6e7d67438055",
+    "3a968d58-640c-446c-a8c2-ca3a1b09f2c8",
+    "7504f2a0-69c9-43f9-8d82-7011630a690e"
+  ],
+
+  "schedulePolicies": [
+    {
+      "id": "policy-biss-standard",
+      "name": "BISS Standard School Hours",
+      "description": "Mon–Fri 07:00–18:00. Public holidays automatically skipped. Covers all MYP, PYP and College students at both campuses.",
+      "enableTime": "07:00",
+      "disableTime": "18:00",
+      "daysOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "timezone": "W. Europe Standard Time",
+      "isActive": true,
+      "respectHolidays": true,
+      "groupIds": [
+        "adac1d63-989d-423e-b793-61f37938b494",
+        "0904b785-87e2-4ea8-95ee-6e7d67438055",
+        "3a968d58-640c-446c-a8c2-ca3a1b09f2c8",
+        "7504f2a0-69c9-43f9-8d82-7011630a690e"
+      ],
+      "_changeNote": "To change hours: update enableTime/disableTime here, run Prepare-BissDeployment.ps1 to update the Automation Variable, OR change directly in the portal UI → Policies page."
+    },
+    {
+      "id": "policy-biss-exam",
+      "name": "BISS Exam Period (Extended Access)",
+      "description": "During IB exam weeks — students have extended access until 20:00 for last-day preparation.",
+      "enableTime": "07:00",
+      "disableTime": "20:00",
+      "daysOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "timezone": "W. Europe Standard Time",
+      "isActive": false,
+      "respectHolidays": false,
+      "groupIds": [
+        "7504f2a0-69c9-43f9-8d82-7011630a690e"
+      ],
+      "_note": "Activate this in the portal during IB exam season for College Students only"
+    }
+  ]
+}

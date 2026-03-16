@@ -1,10 +1,18 @@
 // API: POST /api/students/[id]/suspend — Suspend a student with end date
 // API: DELETE /api/students/[id]/suspend — Lift suspension early
+//
+// Suspensions are written to TWO stores:
+//   1. Local suspension-store (portal UI, fast reads)
+//   2. Azure Automation Variable "SuspendedStudents" (fallback for runbooks)
+// This means Enable-StudentAccess.ps1 and Process-Suspensions.ps1 will honour
+// portal-initiated suspensions even if the portal is offline.
 import { NextRequest, NextResponse } from "next/server";
 import { getGraphClient } from "@/lib/graph-client";
 import { auth } from "@/lib/auth";
 import { createSuspension, liftSuspension, getActiveSuspension } from "@/lib/suspension-store";
+import { syncSuspensionCreate, syncSuspensionLift } from "@/lib/automation-client";
 import { logStudentAction } from "@/lib/audit-store";
+import { canWrite, getUserRole } from "@/lib/roles";
 import type { ApiResponse, Suspension, SuspendRequest } from "@/types";
 
 export async function POST(
@@ -14,6 +22,9 @@ export async function POST(
   const session = await auth();
   if (!session) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+  }
+  if (!canWrite(getUserRole(session.user?.email))) {
+    return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
   }
 
   const { id } = await params;
@@ -45,7 +56,7 @@ export async function POST(
     // Disable the account
     await client.api(`/users/${id}`).update({ accountEnabled: false });
 
-    // Record suspension
+    // Record suspension in local store (portal reads)
     const suspension = await createSuspension({
       studentId: id,
       studentName: user.displayName,
@@ -56,8 +67,22 @@ export async function POST(
       createdBy: session.user?.email || "unknown",
     });
 
-    // Audit log
+    // Sync to Automation Variable — runbooks use this as fallback even if
+    // the portal is offline. Non-fatal: portal state is authoritative.
     const performedBy = session.user?.email || session.user?.name || "unknown";
+    try {
+      await syncSuspensionCreate({
+        studentId:   id,
+        studentName: user.displayName,
+        endDate:     body.endDate,
+        reason:      body.reason,
+        suspendedBy: performedBy,
+      });
+    } catch (syncErr) {
+      console.warn("[suspend] Automation Variable sync failed (non-fatal):", syncErr);
+    }
+
+    // Audit log
     await logStudentAction(
       "student_suspended",
       performedBy,
@@ -84,6 +109,9 @@ export async function DELETE(
   if (!session) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
+  if (!canWrite(getUserRole(session.user?.email))) {
+    return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
+  }
 
   const { id } = await params;
 
@@ -102,11 +130,18 @@ export async function DELETE(
     // Re-enable account
     await client.api(`/users/${id}`).update({ accountEnabled: true });
 
-    // Lift suspension record
+    // Lift suspension in local store
     await liftSuspension(id);
 
-    // Audit log
+    // Sync lift to Automation Variable — runbooks will stop skipping this student
     const performedBy = session.user?.email || session.user?.name || "unknown";
+    try {
+      await syncSuspensionLift(id);
+    } catch (syncErr) {
+      console.warn("[suspend] Automation Variable sync (lift) failed (non-fatal):", syncErr);
+    }
+
+    // Audit log
     await logStudentAction(
       "student_unsuspended",
       performedBy,

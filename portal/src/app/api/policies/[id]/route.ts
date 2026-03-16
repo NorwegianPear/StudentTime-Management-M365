@@ -5,6 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { getPolicy, updatePolicy, deletePolicy } from "@/lib/policy-store";
 import { getGraphClient } from "@/lib/graph-client";
+import { logPolicyAction } from "@/lib/audit-store";
+import { canWrite, getUserRole } from "@/lib/roles";
 import type { ApiResponse, SchedulePolicy } from "@/types";
 
 export async function GET(
@@ -41,11 +43,19 @@ export async function PATCH(
   if (!session) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
+  if (!canWrite(getUserRole(session.user?.email))) {
+    return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
+  }
 
   const { id } = await params;
+  const performedBy = session.user?.email || session.user?.name || "unknown";
 
   try {
     const body = await request.json();
+    const before = await getPolicy(id);
+    if (!before) {
+      return NextResponse.json({ success: false, error: "Policy not found" }, { status: 404 });
+    }
 
     // If assigning groups, resolve their display names
     if (body.assignedGroupIds && Array.isArray(body.assignedGroupIds)) {
@@ -68,9 +78,21 @@ export async function PATCH(
       return NextResponse.json({ success: false, error: "Policy not found" }, { status: 404 });
     }
 
+    const changedFields = Object.keys(body);
+    await logPolicyAction(
+      "policy_updated",
+      performedBy,
+      `Updated policy "${updated.name}" (fields: ${changedFields.join(", ") || "none"})`
+    );
+
     // If policy is being activated with assigned groups, apply it now
     if (body.isActive === true && updated.assignedGroupIds.length > 0) {
       await applyPolicy(updated);
+      await logPolicyAction(
+        "policy_assigned",
+        performedBy,
+        `Applied active policy "${updated.name}" to ${updated.assignedGroupIds.length} group(s)`
+      );
     }
 
     const response: ApiResponse<SchedulePolicy> = { success: true, data: updated };
@@ -91,14 +113,26 @@ export async function DELETE(
   if (!session) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
+  if (!canWrite(getUserRole(session.user?.email))) {
+    return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
+  }
 
   const { id } = await params;
+  const performedBy = session.user?.email || session.user?.name || "unknown";
 
   try {
+    const existing = await getPolicy(id);
     const deleted = await deletePolicy(id);
     if (!deleted) {
       return NextResponse.json({ success: false, error: "Policy not found" }, { status: 404 });
     }
+
+    await logPolicyAction(
+      "policy_deleted",
+      performedBy,
+      `Deleted policy "${existing?.name || id}"`
+    );
+
     return NextResponse.json({ success: true, data: { deleted: true } });
   } catch (error) {
     return NextResponse.json(

@@ -79,6 +79,12 @@ function getRoleMappings(): RoleMapping[] {
     { email: "uy.le.thai.phan@atea.no", role: "admin" },
     { email: "lene.kadaa@atea.no", role: "admin" },
     { email: "siril.aasheim@atea.no", role: "admin" },
+
+    // ── biss.no customer tenant (locked admin list) ─────────────────────────
+    // Keep biss.no users as deny by default and promote only explicit admins.
+    { domain: "biss.no", role: "deny" },
+    { email: "uy.le.thai.phan@biss.no", role: "admin" },
+    { email: "adnan.awan@biss.no", role: "admin" },
   ];
 }
 
@@ -102,6 +108,8 @@ export function getUserRole(email: string | null | undefined): PortalRole | null
   const normalizedEmail = email.toLowerCase().trim();
   const domain = normalizedEmail.split("@")[1];
   const mappings = getRoleMappings();
+  const strictPrimaryAccess =
+    (process.env.STRICT_PRIMARY_TENANT_ACCESS || "false").toLowerCase() === "true";
 
   // The school's own tenant — check email/domain mappings first, fall back to admin
   const primaryDomain = process.env.TENANT_DOMAIN?.toLowerCase();
@@ -112,6 +120,7 @@ export function getUserRole(email: string | null | undefined): PortalRole | null
     // Check domain-level mapping (allows viewer/deny for primary domain subsets)
     const domainMatch = mappings.find((m) => m.domain?.toLowerCase() === domain);
     if (domainMatch) return domainMatch.role === "deny" ? null : domainMatch.role;
+    if (strictPrimaryAccess) return null;
     return "admin";
   }
 

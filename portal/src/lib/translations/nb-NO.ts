@@ -63,6 +63,7 @@ const nbNO = {
     specialGroups: "Spesialgrupper",
     policies: "Policyer",
     schedules: "Tidsplaner",
+    holidayCalendar: "Helligdagskalender",
     pendingChanges: "Ventende endringer",
     auditLog: "Revisjonslogg",
     docs: "Dokumentasjon",

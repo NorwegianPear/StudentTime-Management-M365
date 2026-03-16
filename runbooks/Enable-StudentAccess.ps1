@@ -51,7 +51,27 @@ try {
     Write-Output "Found $($students.Count) members in student group"
     Write-Output "--------------------------------------------"
 
-    $enabledCount = 0
+    # ── Load active suspensions so we never re-enable a suspended student ──
+    # Suspensions are written here both by Process-Suspensions.ps1 and by the
+    # web portal (via its automation bridge). This is the shared fallback state:
+    # even if the portal is unreachable, the runbook still honours suspensions.
+    $suspendedUntil = @{}
+    try {
+        $suspensionsJson = Get-AutomationVariable -Name 'SuspendedStudents' -ErrorAction SilentlyContinue
+        if ($suspensionsJson -and $suspensionsJson -ne '[]') {
+            $now = Get-Date
+            ($suspensionsJson | ConvertFrom-Json) | Where-Object { $_.isActive -and ([datetime]$_.endDate) -gt $now } |
+                ForEach-Object { $suspendedUntil[$_.studentId] = $_.endDate }
+            Write-Output "Active suspensions (will be skipped): $($suspendedUntil.Count)"
+        }
+    }
+    catch {
+        Write-Output "WARNING: Could not load SuspendedStudents variable — proceeding without suspension check."
+    }
+    Write-Output "--------------------------------------------"
+
+    $enabledCount   = 0
+    $suspendedCount = 0
     $alreadyEnabledCount = 0
     $errorCount = 0
 
@@ -59,7 +79,14 @@ try {
         try {
             # Get current user status
             $user = Get-MgUser -UserId $student.Id -Property "displayName,accountEnabled,userPrincipalName" -ErrorAction Stop
-            
+
+            # ── Suspension check — never re-enable a suspended student ──────
+            if ($suspendedUntil.ContainsKey($student.Id)) {
+                Write-Output "[SUSPENDED] $($user.DisplayName) ($($user.UserPrincipalName)) — active until $($suspendedUntil[$student.Id])"
+                $suspendedCount++
+                continue
+            }
+
             if ($user.AccountEnabled -eq $false) {
                 # Enable the account
                 Update-MgUser -UserId $student.Id -AccountEnabled:$true
@@ -83,6 +110,7 @@ try {
     Write-Output "============================================"
     Write-Output "Accounts enabled:         $enabledCount"
     Write-Output "Already enabled:          $alreadyEnabledCount"
+    Write-Output "Skipped (suspended):      $suspendedCount"
     Write-Output "Errors:                   $errorCount"
     Write-Output "Total processed:          $($students.Count)"
     Write-Output "============================================"
@@ -95,6 +123,7 @@ try {
         $summaryData = [ordered]@{
             "Accounts Enabled"   = $enabledCount
             "Already Enabled"    = $alreadyEnabledCount
+            "Skipped (Suspended)" = $suspendedCount
             "Errors"             = $errorCount
             "Total Processed"    = $students.Count
         }

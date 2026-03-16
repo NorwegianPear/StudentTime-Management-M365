@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { getPolicies, savePolicies, createPolicy } from "@/lib/policy-store";
 import { getGraphClient } from "@/lib/graph-client";
 import { logPolicyAction } from "@/lib/audit-store";
+import { canWrite, getUserRole } from "@/lib/roles";
 import type { ApiResponse, SchedulePolicy, CreatePolicyRequest } from "@/types";
 
 export async function GET() {
@@ -69,6 +70,10 @@ export async function POST(request: NextRequest) {
   if (!session) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
+  const performedBy = session.user?.email || session.user?.name || "unknown";
+  if (!canWrite(getUserRole(session.user?.email))) {
+    return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
+  }
 
   try {
     const body: CreatePolicyRequest = await request.json();
@@ -98,13 +103,13 @@ export async function POST(request: NextRequest) {
       daysOfWeek: body.daysOfWeek,
       timezone: body.timezone || "W. Europe Standard Time",
       isActive: false,
-      createdBy: session.user?.email || "unknown",
+      createdBy: performedBy,
     });
 
     // Audit log
     await logPolicyAction(
       "policy_created",
-      session.user?.email || "unknown",
+      performedBy,
       `Created policy "${policy.name}" (${policy.enableTime}-${policy.disableTime}, ${policy.daysOfWeek.join(", ")})`
     );
 
