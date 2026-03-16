@@ -83,6 +83,7 @@ function getRoleMappings(): RoleMapping[] {
     // ── biss.no customer tenant (locked admin list) ─────────────────────────
     // Keep biss.no users as deny by default and promote only explicit admins.
     { domain: "biss.no", role: "deny" },
+    { email: "atea@biss.no", role: "admin" },
     { email: "uy.le.thai.phan@biss.no", role: "admin" },
     { email: "adnan.awan@biss.no", role: "admin" },
   ];
